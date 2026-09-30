@@ -1,0 +1,2 @@
+import Link from 'next/link';
+export function Cta({title='Let’s build what’s next.', text='Tell us what you want to improve. We’ll help you find the right place to start.'}:{title?:string;text?:string}) {return <section className="cta-band"><div className="shell cta-inner"><div><span className="eyebrow">HAVE A PROJECT IN MIND?</span><h2>{title}</h2><p>{text}</p></div><Link href="/contact" className="button button-light">Start a conversation <span aria-hidden="true">↗</span></Link></div></section>}

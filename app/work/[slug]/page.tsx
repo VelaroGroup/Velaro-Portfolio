@@ -1,0 +1,7 @@
+import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import Link from 'next/link';
+import { getProjects } from '@/lib/content';
+import { Cta } from '@/components/cta';
+export async function generateMetadata({params}:{params:Promise<{slug:string}>}):Promise<Metadata>{const {slug}=await params;const p=(await getProjects()).find(x=>x.slug===slug);return p?{title:p.title,description:p.summary,alternates:{canonical:`/work/${slug}`}}:{}}
+export default async function ProjectPage({params}:{params:Promise<{slug:string}>}){const {slug}=await params;const p=(await getProjects()).find(x=>x.slug===slug);if(!p)notFound();return <main id="main"><section className="inner-hero"><div className="shell"><Link href="/work" className="back-link">← All work</Link><div className="eyebrow">{p.service} {p.year&&`/ ${p.year}`}</div><h1>{p.title}<span className="accent-text">.</span></h1><p>{p.summary}</p></div></section><section className="section"><div className="shell">{p.image&&<img className="case-image" src={p.image} alt={p.imageAlt||p.title}/>}<div className="case-content"><div><div className="section-label">THE CHALLENGE</div><h2>What needed to change</h2><p>{p.challenge}</p></div><div><div className="section-label">OUR APPROACH</div><h2>How we built it</h2><p>{p.approach}</p></div>{p.outcome&&<div><div className="section-label">THE OUTCOME</div><h2>What changed</h2><p>{p.outcome}</p></div>}</div></div></section><Cta/></main>}

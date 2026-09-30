@@ -1,0 +1,7 @@
+import type { Metadata } from 'next';
+import { SiteHeader } from '@/components/site-header';
+import { SiteFooter } from '@/components/site-footer';
+import { siteUrl } from '@/lib/content';
+import './globals.css';
+export const metadata: Metadata = { metadataBase: new URL(siteUrl), title: { default: 'Velaro | Automation, Web, E-commerce & Custom Software', template: '%s | Velaro' }, description: 'Velaro designs and develops business automations, websites, e-commerce experiences, and custom software for businesses in Lebanon and the Middle East.', alternates: { canonical: '/' }, openGraph: { type:'website', siteName:'Velaro', title:'Velaro | Digital solutions that move business forward', description:'Automation, web, e-commerce, and custom software built around your business.', url:siteUrl, images:[{url:'/velaro-logo.png',width:1264,height:842,alt:'Velaro logo'}] }, robots:{index:true,follow:true}, icons:{icon:'/favicon.svg'} };
+export default function RootLayout({children}:{children:React.ReactNode}) { const organization = {'@context':'https://schema.org','@type':'Organization',name:'Velaro',url:siteUrl,logo:`${siteUrl}/velaro-logo.png`,email:'info@velaro.group',description:'Digital solutions for automation, websites, e-commerce, and custom software.'}; return <html lang="en"><body><a className="skip-link" href="#main">Skip to content</a><SiteHeader/>{children}<SiteFooter/><script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(organization)}}/></body></html> }
