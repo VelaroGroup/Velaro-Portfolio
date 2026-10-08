@@ -1,6 +1,9 @@
 import { generatedLocalProjects } from './generated-projects';
 import { cache } from 'react';
+import { unstable_cache } from 'next/cache';
 import { z } from 'zod';
+
+export { projectCategories, projectCategoryLabel } from './project-categories';
 
 export type ProjectVisual = 'inbox' | 'workflow' | 'platform' | 'website' | 'commerce';
 
@@ -20,17 +23,6 @@ export type Project = {
   kind?: 'concept' | 'case-study';
   visual?: ProjectVisual;
 };
-
-export const projectCategories = [
-  { slug: 'automation', label: 'Automation', shortLabel: 'Automation' },
-  { slug: 'custom-software', label: 'Custom software & platforms', shortLabel: 'Custom platforms' },
-  { slug: 'web-development', label: 'Web development', shortLabel: 'Websites' },
-  { slug: 'ecommerce', label: 'E-commerce', shortLabel: 'E-commerce' },
-] as const;
-
-export function projectCategoryLabel(service: string): string {
-  return projectCategories.find((category) => category.label === service)?.shortLabel || service;
-}
 
 const optionalText = z.preprocess(
   (value) => value === null || value === '' ? undefined : value,
@@ -70,16 +62,13 @@ if (!localResult.success) {
 }
 export const localProjects: Project[] = localResult.data;
 
-export const getProjects = cache(async (): Promise<Project[]> => {
-  const id = process.env.SANITY_PROJECT_ID;
-  const dataset = process.env.SANITY_DATASET || 'production';
-  if (!id) return localProjects;
-
+const getPublishedProjects = unstable_cache(async (id: string, dataset: string): Promise<Project[]> => {
   const query = encodeURIComponent('*[_type == "project" && defined(slug.current)] | order(featured desc, _createdAt desc){"slug":slug.current,title,summary,service,year,client,featured,challenge,approach,outcome,kind,visual,"image":cover.asset->url,"imageAlt":cover.alt}');
 
   try {
     const response = await fetch(`https://${id}.api.sanity.io/v2025-02-19/data/query/${dataset}?query=${query}`, {
-      next: { revalidate: 300 },
+      // Cache the validated collection below, never a malformed HTTP-200 body.
+      cache: 'no-store',
       signal: AbortSignal.timeout(5000),
     });
     if (!response.ok) throw new Error(`Sanity returned ${response.status}`);
@@ -87,14 +76,23 @@ export const getProjects = cache(async (): Promise<Project[]> => {
     const parsed = cmsPayloadSchema.safeParse(data);
     if (!parsed.success) throw new Error('Invalid project response');
 
-    // Published records take precedence, while local concept URLs remain available.
-    const merged = new Map<string, Project>(parsed.data.result.map((project) => [project.slug, project]));
-    for (const project of localProjects) {
-      if (!merged.has(project.slug)) merged.set(project.slug, project);
-    }
-    return [...merged.values()].sort((a, b) => Number(b.featured) - Number(a.featured));
+    return parsed.data.result;
   } catch {
-    console.warn('Project content unavailable; using local projects.');
-    return localProjects;
+    // A configured CMS is authoritative. Throwing preserves successful ISR output;
+    // a temporary failure must not replace published records with cached 404s.
+    throw new Error('Project content is temporarily unavailable. Please try again later.');
   }
+}, ['velaro-published-projects-v1'], { revalidate: 300 });
+
+export const getProjects = cache(async (): Promise<Project[]> => {
+  const id = process.env.SANITY_PROJECT_ID;
+  if (!id) return localProjects;
+  const publishedProjects = await getPublishedProjects(id, process.env.SANITY_DATASET || 'production');
+
+  // Published records take precedence, while local concept URLs remain available.
+  const merged = new Map<string, Project>(publishedProjects.map((project) => [project.slug, project]));
+  for (const project of localProjects) {
+    if (!merged.has(project.slug)) merged.set(project.slug, project);
+  }
+  return [...merged.values()].sort((a, b) => Number(b.featured) - Number(a.featured));
 });

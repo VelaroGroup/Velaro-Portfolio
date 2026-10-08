@@ -5,7 +5,11 @@ const production = process.env.NODE_ENV === 'production';
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   // Public commit identity is compiled into static and dynamic page metadata.
-  env: { VELARO_RELEASE_SHA: process.env.GITHUB_SHA || 'local' },
+  env: {
+    VELARO_RELEASE_SHA: process.env.GITHUB_SHA || 'local',
+    // Public indexing policy must agree in static and request-rendered metadata.
+    SITE_NOINDEX: process.env.SITE_NOINDEX === '1' ? '1' : '0',
+  },
   // Opt in for a minimal Node/container artifact; ordinary `next start` stays supported.
   output: process.env.VELARO_STANDALONE === '1' ? 'standalone' : undefined,
   images: {
@@ -52,6 +56,11 @@ const nextConfig: NextConfig = {
         { key: 'Content-Security-Policy', value: `base-uri 'self'; object-src 'none'${production ? "; frame-ancestors 'self'" : ''}` },
         ...(process.env.SITE_NOINDEX === '1' ? [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }] : []),
       ],
+    }, {
+      // Keep the canonical public domain indexable, without indexing the Worker alias.
+      source: '/:path*',
+      has: [{ type: 'host', value: '^.+\\.workers\\.dev$' }],
+      headers: [{ key: 'X-Robots-Tag', value: 'noindex, follow' }],
     }];
   },
 };

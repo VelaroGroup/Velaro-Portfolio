@@ -6,7 +6,7 @@ import { pageMetadata } from '@/lib/metadata';
 
 export function generateMetadata(_props: unknown, parent: ResolvingMetadata) {
   return pageMetadata({
-    title: 'Let’s talk',
+    title: 'Contact Us',
     description: 'Talk to Velaro about a custom platform, business automation, a website or an online store. We help turn your business needs into a clear plan.',
     path: '/contact',
   }, parent);

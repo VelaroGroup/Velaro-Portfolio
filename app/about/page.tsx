@@ -5,6 +5,7 @@ import { ArrowUpRight, Compass, Gauge, Layers3 } from 'lucide-react';
 import { Cta } from '@/components/cta';
 import { SectionHeading } from '@/components/section-heading';
 import { pageMetadata } from '@/lib/metadata';
+import velaroMark from '@/public/velaro-mark.png';
 
 export function generateMetadata(_props: unknown, parent: ResolvingMetadata) {
   return pageMetadata({
@@ -42,7 +43,7 @@ export default function About() {
         </div>
         <figure className="about-brand-art">
           <div className="about-brand-top"><span>DIGITAL GROWTH STUDIO</span><ArrowUpRight aria-hidden="true" /></div>
-          <div className="about-brand-mark"><Image src="/velaro-mark.png" alt="Velaro’s original blue and cyan V logo" width={680} height={680} sizes="(max-width: 600px) 230px, 260px" /></div>
+          <div className="about-brand-mark"><Image src={velaroMark} alt="Velaro’s original blue and cyan V logo" width={680} height={680} sizes="(max-width: 600px) 230px, 260px" /></div>
           <figcaption>
             <span className="about-brand-wordmark">VELARO</span>
             <p>Accelerating digital growth.</p>

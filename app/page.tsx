@@ -2,10 +2,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, ArrowUpRight, Check, Globe2, Layers3, ShoppingBag, Workflow } from 'lucide-react';
 import { Cta } from '@/components/cta';
+import { JsonLd } from '@/components/json-ld';
 import { PlatformPreview } from '@/components/platform-preview';
 import { ProcessSteps, SectionHeading } from '@/components/section-heading';
 import { WorkflowExplorer } from '@/components/workflow-explorer';
 import { site } from '@/lib/site';
+import { websiteSchema } from '@/lib/structured-data';
+import velaroMark from '@/public/velaro-mark.png';
 
 const offerings = [
   { slug: 'custom-software', number: '01', name: 'Custom platforms', line: 'Your business. Your own system.', description: 'Business software, team workspaces and customer portals, shaped around your operations and available under your brand.', details: 'Business systems · Portals · White-label', Icon: Layers3 },
@@ -64,11 +67,12 @@ export default function Home() {
     </div></section>
 
     <section className="section home-about"><div className="shell home-about-grid">
-      <div className="home-about-identity"><Image src="/velaro-mark.png" alt="" width={100} height={100} sizes="100px" /><span className="eyebrow">ABOUT US</span><h2>Thoughtful people.<br />Practical thinking.</h2></div>
+      <div className="home-about-identity"><Image src={velaroMark} alt="" width={100} height={100} sizes="100px" /><span className="eyebrow">ABOUT US</span><h2>Thoughtful people.<br />Practical thinking.</h2></div>
       <div className="home-about-copy"><p className="intro-text">Velaro is a digital growth studio based in Lebanon, working with businesses across the Middle East and beyond.</p><p>Our name comes from velocity: steady, confident progress. We bring that approach to everything we build, from your public presence to the systems behind it.</p><div className="home-about-pillars"><span>Velocity</span><span>Vision</span><span>Value</span></div><Link href="/about" className="text-link">Get to know Velaro <ArrowUpRight size={18} aria-hidden="true" /></Link></div>
     </div></section>
 
     <section id="how-it-works" className="section home-process"><div className="shell"><SectionHeading eyebrow="HOW WE WORK" title="A clear path, from idea to everyday use." description="One collaborative approach, whether we’re building your website, store, automation or custom platform." /><ProcessSteps /></div></section>
     <Cta title="What’s next for your business?" text="A new presence, a better process or a platform of your own. Tell us what you have in mind, and we’ll help shape the right solution." />
+    <JsonLd data={websiteSchema} />
   </main>;
 }

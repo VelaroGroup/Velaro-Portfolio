@@ -2,7 +2,9 @@ import type { Metadata, Viewport } from 'next';
 import localFont from 'next/font/local';
 import { SiteHeader } from '@/components/site-header';
 import { SiteFooter } from '@/components/site-footer';
+import { JsonLd } from '@/components/json-ld';
 import { site, siteUrl } from '@/lib/site';
+import { organizationSchema } from '@/lib/structured-data';
 import './design-system.css';
 import './previews.css';
 import './services.css';
@@ -26,7 +28,9 @@ export const metadata: Metadata = {
   },
   twitter: { card: 'summary_large_image' },
   other: { 'velaro-release': process.env.VELARO_RELEASE_SHA || 'local' },
-  robots: { index: true, follow: true },
+  robots: process.env.SITE_NOINDEX === '1'
+    ? { index: false, follow: false }
+    : { index: true, follow: true, 'max-image-preview': 'large' },
   icons: {
     icon: { url: '/velaro-mark.png', type: 'image/png', sizes: '680x680' },
     apple: { url: '/velaro-mark.png', type: 'image/png', sizes: '680x680' },
@@ -34,10 +38,6 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const organization = {
-    '@context': 'https://schema.org', '@type': 'Organization', name: site.name,
-    url: siteUrl, logo: `${siteUrl}/velaro-mark.png`, email: site.email, description: site.description,
-  };
   return (
     <html lang="en" className={inter.variable}>
       <body>
@@ -45,7 +45,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SiteHeader />
         {children}
         <SiteFooter />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organization).replace(/</g, '\\u003c') }} />
+        <JsonLd data={organizationSchema} />
       </body>
     </html>
   );

@@ -3,13 +3,22 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowDown, ArrowLeft, ArrowUpRight, Check, Layers3, MessageCircle, Plus, Workflow } from 'lucide-react';
 import { Cta } from '@/components/cta';
+import { JsonLd } from '@/components/json-ld';
 import { PlatformPreview } from '@/components/platform-preview';
 import { ProcessSteps, SectionHeading } from '@/components/section-heading';
-import { siteUrl } from '@/lib/content';
+import { siteUrl } from '@/lib/site';
 import { services } from '@/lib/services';
 import { pageMetadata } from '@/lib/metadata';
+import { organizationId } from '@/lib/structured-data';
 
 type ServicePageProps = { params: Promise<{ slug: string }> };
+
+const serviceSearchTitles: Record<string, string> = {
+  automation: 'Business Process Automation',
+  web: 'Web Design & Development',
+  ecommerce: 'E-commerce Design & Development',
+  'custom-software': 'Custom Software & White-label Platforms',
+};
 
 export function generateStaticParams() {
   return services.map(({ slug }) => ({ slug }));
@@ -21,7 +30,7 @@ export async function generateMetadata({ params }: ServicePageProps, parent: Res
   if (!service) notFound();
 
   return pageMetadata({
-    title: service.name,
+    title: serviceSearchTitles[slug] ?? service.name,
     description: service.description,
     path: `/services/${slug}`,
   }, parent);
@@ -40,9 +49,10 @@ export default async function ServicePage({ params }: ServicePageProps) {
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'Service',
+    '@id': `${siteUrl}/services/${slug}#service`,
     name: service.name,
     description: service.description,
-    provider: { '@type': 'Organization', name: 'Velaro', url: siteUrl },
+    provider: { '@id': organizationId },
     url: `${siteUrl}/services/${slug}`,
   };
 
@@ -155,7 +165,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
 
       <section className="section svc-related">
         <div className="shell">
-          <p className="eyebrow">PART OF A CONNECTED BUSINESS</p>
+          <h2 className="eyebrow">PART OF A CONNECTED BUSINESS</h2>
           <div className="svc-related-grid">
             {related.map((item) => (
               <Link className="svc-related-link" href={`/services/${item.slug}`} key={item.slug}>
@@ -169,7 +179,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
       </section>
 
       <Cta title={service.closing} text="Tell us where the work gets complicated. We’ll help you find a useful way forward." />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, '\\u003c') }} />
+      <JsonLd data={schema} />
     </main>
   );
 }

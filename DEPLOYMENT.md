@@ -4,7 +4,7 @@ The supported production application is the Next.js website in **`velaro-website
 
 The public website is live at **[www.velaro.group](https://www.velaro.group)** on the Cloudflare Worker **`velaro-portfolio`**. Both `velaro.group` and `www.velaro.group` are attached as Custom Domains and declared in `wrangler.jsonc`. The apex redirects to www, preserving paths and queries. The [workers.dev endpoint](https://velaro-portfolio.weathered-mud-0703.workers.dev) remains available for deployment verification. Domain registration remains at Squarespace.
 
-Known healthy release: commit **`33d9c58`**, [GitHub Actions run 37801008410](https://github.com/VelaroGroup/Velaro-Portfolio/actions/runs/37801008410), Worker version **`99263a5d-dd1c-4f21-a9c1-3641f2f9cb48`**. All 17 workflow steps passed. Live-domain verification with normal TLS validation then passed **680 checks across 20 pages, 51 internal destinations and four legacy redirects**, including apex canonicalization and HTTP-to-HTTPS redirection. See [the validation report](TEST_REPORT.md) for release history and review limitations.
+Use the latest successful deployment run and each page's `velaro-release` metadata to identify the running release. Earlier launch commits and Worker versions are dated history in [TEST_REPORT.md](TEST_REPORT.md), not the current release. The 8 October 2026 SEO candidate passed lint, production build and 918 local production checks; consult that report for subsequent deployment evidence and review limits.
 
 ## Hosting requirements
 
@@ -25,7 +25,7 @@ Do not upload an `out/` folder to a static-only host: this implementation uses s
 
 ## Cloudflare Workers target
 
-The deployment target is the existing **`velaro-portfolio`** Worker. OpenNext **1.20.9** adapts the Next.js **16.3.8** build; Wrangler **4.148.0** packages and deploys it. This retains the actual Next compiler and runtime behavior used by the standard build. Cloudflare currently recommends vinext for new applications; this existing tested application uses OpenNext to avoid combining its launch with a framework implementation migration.
+The deployment target is **`velaro-portfolio`**. OpenNext **1.20.9** adapts the Next.js **16.3.8** build; Wrangler **4.148.0** packages and deploys it. This retains the standard Next compiler and runtime used by the release checks.
 
 `wrangler.jsonc` defines these bindings:
 
@@ -72,7 +72,9 @@ corepack pnpm run deploy:cloudflare
 
 Use the OpenNext deployment command, not bare `wrangler deploy`, because it also populates the remote build cache. Authentication belongs in the deployment environment through `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`; never commit token files or place them under `public`. Scope credentials to the website's account and required Worker/KV operations.
 
-The configuration retains `workers.dev` and both exact Custom Domain entries with `custom_domain: true`. Preserve both entries on future deployments. Canonical metadata is `https://www.velaro.group`. The host-specific redirect uses an anchored, escaped apex match and separate root/nonempty-path rules to exclude www and preserve paths and queries. Localhost and workers.dev are unaffected. Keep optional CMS settings available at both build and runtime. A separate staging deployment can use `SITE_NOINDEX=1` at build time; do not apply that setting to the public production Worker. Noindex is not access protection.
+Preserve `workers.dev` and both exact Custom Domain entries with `custom_domain: true`. Canonical metadata points to `https://www.velaro.group`. The anchored apex redirect preserves paths and queries while excluding www, localhost and workers.dev. The Worker alias has a separate host-specific `X-Robots-Tag: noindex, follow` policy; this does not disable indexing on the public domain. Keep optional CMS settings available at both build and runtime.
+
+For a separate non-indexable build, set `SITE_NOINDEX=1` before building. The compiled policy agrees across prerendered and request-rendered pages, sets noindex/nofollow metadata and response headers, and omits the sitemap advertisement from robots.txt while permitting crawlers to read the directives. Unset it and rebuild for public production. Noindex is not access protection.
 
 The public repository is `VelaroGroup/Velaro-Portfolio`. Its `.github/workflows/website.yml` owns automatic deployment for successful **pushes to `master`** in that repository. It installs the frozen lockfile, runs lint and TypeScript, builds and checks the Node production server, then builds and checks the actual Workers preview. Only after those checks pass does it seed the remote cache and publish that artifact. It then verifies the workers.dev endpoint and public domain. Pull requests, `main` pushes and manually dispatched check runs do not trigger the deployment step.
 
@@ -103,11 +105,13 @@ With that production process running, use another terminal:
 corepack pnpm run verify:production http://127.0.0.1:3000
 ```
 
-The verification script checks every main, service, category and bundled concept route, internal links and anchors, contact preselection, unknown-route 404s, headings, wordmarks, metadata, structured data, security headers, sitemap coverage and optimized images. `verify:production` also requires the production framing restrictions; `verify:site` supports the development server and its embedded responsive review. It performs read-only HTTP requests and never sends an email. Responsive appearance and browser interactions still need the separate browser review; an HTTP pass does not establish those results.
+The verifier discovers all canonical URLs from the sitemap and adds required baseline routes. It checks those pages, incoming internal links, anchors, contact preselection, 404s, headings, metadata, structured data, security headers and optimized images. New sitemap projects therefore enter release checks automatically. `verify:production` additionally requires production framing restrictions. Checks are read-only and send no email; responsive appearance and interactions need separate browser review.
+
+When verifying the Worker alias or a noindex build, set `VELARO_EXPECT_INDEXABLE=0` for that command. The workflow sets this only on its alias check; the public-domain check requires indexable pages. Canonical URLs remain the public www origin in both checks.
 
 Dependency security fixes are pinned in the lockfile and `pnpm-workspace.yaml`. Keep the workspace policy file in the build context, even for this single application. Re-run the audit when preparing future releases; an earlier clean result is not a permanent security guarantee.
 
-The pinned-action workflow has completed successfully on GitHub, including local Next and Worker runtime verification and post-deployment checks, as recorded above. The standard Node commands in this section remain useful for development and portability; they do not replace Worker verification for a Cloudflare release. Consult [the validation report](TEST_REPORT.md) for design review coverage and outstanding development-toolchain advisories.
+The standard Node commands support development and portability; they do not replace Worker runtime and post-deployment verification. [TEST_REPORT.md](TEST_REPORT.md) records individual workflow outcomes, audit evidence and the dated [Google mobile PageSpeed baseline](https://pagespeed.web.dev/analysis/https-www-velaro-group/fxnm2kxk5b?form_factor=mobile): 99 performance, 100 accessibility, 100 best practices and 100 SEO, with 2.0 s LCP and 0 CLS. This is a lab measurement; real-user data was unavailable.
 
 ## Environment and content
 
@@ -117,7 +121,7 @@ No secrets or CMS account are needed for the bundled public content.
 | --- | --- |
 | `SANITY_PROJECT_ID` | Optional public Sanity project. Omit it to use local content. |
 | `SANITY_DATASET` | Optional dataset; defaults to `production`. |
-| `SITE_NOINDEX=1` | Build-time switch adding `X-Robots-Tag: noindex, nofollow` to preview deployments. Unset and rebuild for production. |
+| `SITE_NOINDEX=1` | Compiled build-time indexing policy for static and dynamic pages; noindex/nofollow metadata and headers, without a robots.txt sitemap advertisement. Unset and rebuild for public production. |
 | `VELARO_STANDALONE=1` | Build-time switch producing the optional minimal Node artifact described below. |
 | `NEXT_DEPLOYMENT_ID` | Optional build-time release identifier. Use the same value for every instance of one release and a new value for the next release. |
 | `PORT` | Runtime port for the production server, when required by the host. |
@@ -128,11 +132,13 @@ Previews should use hosting access protection as well as `SITE_NOINDEX=1` when a
 
 Publish only approved project content. Local project sources are `public/projects/*/project.json`; the build regenerates `lib/generated-projects.ts`. Those files are publicly accessible, so they must contain public case-study information only. Concept examples are explicitly labeled as concepts.
 
-Known project detail routes are prerendered during the build, with request-driven revalidation after 300 seconds; newly published valid CMS slugs can render on demand. The CMS request has a five-second timeout and falls back to validated local content on failure. A request-level React cache shares the collection between metadata and page rendering. Test a real published CMS record in the chosen hosting environment before relying on that optional connection.
+Work, category pages, project details and the sitemap explicitly use 300-second request-driven revalidation. Known detail routes are prerendered; new valid CMS slugs can render on demand. The CMS request has a five-second timeout and uses `cache: 'no-store'`; only its validated collection enters `unstable_cache`, keyed by project/dataset with a 300-second interval. React's request cache shares reads within one render.
 
-The sitemap contains 20 URLs: main pages, four service pages, four categories, six bundled concepts, Privacy and Terms. It omits invented modification dates. A static 1200×630 Open Graph image is generated at `/opengraph-image`; verify that image and social metadata on the public domain after deployment.
+Without CMS configuration, validated local projects are used. Once the CMS is configured, network, timeout, response and validation errors throw a sanitized error instead of silently substituting the local collection. Failed regeneration can preserve successful cached content; a cold failure remains an error rather than falsely treating a CMS-only project as missing. Test successful publication and failed-refresh behavior in the actual hosting environment before relying on the optional CMS.
 
-Local optimized images are allowed under `/images/`, `/projects/`, `/_next/static/media/`, plus `/velaro-logo.png`. Their source URLs must not contain query parameters. Keep new local project covers under `/projects/` or `/images/`. Remote CMS images currently use their validated HTTPS source directly and are not proxied through Next's image optimizer.
+The [canonical sitemap](https://www.velaro.group/sitemap.xml) currently contains 20 bundled public URLs and includes additional published projects automatically. It omits invented modification dates. Search Console ownership verification and sitemap submission are separate owner actions; sitemap availability does not establish indexing. A static 1200×630 Open Graph image is generated at `/opengraph-image`; verify it after deployment.
+
+Local optimized images are allowed under `/images/`, `/projects/`, `/_next/static/media/`, plus `/velaro-logo.png` and `/velaro-mark.png`, without source query parameters. Static imports of the original logo and concept photos produce hashed sources; OpenNext returns immutable optimized responses for these sources. Original files are unchanged. Keep new local covers under `/projects/` or `/images/`. Remote CMS covers currently use their validated HTTPS originals without optimization; add an approved responsive image loader or restricted optimizer configuration before substantial image growth.
 
 The contact form prepares an email in the visitor's email application, with a copy fallback. It does not submit to a server or save inquiries. Confirm that `info@velaro.group` receives mail before launch. A direct form-delivery service would require a separate provider configuration and implementation.
 
@@ -159,11 +165,13 @@ Respect Next's cache headers instead of forcing one blanket HTML cache policy. H
 
 For one self-hosted instance, provide a writable cache directory and let Next manage revalidation. For multiple instances or ephemeral containers, configure a supported shared cache and coordinated invalidation before expecting the same CMS update to appear on every instance at once. Deploy one built artifact to all replicas rather than rebuilding independently. Use a release identifier for version-skew protection and retain the previous release's static assets during rollout. There is no mutable customer/session state in this marketing application today; adding authenticated platform features would change these requirements.
 
+The current CMS query reads the complete collection, including detail text. Before substantial growth, split summary, detail-by-slug and sitemap projections, add gallery pagination and measure build time and response sizes with representative content. Category routes already send only their selected cards, and client navigation imports only service names/slugs. Sitemap splitting is unnecessary for 20 URLs; introduce partitioning if the collection approaches sitemap protocol limits.
+
 ## Domains, legacy links and rollback
 
 Both public hostnames are attached to `velaro-portfolio`, with the 17 other existing DNS records confirmed unchanged. Keep mail and verification records separate from application changes, and retain both Custom Domain mappings in the deployment configuration.
 
-Configured permanent redirects map `/website-development-lebanon` and `/website-development-middle-east` to `/services/web`, `/shopify-store-lebanon` to `/services/ecommerce`, and `/packages` to `/contact`. Privacy and Terms retain their routes. Confirm any remaining old URLs against the old site's sitemap, hosting route list or search-console export; do not redirect every unknown URL to the homepage.
+Configured permanent redirects map `/website-development-lebanon` and `/website-development-middle-east` to `/services/web`, `/shopify-store-lebanon` to `/services/ecommerce`, `/packages` to `/contact`, and `/about-us` to `/about`. Privacy and Terms retain their routes. Review additional legacy URLs against a sitemap, hosting route list or Search Console export; do not redirect every unknown URL to the homepage.
 
 After a production push succeeds, verify the final canonical domain:
 
@@ -182,4 +190,4 @@ git revert <commit-to-revert>
 git push origin master
 ```
 
-The same workflow rebuilds, tests and deploys the reverted source, making the rollback reproducible. Confirm the new Actions run and final-domain verification. Keep current domain routes and cache bindings intact when reverting application changes; reverting the deployment setup itself would remove the mechanism needed to release the rollback. Use the known healthy commit and Worker version above as release references, and retain the former site's saved configuration for any broader hosting rollback.
+The same workflow rebuilds, tests and deploys the reverted source. Confirm its Actions run, expected commit metadata and final-domain verification. Keep domain routes and cache bindings intact when reverting application changes. Select a previously verified release from [TEST_REPORT.md](TEST_REPORT.md) and the deployment history; an old launch reference is not necessarily the latest healthy release. Retain the former site's saved configuration for a broader hosting rollback.

@@ -3,6 +3,8 @@ import { WorkCollection } from '@/components/work-collection';
 import { getProjects } from '@/lib/projects';
 import { pageMetadata } from '@/lib/metadata';
 
+export const revalidate = 300;
+
 export function generateMetadata(_props: unknown, parent: ResolvingMetadata) {
   return pageMetadata({
     title: 'Work & possibilities',

@@ -2,6 +2,35 @@
 
 Reviewed on 8 October 2026 in the Windows workspace and the Linux deployment workflow. This report covers the public `velaro-website` repository; the sibling private platform was not modified.
 
+## SEO and indexing audit, 8 October 2026
+
+The live baseline (`1638bb3`) had no observed crawl/indexing blocker across its 20 sitemap pages. This audit checked every public page, canonical URL, title, description, internal destination, unknown-route response and sitemap entry, plus the application and Cloudflare configuration. Search Console ownership and Google's actual index coverage were not available in this session; crawl eligibility is not proof of indexing or ranking.
+
+| Finding | Change / verification |
+| --- | --- |
+| Service titles could communicate the offer more precisely | Added descriptive search titles for business process automation, web/e-commerce development and custom software/white-label platforms; Contact uses `Contact Us`. Every page has a unique title and description. |
+| Search engines needed a consistent site/business identity | Added homepage `WebSite` data and stable `Organization`/`Service` IDs, original logo and linked provider references. JSON-LD is safely serialized and matches visible business information. No invented reviews, results or addresses. |
+| Demonstration headings distracted from the real page outline | Replaced simulated interface headings with styled labels; retained meaningful page/section headings. |
+| New CMS content could outlive a build-only collection/sitemap | Explicit five-minute request-driven revalidation covers Work, categories, details and sitemap. Release checks discover new sitemap routes automatically and check incoming internal links. |
+| Configured CMS failure could hide published projects | Validate successful collections before caching; propagate sanitized errors instead of silently substituting local concepts. No-CMS mode remains local. Failed regeneration can retain the last successful output. |
+| Category pages carried hidden cards and header code carried full service copy | Filter cards on the server and use lightweight service navigation data. Category copy is shared between visible content and metadata. |
+| Optimized bundled images lacked durable cache headers on the baseline Worker | Static imports create fingerprinted image sources suitable for immutable caching. Original brand/photo PNGs are unchanged. Production checks require immutable optimized responses. |
+| Deployment aliases could compete with the canonical website | Host-specific `noindex` on `workers.dev`; public `www` remains indexable. `SITE_NOINDEX=1` consistently covers static and dynamic metadata/headers, with robots allowing crawlers to read that directive. |
+
+Local validation passed full ESLint and the TypeScript production build. The normal production candidate passed **918 checks**, covering 20 pages, 51 internal destinations, five permanent legacy redirects, four unknown-route 404/noindex responses, two contact selections, three optimized images, tracking-query canonicals, crawler-user-agent responses, JSON-LD identities and sitemap discovery. A separately built `SITE_NOINDEX=1` candidate passed **916 checks**; both home and request-rendered Contact returned `noindex, nofollow` in metadata and response headers. The normal build was restored afterward. Linux Worker and exact-release public verification run in the workflow associated with this change.
+
+CMS fixtures covered local mode, valid merge/override and sanitized rejection of invalid records, duplicates, invalid JSON, HTTP failure, network failure and timeout. Those fixtures mocked the persistent-cache wrapper; they do not establish a real Sanity publication or Cloudflare failed-refresh integration. No live CMS is configured. Production build output confirms five-minute revalidation for the collection, categories, details and sitemap.
+
+The [Google PageSpeed mobile baseline report](https://pagespeed.web.dev/analysis/https-www-velaro-group/fxnm2kxk5b?form_factor=mobile), captured at 22:06 GST on 8 October, scored **99 performance, 100 accessibility, 100 best practices and 100 SEO**. Its emulated slow-4G mobile run measured FCP **1.1s**, LCP **2.0s**, total blocking time **10ms**, CLS **0** and speed index **1.6s**. This measured the live pre-audit release, not every page or the later candidate. Google reported **no real-user data**, so field Core Web Vitals are unverified. Lighthouse's SEO score covers a subset of SEO checks and does not establish indexing; automated accessibility checks also have limited scope.
+
+Cloudflare's inspected configuration had no public-host blocking rule, Bot Fight Mode or AI crawler block. Googlebot, Bingbot and Twitterbot user-agent requests received complete server-rendered pages; these requests do not prove access from Google's verified crawler IPs. Existing HTTPS/apex redirects preserve path/query, while canonicals remove contact/tracking variations. Unknown URLs correctly stay 404. The sitemap omits fabricated modification dates.
+
+Responsive candidate screenshots sampled the revised Work collection at 320px, 390px and 820px; its filter, description and card layout remained readable without visible overlap in the captured area. Previous broader responsive evidence remains below. Audit artifacts are in the parent workspace's `.workspace-logs/seo-audit/`.
+
+Before substantial portfolio growth, optimize remote CMS covers, use separate summary/detail/sitemap queries, add pagination and measure representative content. KV remains eventually consistent; instant publication needs additional coordinated cache infrastructure. These are future growth requirements, not current indexing blockers. New genuine case studies should use approved evidence; the six bundled examples remain labeled concepts.
+
+Search Console still needs an owner-verified `velaro.group` property, sitemap submission at `https://www.velaro.group/sitemap.xml`, and URL Inspection/index-coverage review. No submission or indexing was claimed. The robots sitemap declaration already supports discovery. Guidance was checked against Google's [technical requirements](https://developers.google.com/search/docs/essentials/technical), [sitemap guidance](https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap), [canonicalization guidance](https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls), [site-name data](https://developers.google.com/search/docs/appearance/site-names), [Organization data](https://developers.google.com/search/docs/appearance/structured-data/organization) and [OpenNext image behavior](https://opennext.js.org/cloudflare/howtos/image).
+
 ## Release scope
 
 - Rebuilt the public website around custom automated platforms, discovery of repetitive work, connected operations and messaging workflows.

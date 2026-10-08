@@ -10,7 +10,7 @@ const canonicalBase = new URL(process.env.VELARO_EXPECTED_SITE_URL || 'https://w
 const expectIndexable = process.env.VELARO_EXPECT_INDEXABLE !== '0';
 const expectedRelease = process.env.VELARO_EXPECTED_RELEASE;
 
-const routes = [
+const requiredRoutes = [
   '/', '/about', '/contact', '/work', '/privacy', '/terms',
   ...['custom-software', 'automation', 'web', 'ecommerce'].map(slug => `/services/${slug}`),
   ...['automation', 'custom-software', 'web-development', 'ecommerce'].map(slug => `/work/category/${slug}`),
@@ -87,9 +87,28 @@ async function inBatches(items, action) {
 }
 
 console.log(`Checking Velaro at ${base.origin}`);
+// Crawl newly published content too; adding a CMS record must not bypass release checks.
+const sitemap = await getPage('/sitemap.xml');
+check(sitemap.status === 200, 'sitemap.xml: expected 200');
+check(/(?:application|text)\/xml/i.test(sitemap.headers?.get('content-type') || ''), 'sitemap.xml: XML content type is missing');
+const locations = [...(sitemap.html || '').matchAll(/<loc>(.*?)<\/loc>/gi)].map(match => {
+  try { return new URL(decode(match[1])).href; } catch { return decode(match[1]); }
+});
+check(new Set(locations).size === locations.length, 'sitemap.xml: duplicate URLs');
+const routes = [...requiredRoutes];
+for (const location of locations) {
+  try {
+    const url = new URL(location);
+    const canonical = url.origin === canonicalBase.origin && !url.search && !url.hash && !url.username && !url.password;
+    check(canonical, `sitemap.xml: non-canonical entry ${location}`);
+    if (canonical && !routes.includes(url.pathname)) routes.push(url.pathname);
+  } catch { check(false, 'sitemap.xml: malformed URL'); }
+}
 const pages = await inBatches(routes, getPage);
 const titles = new Map();
+const descriptions = new Map();
 const links = new Map();
+const linkedFromOtherPages = new Set();
 const photoUrls = new Map();
 const expectedPhotos = ['/images/concept-architecture.png', '/images/concept-ceramics.png', '/velaro-mark.png'];
 
@@ -99,6 +118,7 @@ for (const [index, page] of pages.entries()) {
   if (page.status !== 200) continue;
 
   const title = textContent(page.markup.match(/<title\b[^>]*>([\s\S]*?)<\/title>/i)?.[1] || '');
+  check([...page.markup.matchAll(/<title\b/gi)].length === 1, `${path}: expected exactly one page title`);
   check(title.length > 10 && !/create next app|untitled|placeholder/i.test(title), `${path}: missing or placeholder page title`);
   check(!titles.has(title), `${path}: title duplicates ${titles.get(title)} (${title})`);
   titles.set(title, path);
@@ -112,7 +132,10 @@ for (const [index, page] of pages.entries()) {
     check(attribute(release?.[1] || '', 'content') === expectedRelease, `${path}: the expected release has not reached this page`);
   }
   const description = metas.find(match => attribute(match[1], 'name') === 'description');
-  check((attribute(description?.[1] || '', 'content') || '').length >= 40, `${path}: missing meaningful meta description`);
+  const descriptionText = attribute(description?.[1] || '', 'content') || '';
+  check(descriptionText.length >= 40, `${path}: missing meaningful meta description`);
+  check(!descriptions.has(descriptionText), `${path}: meta description duplicates ${descriptions.get(descriptionText)}`);
+  descriptions.set(descriptionText, path);
   const viewport = metas.find(match => attribute(match[1], 'name') === 'viewport');
   check(/width=device-width/.test(attribute(viewport?.[1] || '', 'content') || ''), `${path}: responsive viewport is missing`);
   const canonical = [...page.markup.matchAll(/<link\b([^>]*)>/gi)].filter(match => attribute(match[1], 'rel') === 'canonical');
@@ -137,19 +160,38 @@ for (const [index, page] of pages.entries()) {
   check(csp.includes("base-uri 'self'") && csp.includes("object-src 'none'"), `${path}: baseline content security policy is missing`);
   if (productionCheck) check(csp.includes("frame-ancestors 'self'"), `${path}: production CSP frame protection is missing`);
   check((page.headers.get('permissions-policy') || '').includes('microphone=()'), `${path}: browser feature policy is missing`);
-  if (expectIndexable) {
-    const robots = metas.find(match => attribute(match[1], 'name') === 'robots');
-    check(!/noindex/i.test(`${page.headers.get('x-robots-tag') || ''} ${attribute(robots?.[1] || '', 'content') || ''}`), `${path}: production page is marked noindex`);
-  }
+  const indexingDirectives = [page.headers.get('x-robots-tag') || '', ...metas
+    .filter(match => ['robots', 'googlebot', 'bingbot'].includes((attribute(match[1], 'name') || '').toLowerCase()))
+    .map(match => attribute(match[1], 'content') || '')].join(' ');
+  check(expectIndexable ? !/noindex|nofollow|\bnone\b/i.test(indexingDirectives) : /noindex/i.test(indexingDirectives),
+    `${path}: expected ${expectIndexable ? 'indexable, followable public page' : 'noindex preview/Worker alias'}`);
 
   const jsonLd = [...page.html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)]
     .filter(match => attribute(match[1], 'type') === 'application/ld+json');
   check(jsonLd.length > 0, `${path}: structured data is missing`);
+  const schemas = [];
   for (const [, , json] of jsonLd) {
     try {
       const data = JSON.parse(json);
       check(data['@context'] === 'https://schema.org' && Boolean(data['@type']), `${path}: structured data has no schema context/type`);
+      schemas.push(data);
     } catch { check(false, `${path}: structured data is not valid JSON`); }
+  }
+  const organization = schemas.find(data => data['@type'] === 'Organization');
+  const organizationId = new URL('/#organization', canonicalBase).href;
+  check(organization?.['@id'] === organizationId && organization?.name === 'Velaro', `${path}: consistent Organization identity is missing`);
+  check(organization?.logo === new URL('/velaro-mark.png', canonicalBase).href, `${path}: Organization logo must use the original public mark`);
+  if (path === '/') {
+    const website = schemas.find(data => data['@type'] === 'WebSite');
+    check(website?.name === 'Velaro' && website?.['@id'] === new URL('/#website', canonicalBase).href,
+      'homepage: WebSite identity is missing');
+    check(website?.publisher?.['@id'] === organizationId && new URL(website.url, canonicalBase).origin === canonicalBase.origin,
+      'homepage: WebSite publisher or URL is incorrect');
+  }
+  if (path.startsWith('/services/')) {
+    const service = schemas.find(data => data['@type'] === 'Service');
+    check(service?.['@id'] === new URL(`${path}#service`, canonicalBase).href && service?.provider?.['@id'] === organizationId,
+      `${path}: Service identity/provider is missing`);
   }
 
   const headings = [...page.markup.matchAll(/<h[1-6]\b[^>]*>([\s\S]*?)<\/h[1-6]>/gi)].map(match => textContent(match[1]));
@@ -171,23 +213,28 @@ for (const [index, page] of pages.entries()) {
     if (destination.origin === base.origin && ['http:', 'https:'].includes(destination.protocol)) {
       const target = `${destination.pathname}${destination.search}${destination.hash}`;
       if (!links.has(target)) links.set(target, path);
+      if (destination.pathname !== path) linkedFromOtherPages.add(destination.pathname);
     }
   }
 
   for (const image of page.markup.matchAll(/<img\b([^>]*)>/gi)) {
+    check(attribute(image[1], 'alt') !== null, `${path}: image has no alt attribute`);
     const src = attribute(image[1], 'src');
     if (!src) continue;
     const imageUrl = new URL(src, page.url);
     const original = imageUrl.searchParams.get('url');
-    if (imageUrl.pathname === '/_next/image' && expectedPhotos.includes(original) && !photoUrls.has(original)) {
-      photoUrls.set(original, imageUrl);
+    const matchedPhoto = expectedPhotos.find(photo => original === photo ||
+      new RegExp(`^/_next/static/media/${photo.split('/').pop().replace('.png', '')}\\.[a-z0-9_-]+\\.png$`, 'i').test(original || ''));
+    if (imageUrl.pathname === '/_next/image' && matchedPhoto && !photoUrls.has(matchedPhoto)) {
+      photoUrls.set(matchedPhoto, imageUrl);
     }
   }
 }
 
-for (const path of ['/services/does-not-exist', '/work/category/does-not-exist', '/work/does-not-exist']) {
+for (const path of ['/does-not-exist', '/services/does-not-exist', '/work/category/does-not-exist', '/work/does-not-exist']) {
   const response = await getPage(path);
   check(response.status === 404, `${path}: expected 404, received ${response.status}`);
+  check(/<meta\b[^>]*name="robots"[^>]*content="[^"]*noindex/i.test(response.html || ''), `${path}: missing noindex on the error page`);
 }
 
 await inBatches(legacyRedirects, async ([source, destination]) => {
@@ -208,7 +255,7 @@ if (['localhost', '127.0.0.1', '[::1]'].includes(base.hostname)) {
   const { get } = await import(base.protocol === 'https:' ? 'node:https' : 'node:http');
   const requestHost = (host, path) => new Promise((resolve, reject) => {
     const request = get(new URL(path, base), { headers: { host } }, response => {
-      const result = { status: response.statusCode, location: response.headers.location };
+      const result = { status: response.statusCode, location: response.headers.location, robots: response.headers['x-robots-tag'] };
       response.resume();
       response.on('end', () => resolve(result));
       response.on('error', reject);
@@ -230,6 +277,10 @@ if (['localhost', '127.0.0.1', '[::1]'].includes(base.hostname)) {
       check(!response.location, `www host ${path}: unexpected redirect location`);
     } catch (error) { check(false, `www host ${path}: request failed (${error.message})`); }
   }
+  try {
+    const response = await requestHost('velaro-portfolio.weathered-mud-0703.workers.dev', '/');
+    check(response.status === 200 && /noindex/i.test(response.robots || ''), 'Worker alias: must serve the site with a noindex response header');
+  } catch (error) { check(false, `Worker alias indexing policy: ${error.message}`); }
 }
 
 // On the public release, also verify HTTPS enforcement and the real apex host.
@@ -254,12 +305,45 @@ for (const service of ['custom-software', 'automation']) {
   const path = `/contact?service=${service}`;
   const page = await getPage(path);
   check(page.status === 200, `${path}: expected 200, received ${page.status}`);
+  const queryCanonical = [...page.markup.matchAll(/<link\b([^>]*)>/gi)].find(match => attribute(match[1], 'rel') === 'canonical');
+  check(attribute(queryCanonical?.[1] || '', 'href') === new URL('/contact', canonicalBase).href,
+    `${path}: query variation must canonicalize to /contact`);
   const select = [...page.markup.matchAll(/<select\b([^>]*)>([\s\S]*?)<\/select>/gi)]
     .find(match => attribute(match[1], 'id') === 'contact-topic');
   const selected = [...(select?.[2] || '').matchAll(/<option\b([^>]*)>/gi)]
     .filter(match => /\bselected(?:=|\s|$)/i.test(match[1]))
     .map(match => attribute(match[1], 'value'));
   check(selected.length === 1 && selected[0] === service, `${path}: expected the matching service option to be selected`);
+}
+
+// Exercise the request-rendered route with crawler user agents as well as a browser.
+// This checks response behavior; it does not prove a visit from a verified crawler IP.
+for (const [name, userAgent] of [
+  ['Googlebot', 'Mozilla/5.0 (Linux; Android 6.0.1; Nexus 5X Build/MMB29P) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Mobile Safari/537.36 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)'],
+  ['Bingbot', 'Mozilla/5.0 (compatible; bingbot/2.0; +http://www.bing.com/bingbot.htm)'],
+  ['Twitterbot', 'Twitterbot/1.0'],
+]) {
+  try {
+    const response = await fetch(new URL('/contact?service=automation', base), {
+      headers: { 'User-Agent': userAgent }, redirect: 'manual', signal: AbortSignal.timeout(30000),
+    });
+    const markup = visibleMarkup(await response.text());
+    check(response.status === 200, `${name}: contact response returned ${response.status}`);
+    check(/<title\b[^>]*>Contact Us \| Velaro<\/title>/i.test(markup), `${name}: complete page title is missing`);
+    const canonical = [...markup.matchAll(/<link\b([^>]*)>/gi)].find(match => attribute(match[1], 'rel') === 'canonical');
+    check(attribute(canonical?.[1] || '', 'href') === new URL('/contact', canonicalBase).href, `${name}: clean canonical URL is missing`);
+    check(/<main\b/i.test(markup) && /<h1\b/i.test(markup), `${name}: server-rendered page content is missing`);
+  } catch (error) { check(false, `${name}: crawler response failed (${error.message})`); }
+}
+
+for (const path of ['/', '/services/custom-software']) {
+  const page = await getPage(`${path}?utm_source=seo-check`);
+  const canonical = [...page.markup.matchAll(/<link\b([^>]*)>/gi)].find(match => attribute(match[1], 'rel') === 'canonical');
+  const href = attribute(canonical?.[1] || '', 'href');
+  let normalized;
+  try { normalized = href ? new URL(href).href : null; } catch { normalized = null; }
+  check(page.status === 200 && normalized === new URL(path, canonicalBase).href,
+    `${path}: tracking parameters must canonicalize to the clean public URL`);
 }
 
 await inBatches([...links], async ([target, source]) => {
@@ -281,6 +365,7 @@ for (const photo of expectedPhotos) {
     const response = await fetch(url, { headers: { Accept: 'image/webp,image/*' }, signal: AbortSignal.timeout(30000) });
     check(response.status === 200, `${photo}: optimized image returned ${response.status}`);
     check(/^image\//i.test(response.headers.get('content-type') || ''), `${photo}: optimized response has no image content type`);
+    if (productionCheck) check(/immutable/i.test(response.headers.get('cache-control') || ''), `${photo}: fingerprinted optimized image is missing immutable caching`);
     check((await response.arrayBuffer()).byteLength > 0, `${photo}: optimized image body is empty`);
   } catch (error) {
     check(false, `${photo}: optimized image request failed (${error.message})`);
@@ -311,15 +396,14 @@ try {
 
 const robots = await getPage('/robots.txt');
 check(robots.status === 200, 'robots.txt: expected 200');
-check(robots.html?.includes(`Sitemap: ${new URL('/sitemap.xml', canonicalBase).href}`), 'robots.txt: canonical sitemap is missing');
+if (expectIndexable || /^Sitemap:/im.test(robots.html || '')) {
+  check(robots.html?.includes(`Sitemap: ${new URL('/sitemap.xml', canonicalBase).href}`), 'robots.txt: canonical sitemap is missing');
+}
 if (expectIndexable) check(!/^Disallow:\s*\/\s*$/im.test(robots.html || ''), 'robots.txt: all crawling is blocked');
-const sitemap = await getPage('/sitemap.xml');
-check(sitemap.status === 200, 'sitemap.xml: expected 200');
-const locations = [...(sitemap.html || '').matchAll(/<loc>(.*?)<\/loc>/gi)].map(match => {
-  try { return new URL(decode(match[1])).href; } catch { return decode(match[1]); }
-});
-check(new Set(locations).size === locations.length, 'sitemap.xml: duplicate URLs');
 for (const path of routes) check(locations.includes(new URL(path, canonicalBase).href), `sitemap.xml: missing ${path}`);
+for (const path of routes.filter(path => path !== '/')) {
+  check(linkedFromOtherPages.has(path), `${path}: sitemap page has no crawlable incoming internal link`);
+}
 
 // A real image with an unapproved source query must not create another optimizer entry.
 const disallowedImage = new URL('/_next/image', base);
@@ -335,5 +419,5 @@ if (failures.length) {
   failures.forEach(failure => console.error(`- ${failure}`));
   process.exitCode = 1;
 } else {
-  console.log(`PASS: ${assertions} checks across ${routes.length} pages, ${links.size} internal destinations, ${legacyRedirects.length} legacy redirects, 3 unknown routes, 2 contact selections and 3 optimized images (including the Velaro mark), including SEO, response security headers and sitemap coverage.`);
+  console.log(`PASS: ${assertions} checks across ${routes.length} pages, ${links.size} internal destinations, ${legacyRedirects.length} legacy redirects, 4 unknown routes, 2 contact selections and 3 optimized images (including the Velaro mark), including SEO, response security headers and sitemap coverage.`);
 }

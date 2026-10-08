@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { ArrowRight, ChevronDown, Menu, X } from 'lucide-react';
 import { Brand } from './brand';
-import { services } from '@/lib/services';
+import { serviceNavigation } from '@/lib/service-navigation';
 
 export function SiteHeader() {
   const pathname = usePathname();
@@ -64,7 +64,7 @@ export function SiteHeader() {
             </button>
             <div id="services-menu" className="nav-dropdown" hidden={!servicesOpen}>
               <span className="nav-dropdown-label">Built around your business</span>
-              {services.map((service) => (
+              {serviceNavigation.map((service) => (
                 <Link key={service.slug} href={`/services/${service.slug}`} onClick={closeMenus} aria-current={pathname === `/services/${service.slug}` ? 'page' : undefined}>
                   <span>{service.name}</span><ArrowRight size={15} aria-hidden="true" />
                 </Link>

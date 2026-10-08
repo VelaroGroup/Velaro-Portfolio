@@ -1,31 +1,19 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { useRef, type KeyboardEvent, type ReactNode } from 'react';
 
-type GalleryCategory = { slug: string; label: string; shortLabel: string };
-type GalleryItem = { slug: string; category: string; concept: boolean; card: ReactNode };
+type GalleryFilter = { label: string; shortLabel: string; href: string; count: number };
 
-export function WorkGallery({ categories, items, initialCategory }: {
-  categories: readonly GalleryCategory[];
-  items: GalleryItem[];
-  initialCategory: string;
+export function WorkGallery({ filters, selected, selectedLabel, description, resultLabel, children }: {
+  filters: GalleryFilter[];
+  selected: string;
+  selectedLabel: string;
+  description: string;
+  resultLabel: string;
+  children: ReactNode;
 }) {
-  const pathname = usePathname();
   const navRef = useRef<HTMLElement>(null);
-  const selected = pathname === '/work' ? 'All work'
-    : categories.find((category) => pathname === `/work/category/${category.slug}`)?.label || initialCategory;
-  const selectedLabel = categories.find((category) => category.label === selected)?.shortLabel || 'All work';
-  const visibleItems = selected === 'All work' ? items : items.filter((item) => item.category === selected);
-  const conceptCount = visibleItems.filter((item) => item.concept).length;
-  const resultLabel = conceptCount === visibleItems.length && conceptCount > 0
-    ? `${conceptCount} illustrative ${conceptCount === 1 ? 'concept' : 'concepts'}`
-    : `${visibleItems.length} ${visibleItems.length === 1 ? 'example' : 'examples'}`;
-  const filters = [
-    { label: 'All work', shortLabel: 'All work', href: '/work', count: items.length },
-    ...categories.map((category) => ({ ...category, href: `/work/category/${category.slug}`, count: items.filter((item) => item.category === category.label).length })),
-  ];
 
   function moveFilterFocus(event: KeyboardEvent<HTMLElement>) {
     if (event.altKey || event.ctrlKey || event.metaKey) return;
@@ -60,10 +48,10 @@ export function WorkGallery({ categories, items, initialCategory }: {
     <div className="project-results-heading">
       <h2 id="work-results-title">{selectedLabel === 'All work' ? 'The collection' : selectedLabel}</h2>
       <p role="status" aria-live="polite" aria-atomic="true"><span className="sr-only">{selectedLabel}: </span>{resultLabel}</p>
+      <p style={{ flexBasis: '100%', maxWidth: '680px', lineHeight: 1.7 }}>{description}</p>
     </div>
     <div id="work-results" className="project-results" aria-labelledby="work-results-title">
-      {visibleItems.length ? <div className="project-grid">{visibleItems.map((item) => <div className="project-grid-item" key={item.slug}>{item.card}</div>)}</div>
-        : <div className="project-filter-empty"><h3>More possibilities to explore.</h3><p>Have a challenge in this area? We can talk through what a useful solution would look like.</p><Link href="/contact" className="text-link">Tell us about it <span aria-hidden="true">↗</span></Link></div>}
+      {children}
     </div>
   </div>;
 }
