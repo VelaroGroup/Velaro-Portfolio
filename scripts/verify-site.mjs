@@ -194,26 +194,32 @@ await inBatches(legacyRedirects, async ([source, destination]) => {
   } catch (error) { check(false, `${source}: redirect check failed (${error.message})`); }
 });
 
-// Exercise the canonical host rule locally without contacting another live host.
+// Native HTTP retains an explicit Host header; Node fetch can discard it.
+// Exercise both domain identities locally without contacting another live host.
 if (['localhost', '127.0.0.1', '[::1]'].includes(base.hostname)) {
+  const { get } = await import(base.protocol === 'https:' ? 'node:https' : 'node:http');
+  const requestHost = (host, path) => new Promise((resolve, reject) => {
+    const request = get(new URL(path, base), { headers: { host } }, response => {
+      const result = { status: response.statusCode, location: response.headers.location };
+      response.resume();
+      response.on('end', () => resolve(result));
+      response.on('error', reject);
+    });
+    request.setTimeout(30000, () => request.destroy(new Error('Host check timed out')));
+    request.on('error', reject);
+  });
   for (const path of ['/?source=legacy-link', '/about?source=legacy-link']) {
     try {
-      const response = await fetch(new URL(path, base), {
-        headers: { Host: 'velaro.group' }, redirect: 'manual', signal: AbortSignal.timeout(30000),
-      });
+      const response = await requestHost('velaro.group', path);
       check([301, 308].includes(response.status), `apex host ${path}: expected a permanent redirect, received ${response.status}`);
-      check(response.headers.get('location') === new URL(path, canonicalBase).href, `apex host ${path}: canonical redirect must preserve path and query`);
-      await response.body?.cancel();
+      check(response.location === new URL(path, canonicalBase).href, `apex host ${path}: canonical redirect must preserve path and query`);
     } catch (error) { check(false, `apex host ${path}: redirect check failed (${error.message})`); }
   }
   for (const path of ['/', '/about']) {
     try {
-      const response = await fetch(new URL(path, base), {
-        headers: { Host: 'www.velaro.group' }, redirect: 'manual', signal: AbortSignal.timeout(30000),
-      });
+      const response = await requestHost('www.velaro.group', path);
       check(response.status === 200, `www host ${path}: expected 200 without a redirect loop, received ${response.status}`);
-      check(!response.headers.has('location'), `www host ${path}: unexpected redirect location`);
-      await response.body?.cancel();
+      check(!response.location, `www host ${path}: unexpected redirect location`);
     } catch (error) { check(false, `www host ${path}: request failed (${error.message})`); }
   }
 }
