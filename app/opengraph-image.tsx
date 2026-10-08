@@ -6,19 +6,19 @@ export const alt = 'Velaro — Less busywork. More possibility. Custom platforms
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
-const [interRegular, interBold, logo] = await Promise.all([
-  readFile(join(process.cwd(), 'public/fonts/inter-og-400.ttf')),
-  readFile(join(process.cwd(), 'public/fonts/inter-og-700.ttf')),
-  readFile(join(process.cwd(), 'public/velaro-mark.png')),
-]);
-const logoSource = `data:image/png;base64,${logo.toString('base64')}`;
-
-export default function OpenGraphImage() {
+export default async function OpenGraphImage() {
+  // Next also imports this module to resolve page metadata on Workers. Keep
+  // local asset reads inside the image handler, which is prerendered at build.
+  const [interRegular, interBold, logo] = await Promise.all([
+    readFile(join(process.cwd(), 'public/fonts/inter-og-400.ttf')),
+    readFile(join(process.cwd(), 'public/fonts/inter-og-700.ttf')),
+    readFile(join(process.cwd(), 'public/velaro-mark.png')),
+  ]);
+  const logoSource = `data:image/png;base64,${logo.toString('base64')}`;
   return new ImageResponse(
     <div style={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100%', padding: '52px 76px', background: '#0a1628', color: '#f5f7fb', fontFamily: 'Inter', fontWeight: 400 }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
         {/* ImageResponse embeds the unchanged original artwork directly. */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={logoSource} width={74} height={74} alt="" />
         <div style={{ display: 'flex', fontSize: 32, fontWeight: 700, letterSpacing: 4 }}>VELARO</div>
       </div>
