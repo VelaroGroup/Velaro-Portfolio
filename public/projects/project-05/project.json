@@ -1,12 +1,12 @@
 {
-  "title": "Preview platform project",
+  "title": "From request to approval, without chasing",
   "slug": "preview-platform-project",
   "service": "Custom software & platforms",
-  "year": "2025",
-  "summary": "Preview content for testing the work-page layout. Replace with approved project details.",
-  "cover": "/service-illustrations/custom-software.png",
-  "challenge": "Preview challenge.",
-  "approach": "Preview approach.",
-  "outcome": "Replace with verified outcome.",
+  "summary": "A tailored approval process that routes requests, keeps decisions visible, and moves the next step forward.",
+  "challenge": "Requests move between email, messages, and documents. The team cannot easily see what is waiting, which details are missing, or who needs to make a decision.",
+  "approach": "Build a guided request form and connect it to the right approval path. Validate required information, notify the responsible person, keep a decision history, and trigger the next task after approval.",
+  "outcome": "This concept shows a clearer path from request to decision, including a place for exceptions and human judgment. The workflow would be adapted to the business's real rules before launch.",
+  "kind": "concept",
+  "visual": "workflow",
   "featured": false
 }

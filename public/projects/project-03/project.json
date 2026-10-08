@@ -1,12 +1,12 @@
 {
-  "title": "Preview e-commerce project",
+  "title": "A store that works behind the scenes",
   "slug": "preview-ecommerce-project",
   "service": "E-commerce",
-  "year": "2026",
-  "summary": "Preview content for testing the work-page layout. Replace with approved project details.",
-  "cover": "/service-illustrations/ecommerce.png",
-  "challenge": "Preview challenge.",
-  "approach": "Preview approach.",
-  "outcome": "Replace with verified outcome.",
+  "summary": "Thoughtful shopping, connected orders, and fewer manual updates for the team running the store.",
+  "challenge": "A small retailer manages products, orders, and customer questions in separate places. Each sale triggers manual data entry and repeated delivery-status messages.",
+  "approach": "Pair a straightforward storefront with an order workflow that updates connected systems, assigns fulfilment tasks, and prepares appropriate customer notifications. Keep exceptions visible for the team.",
+  "outcome": "The concept demonstrates how the shopping experience and daily operations could work together, with clearer order status and less duplicate entry. No sales or efficiency result is claimed.",
+  "kind": "concept",
+  "visual": "commerce",
   "featured": false
 }

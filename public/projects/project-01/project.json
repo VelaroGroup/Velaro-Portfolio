@@ -1,12 +1,12 @@
 {
-  "title": "Preview automation project",
+  "title": "Every conversation, a clear next step",
   "slug": "preview-automation-project",
   "service": "Automation",
-  "year": "2026",
-  "summary": "Preview content for testing the work-page layout. Replace with approved project details.",
-  "cover": "/service-illustrations/automation.png",
-  "challenge": "Preview challenge.",
-  "approach": "Preview approach.",
-  "outcome": "Replace with verified outcome.",
+  "summary": "An illustrative messaging workflow that answers common questions, captures useful details, and gives the right person the next step.",
+  "challenge": "A growing business receives similar questions across social messages and email. People repeat answers, copy details into spreadsheets, and lose track of conversations that need follow-up.",
+  "approach": "Connect eligible messaging channels to a shared workflow. Use approved information for replies, collect inquiry details, update the customer record, and assign exceptions to a person with the full conversation attached. Channel access and reply rules are checked during discovery.",
+  "outcome": "The proposed system gives every inquiry a visible owner and status. The goal is less copying, more consistent responses, and a clear handoff whenever a person is needed. These are intended benefits of the concept, not measured client results.",
+  "kind": "concept",
+  "visual": "inbox",
   "featured": true
 }

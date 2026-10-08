@@ -1,12 +1,12 @@
 {
-  "title": "Preview software project",
+  "title": "The whole workflow, in one workspace",
   "slug": "preview-software-project",
   "service": "Custom software & platforms",
-  "year": "2026",
-  "summary": "Preview content for testing the work-page layout. Replace with approved project details.",
-  "cover": "/service-illustrations/custom-software.png",
-  "challenge": "Preview challenge.",
-  "approach": "Preview approach.",
-  "outcome": "Replace with verified outcome.",
+  "summary": "A custom operations platform that brings requests, responsibilities, approvals, and progress into one useful view.",
+  "challenge": "An operations team relies on chats and spreadsheets to move work forward. Ownership is unclear, approvals take repeated reminders, and preparing a status report means asking everyone for updates.",
+  "approach": "Map the actual workflow, then design one workspace with role-based access, shared records, automatic task creation, approval steps, and a live view of progress. Start with one complete process before extending it.",
+  "outcome": "The proposed platform makes the next action and responsible person visible at each stage. Its purpose is to reduce chasing and support more dependable handoffs, subject to testing with the real team.",
+  "kind": "concept",
+  "visual": "platform",
   "featured": false
 }

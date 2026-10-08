@@ -1,7 +1,52 @@
-import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
+import type { Metadata, ResolvingMetadata } from 'next';
 import Link from 'next/link';
-import { getProjects } from '@/lib/content';
+import { notFound } from 'next/navigation';
+import { ArrowUpRight, Check } from 'lucide-react';
 import { Cta } from '@/components/cta';
-export async function generateMetadata({params}:{params:Promise<{slug:string}>}):Promise<Metadata>{const {slug}=await params;const p=(await getProjects()).find(x=>x.slug===slug);return p?{title:p.title,description:p.summary,alternates:{canonical:`/work/${slug}`}}:{}}
-export default async function ProjectPage({params}:{params:Promise<{slug:string}>}){const {slug}=await params;const p=(await getProjects()).find(x=>x.slug===slug);if(!p)notFound();return <main id="main"><section className="inner-hero"><div className="shell"><Link href="/work" className="back-link">← All work</Link><div className="eyebrow">{p.service} {p.year&&`/ ${p.year}`}</div><h1>{p.title}<span className="accent-text">.</span></h1><p>{p.summary}</p></div></section><section className="section"><div className="shell">{p.image&&<img className="case-image" src={p.image} alt={p.imageAlt||p.title}/>}<div className="case-content"><div><div className="section-label">THE CHALLENGE</div><h2>What needed to change</h2><p>{p.challenge}</p></div><div><div className="section-label">OUR APPROACH</div><h2>How we built it</h2><p>{p.approach}</p></div>{p.outcome&&<div><div className="section-label">THE OUTCOME</div><h2>What changed</h2><p>{p.outcome}</p></div>}</div></div></section><Cta/></main>}
+import { ProjectVisual } from '@/components/project-grid';
+import { PlatformPreview } from '@/components/platform-preview';
+import { getProjects, projectCategoryLabel } from '@/lib/projects';
+import { pageMetadata } from '@/lib/metadata';
+
+export const revalidate = 300;
+export const dynamic = 'force-static';
+
+export async function generateStaticParams() {
+  return (await getProjects()).map(({ slug }) => ({ slug }));
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }, parent: ResolvingMetadata): Promise<Metadata> {
+  const { slug } = await params;
+  const project = (await getProjects()).find((item) => item.slug === slug);
+  return project ? pageMetadata({ title: project.title, description: project.summary, path: `/work/${slug}` }, parent) : {};
+}
+
+export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const projects = await getProjects();
+  const project = projects.find((item) => item.slug === slug);
+  if (!project) notFound();
+  const isConcept = project.kind === 'concept';
+  const related = projects.find((item) => item.slug !== slug && item.service === project.service) || projects.find((item) => item.slug !== slug);
+
+  return <main id="main" className="secondary-page">
+    <section className="page-hero case-hero"><div className="shell">
+      <Link href="/work" className="back-link"><span aria-hidden="true">←</span> All work & possibilities</Link>
+      <div className="eyebrow">{isConcept ? 'ILLUSTRATIVE CONCEPT' : 'PROJECT'} <span aria-hidden="true">/</span> {projectCategoryLabel(project.service)}</div>
+      <h1>{project.title}</h1>
+      <p className="intro-text">{project.summary}</p>
+      <div className="case-facts"><span>{project.service}</span>{isConcept ? <span>Design & workflow exploration</span> : <>{project.client && <span>{project.client}</span>}{project.year && <span>{project.year}</span>}</>}</div>
+    </div></section>
+    <section className="case-showcase-section"><div className="shell"><div className="case-showcase"><ProjectVisual project={project} /></div>{isConcept && <p className="case-image-caption">Illustrative interface with sample information. This concept is not a delivered client project.</p>}</div></section>
+    <section className="section"><div className="shell case-story">
+      <div className="case-story-label"><span className="eyebrow">THE BIG PICTURE</span><h2>Start with what<br />needs to change.</h2></div>
+      <div className="case-story-sections"><article><span className="eyebrow">01 / THE CHALLENGE</span><h3>Where work gets harder than it should.</h3><p>{project.challenge}</p></article><article><span className="eyebrow">02 / THE APPROACH</span><h3>A system around the real process.</h3><p>{project.approach}</p></article>{project.outcome && <article><span className="eyebrow">03 / {isConcept ? 'THE INTENDED BENEFIT' : 'THE OUTCOME'}</span><h3>{isConcept ? 'A clearer way forward.' : 'What changed.'}</h3><p>{project.outcome}</p></article>}</div>
+    </div></section>
+    {isConcept && <section className="section dark-section"><div className="shell case-connected">
+      <div><span className="eyebrow">BEHIND THE EXPERIENCE</span><h2>The next step<br />is already connected.</h2><p>A useful interface is only part of the picture. The workflow behind it keeps information, people, and actions moving together.</p><ul className="case-checks"><li><Check aria-hidden="true" /> Clear ownership at each step</li><li><Check aria-hidden="true" /> Connected records and useful context</li><li><Check aria-hidden="true" /> A person available when needed</li></ul></div>
+      <div className="case-connected-preview"><PlatformPreview variant="workflow" compact /></div>
+    </div></section>}
+    {related && <section className="section"><div className="shell case-related"><div><span className="eyebrow">KEEP EXPLORING</span><h2>Another possibility.</h2></div><Link href={`/work/${related.slug}`}><span>{related.kind === 'concept' ? 'Illustrative concept' : 'Project'} / {projectCategoryLabel(related.service)}</span><h3>{related.title}<ArrowUpRight aria-hidden="true" /></h3><p>{related.summary}</p></Link></div></section>}
+    <Cta title="Let’s solve your next business challenge." text="We’ll look at how work happens today and shape a solution around what needs to improve." />
+  </main>;
+}

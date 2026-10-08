@@ -1,12 +1,12 @@
 {
-  "title": "Preview commerce project",
+  "title": "Helpful answers, connected to the order",
   "slug": "preview-commerce-project",
   "service": "E-commerce",
-  "year": "2025",
-  "summary": "Preview content for testing the work-page layout. Replace with approved project details.",
-  "cover": "/service-illustrations/ecommerce.png",
-  "challenge": "Preview challenge.",
-  "approach": "Preview approach.",
-  "outcome": "Replace with verified outcome.",
+  "summary": "A customer-service concept that brings order information into the conversation and routes unusual requests to the team.",
+  "challenge": "Customers repeatedly ask about products, delivery, and returns. Staff switch between messages and order records to find an answer, while more complex requests wait in the same queue.",
+  "approach": "Connect eligible support channels to approved product information and authorised order data. Automate routine answers within agreed rules, collect missing details, and hand unusual or sensitive requests to a person.",
+  "outcome": "The proposed journey helps customers find the next step while giving the team the context needed to help. It illustrates a possible solution, with no claim of a live integration or measured support improvement.",
+  "kind": "concept",
+  "visual": "inbox",
   "featured": false
 }

@@ -1,0 +1,30 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "velaro-portfolio",
+  "account_id": "5f575f5767c382762158c91171043286",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-10-08",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "workers_dev": true,
+  // Domain attachment is managed separately after the workers.dev release passes checks.
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "services": [
+    { "binding": "WORKER_SELF_REFERENCE", "service": "velaro-portfolio" }
+  ],
+  "kv_namespaces": [
+    { "binding": "NEXT_INC_CACHE_KV", "id": "f82c213c844945d594ea3d98ed68f1fc" }
+  ],
+  "durable_objects": {
+    "bindings": [
+      { "name": "NEXT_CACHE_DO_QUEUE", "class_name": "DOQueueHandler" }
+    ]
+  },
+  "migrations": [
+    { "tag": "v1", "new_sqlite_classes": ["DOQueueHandler"] }
+  ],
+  "images": { "binding": "IMAGES" },
+  "observability": { "enabled": true }
+}

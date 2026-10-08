@@ -1,0 +1,178 @@
+name: Website checks and deployment
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: website-${{ github.workflow }}-${{ github.ref }}
+  # Let a production push finish deploying before starting the next one.
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  verify:
+    name: Lint, build and verify production
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    defaults:
+      run:
+        shell: bash
+    env:
+      CI: 'true'
+      NEXT_TELEMETRY_DISABLED: '1'
+      WRANGLER_SEND_METRICS: 'false'
+      VELARO_EXPECTED_SITE_URL: https://www.velaro.group
+
+    steps:
+      - name: Check out the website
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js 22
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version: '22.x'
+          check-latest: true
+          package-manager-cache: false
+
+      - name: Set up the pinned pnpm version
+        uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+        with:
+          # Reads the exact packageManager version from package.json.
+          run_install: false
+          cache: true
+          cache_dependency_path: |
+            pnpm-lock.yaml
+            pnpm-workspace.yaml
+
+      - name: Install the locked dependencies
+        timeout-minutes: 10
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm run lint
+
+      - name: Check TypeScript
+        run: pnpm run typecheck
+
+      - name: Build the production website
+        timeout-minutes: 10
+        run: pnpm run build
+
+      - name: Verify the running production website
+        timeout-minutes: 5
+        run: |
+          set -euo pipefail
+          server_log="$RUNNER_TEMP/velaro-next.log"
+          setsid pnpm run start --hostname 127.0.0.1 --port 3000 >"$server_log" 2>&1 &
+          server_pid=$!
+
+          cleanup() {
+            result=$?
+            trap - EXIT INT TERM
+            # Stop the process group, including pnpm's Next.js child.
+            kill -- -"$server_pid" 2>/dev/null || true
+            wait "$server_pid" 2>/dev/null || true
+            if (( result != 0 )); then
+              tail -n 120 "$server_log"
+            fi
+            exit "$result"
+          }
+          trap cleanup EXIT
+          trap 'exit 130' INT
+          trap 'exit 143' TERM
+
+          ready=false
+          for attempt in {1..60}; do
+            if ! kill -0 "$server_pid" 2>/dev/null; then
+              echo 'The production server stopped before it was ready.'
+              exit 1
+            fi
+            if curl --fail --silent --max-time 2 http://127.0.0.1:3000/ >/dev/null; then
+              ready=true
+              break
+            fi
+            sleep 1
+          done
+          if [[ "$ready" != true ]]; then
+            echo 'The production server did not become ready in time.'
+            exit 1
+          fi
+
+          pnpm run verify:production http://127.0.0.1:3000
+
+      - name: Build for Cloudflare Workers
+        timeout-minutes: 10
+        run: pnpm run build:cloudflare
+
+      - name: Verify the local Workers runtime
+        timeout-minutes: 5
+        env:
+          NEXTJS_ENV: production
+        run: |
+          set -euo pipefail
+          server_log="$RUNNER_TEMP/velaro-worker.log"
+          setsid pnpm run preview:cloudflare --ip 127.0.0.1 --port 8787 >"$server_log" 2>&1 &
+          server_pid=$!
+
+          cleanup() {
+            result=$?
+            trap - EXIT INT TERM
+            kill -- -"$server_pid" 2>/dev/null || true
+            wait "$server_pid" 2>/dev/null || true
+            if (( result != 0 )); then
+              tail -n 120 "$server_log"
+            fi
+            exit "$result"
+          }
+          trap cleanup EXIT
+          trap 'exit 130' INT
+          trap 'exit 143' TERM
+
+          ready=false
+          for attempt in {1..60}; do
+            if ! kill -0 "$server_pid" 2>/dev/null; then
+              echo 'The Workers preview stopped before it was ready.'
+              exit 1
+            fi
+            if curl --fail --silent --max-time 2 http://127.0.0.1:8787/ >/dev/null; then
+              ready=true
+              break
+            fi
+            sleep 1
+          done
+          if [[ "$ready" != true ]]; then
+            echo 'The Workers preview did not become ready in time.'
+            exit 1
+          fi
+
+          pnpm run verify:production http://127.0.0.1:8787
+
+      - name: Deploy master to Cloudflare
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && github.repository == 'VelaroGroup/Velaro-Portfolio'
+        timeout-minutes: 10
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -euo pipefail
+          : "${CLOUDFLARE_API_TOKEN:?Missing CLOUDFLARE_API_TOKEN GitHub secret}"
+          : "${CLOUDFLARE_ACCOUNT_ID:?Missing CLOUDFLARE_ACCOUNT_ID GitHub secret}"
+          # OpenNext seeds the remote incremental cache before publishing this verified build.
+          pnpm run deploy:cloudflare
+
+      - name: Verify the deployed website
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && github.repository == 'VelaroGroup/Velaro-Portfolio'
+        timeout-minutes: 5
+        env:
+          DEPLOYMENT_URL: https://velaro-portfolio.weathered-mud-0703.workers.dev
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error --retry 12 --retry-delay 5 --retry-all-errors --max-time 15 --retry-max-time 90 "$DEPLOYMENT_URL/" >/dev/null
+          pnpm run verify:production "$DEPLOYMENT_URL"

@@ -1,12 +1,12 @@
 {
-  "title": "Preview web project",
+  "title": "From first visit to first inquiry",
   "slug": "preview-web-project",
   "service": "Web development",
-  "year": "2026",
-  "summary": "Preview content for testing the work-page layout. Replace with approved project details.",
-  "cover": "/service-illustrations/web-development.png",
-  "challenge": "Preview challenge.",
-  "approach": "Preview approach.",
-  "outcome": "Replace with verified outcome.",
+  "summary": "A considered business website, connected to an inquiry flow that keeps the conversation moving behind the scenes.",
+  "challenge": "A business has a clear service but a fragmented online journey. Visitors struggle to find the right information, and website inquiries arrive without enough context for the team to act.",
+  "approach": "Structure the site around real customer questions, build accessible pages for every screen, and connect a focused inquiry form to a shared customer record and follow-up task.",
+  "outcome": "The intended experience joins a clear customer journey to an organised internal handoff. This example explores the design and workflow; it is not a delivered client project.",
+  "kind": "concept",
+  "visual": "website",
   "featured": false
 }

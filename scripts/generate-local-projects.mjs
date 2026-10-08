@@ -18,7 +18,7 @@ const projects = readdirSync(projectsDirectory, { withFileTypes: true })
         ? project.cover
         : `/projects/${entry.name}/${project.cover}`
       : undefined;
-    return { slug: project.slug || entry.name, title: project.title, summary: project.summary, service: project.service, year: project.year, client: project.client, featured: Boolean(project.featured), challenge: project.challenge, approach: project.approach, outcome: project.outcome, image, imageAlt: project.imageAlt || project.title };
+    return { slug: project.slug || entry.name, title: project.title, summary: project.summary, service: project.service, year: project.year, client: project.client, featured: Boolean(project.featured), challenge: project.challenge, approach: project.approach, outcome: project.outcome, kind: project.kind, visual: project.visual, image, imageAlt: project.imageAlt || project.title };
   })
   .filter(Boolean)
   .sort((a, b) => Number(b.featured) - Number(a.featured));

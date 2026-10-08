@@ -1,18 +1,46 @@
-import type { Metadata } from 'next';
+import type { ResolvingMetadata } from 'next';
 import Link from 'next/link';
+import { ArrowUpRight } from 'lucide-react';
 import { Cta } from '@/components/cta';
-import { ProjectGrid } from '@/components/project-grid';
-import { getProjects } from '@/lib/content';
+import { ProjectGrid, ProjectVisual } from '@/components/project-grid';
+import { SectionHeading } from '@/components/section-heading';
+import { getProjects, projectCategoryLabel } from '@/lib/projects';
+import { pageMetadata } from '@/lib/metadata';
 
-export const metadata: Metadata = { title: 'Our work', description: 'Explore Velaro projects in automation, web development, e-commerce, and custom software.', alternates: { canonical: '/work' } };
+export function generateMetadata(_props: unknown, parent: ResolvingMetadata) {
+  return pageMetadata({
+    title: 'Work & possibilities',
+    description: 'Explore how custom platforms, messaging automation, websites, and connected stores can solve everyday business problems.',
+    path: '/work',
+  }, parent);
+}
 
 export default async function Work() {
   const projects = await getProjects();
   const featured = projects.find((project) => project.featured) || projects[0];
+  const onlyConcepts = projects.length > 0 && projects.every((project) => project.kind === 'concept');
 
-  return <main id="main">
-    <section className="inner-hero work-hero"><div className="shell work-hero-grid"><div><div className="eyebrow">OUR WORK</div><h1>Built with purpose<span className="accent-text">.</span></h1><p>Selected digital products and platforms designed around real business challenges.</p></div>{featured && <Link href={`/work/${featured.slug}`} className="featured-project-hero"><div className="featured-project-image">{featured.image ? <img src={featured.image} alt={featured.imageAlt || featured.title} /> : <span>{featured.title.slice(0, 1)}</span>}</div><div><span>FEATURED CASE STUDY</span><h2>{featured.title} <b>↗</b></h2><p>{featured.service}{featured.year && ` · ${featured.year}`}</p></div></Link>}</div></section>
-    <section className="section"><div className="shell">{projects.length ? <><div className="work-grid-heading"><div><div className="section-label">CASE STUDIES</div><h2>Work with measurable intent.</h2></div><p>Browse selected engagements across automation, web, e-commerce, and custom software.</p></div><ProjectGrid projects={projects} featuredSlug={featured?.slug} /><div className="work-progress"><div><span>IN PROGRESS</span><h2>More work is taking shape.</h2></div><p>We only publish projects once the work is complete and sharing it has been approved.</p></div></> : <div className="work-empty"><div className="work-empty-brand" aria-hidden="true"><img className="work-empty-logo" src="/velaro-logo.png" alt="" /></div><div className="work-empty-content"><p className="work-empty-eyebrow">CASE STUDIES</p><h2>Results worth sharing are in progress.</h2><p>We’re preparing selected case studies. Have a challenge of your own? Let’s discuss it.</p><Link href="/contact" className="button button-primary">Start a project conversation <span aria-hidden="true">↗</span></Link></div></div>}</div></section>
-    <Cta />
+  return <main id="main" className="secondary-page">
+    <section className="page-hero work-intro"><div className="shell">
+      <div className="eyebrow">WORK & POSSIBILITIES</div>
+      <h1>See what better<br />could look like.</h1>
+      <p className="intro-text">From the first customer message to the work behind it. Explore websites, workflows, and custom platforms built around a business.</p>
+      <p className="work-context">{onlyConcepts ? 'Our current collection is a set of illustrative concepts, showing the problems we can help you solve.' : 'Explore the collection. Illustrative concepts are clearly marked throughout.'}</p>
+    </div></section>
+    {featured && <section className="work-featured-section"><div className="shell">
+      <article className="work-featured">
+        <div className="work-featured-visual"><span className="project-kind">{featured.kind === 'concept' ? 'Featured concept' : 'Featured project'}</span><ProjectVisual project={featured} /></div>
+        <Link href={`/work/${featured.slug}`} className="work-featured-copy"><div><span className="eyebrow">{projectCategoryLabel(featured.service)}</span><h2>{featured.title}</h2><p>{featured.summary}</p></div><span className="work-featured-arrow"><ArrowUpRight aria-hidden="true" /></span></Link>
+      </article>
+    </div></section>}
+    <section className="section"><div className="shell">
+      <SectionHeading eyebrow="A CLOSER LOOK" title="Different challenges. Useful possibilities." description="Every business has its own friction. The right solution starts there." />
+      <ProjectGrid projects={projects} featuredSlug={featured?.slug} />
+    </div></section>
+    <section className="section dark-section"><div className="shell work-belief">
+      <div><span className="eyebrow">THE THINKING BEHIND THE WORK</span><h2>Good design makes<br />the whole thing work.</h2></div>
+      <div className="work-belief-points"><p><span>01</span><strong>Understand the real problem</strong></p><p><span>02</span><strong>Connect the customer and the team</strong></p><p><span>03</span><strong>Make the next step feel simple</strong></p></div>
+    </div></section>
+    <Cta title="What could we make work better?" text="Bring the repetitive task, disconnected tools, or idea. We’ll help you find a useful starting point." />
   </main>;
 }

@@ -1,0 +1,11 @@
+# Workers Static Assets bypass Next's headers() handler.
+# Keep these aligned with the production response policy in next.config.ts.
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Content-Security-Policy: base-uri 'self'; object-src 'none'; frame-ancestors 'self'
+
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable

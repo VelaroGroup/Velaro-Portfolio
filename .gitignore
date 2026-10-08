@@ -16,6 +16,7 @@
 # next.js
 /.next/
 /.vinext/
+/.open-next/
 /out/
 
 # misc
@@ -30,11 +31,13 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+.dev.vars*
 
 # vercel
 .vercel
 
 # typescript
+*.tsbuildinfo
 next-env.d.ts
 /dist/
 /.wrangler/
@@ -47,3 +50,6 @@ next-env.d.ts
 
 !.env.example
 !studio/.env.example
+
+# Local visual review artifacts are retained on disk, outside the public repository.
+/design-concepts/

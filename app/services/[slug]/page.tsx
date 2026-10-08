@@ -1,54 +1,175 @@
-import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
+import type { Metadata, ResolvingMetadata } from 'next';
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import { ArrowDown, ArrowLeft, ArrowUpRight, Check, Layers3, MessageCircle, Plus, Workflow } from 'lucide-react';
 import { Cta } from '@/components/cta';
-import { services, siteUrl } from '@/lib/content';
+import { PlatformPreview } from '@/components/platform-preview';
+import { ProcessSteps, SectionHeading } from '@/components/section-heading';
+import { siteUrl } from '@/lib/content';
+import { services } from '@/lib/services';
+import { pageMetadata } from '@/lib/metadata';
+
+type ServicePageProps = { params: Promise<{ slug: string }> };
 
 export function generateStaticParams() {
-  return services.map((service) => ({ slug: service.slug }));
+  return services.map(({ slug }) => ({ slug }));
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  const { slug } = await params;
-  const service = services.find((item) => item.slug === slug);
-  if (!service) return {};
-  return { title: service.name, description: service.description, alternates: { canonical: `/services/${slug}` }, openGraph: { title: `${service.name} | Velaro`, description: service.description, url: `${siteUrl}/services/${slug}` } };
-}
-
-export default async function ServicePage({ params }: { params: Promise<{ slug: string }> }) {
+export async function generateMetadata({ params }: ServicePageProps, parent: ResolvingMetadata): Promise<Metadata> {
   const { slug } = await params;
   const service = services.find((item) => item.slug === slug);
   if (!service) notFound();
 
-  const serviceIndex = services.findIndex((item) => item.slug === slug);
-  const related = [
-    services[(serviceIndex - 1 + services.length) % services.length],
-    services[(serviceIndex + 1) % services.length],
-  ];
-  const illustration = `/service-illustrations/${service.slug === 'web' ? 'web-development' : service.slug}.png`;
-  const deliverableIllustrations = [
-    '0% 0%',
-    '100% 0%',
-    '0% 100%',
-    '100% 100%',
-  ];
-  const deliverableSprite = `/service-illustrations/${service.slug}-deliverables.png`;
-  const heroStages: Record<string, string[]> = {
-    automation: ['MAP', 'CONNECT', 'AUTOMATE'],
-    web: ['PLAN', 'DESIGN', 'LAUNCH'],
-    ecommerce: ['DISCOVER', 'CONVERT', 'GROW'],
-    'custom-software': ['DEFINE', 'BUILD', 'EVOLVE'],
-  };
-  const schema = { '@context': 'https://schema.org', '@type': 'Service', name: service.name, description: service.description, provider: { '@type': 'Organization', name: 'Velaro', url: siteUrl }, url: `${siteUrl}/services/${slug}` };
+  return pageMetadata({
+    title: service.name,
+    description: service.description,
+    path: `/services/${slug}`,
+  }, parent);
+}
 
-  return <main id="main">
-    <section className="inner-hero service-hero"><div className="shell service-hero-grid"><div><Link href="/#services" className="back-link">← All services</Link><div className="eyebrow">SERVICE / {service.number}</div><h1>{service.name}<span className="accent-text">.</span></h1><p>{service.description}</p><Link className="button button-primary" href="/contact">Discuss your project <span aria-hidden="true">↗</span></Link></div><div className="service-hero-art"><div className="service-hero-gridlines" /><img src={illustration} alt={`Abstract illustration for ${service.name}`} /><div className="service-hero-caption"><span>{heroStages[service.slug][0]}</span><b>→</b><span>{heroStages[service.slug][1]}</span><b>→</b><span>{heroStages[service.slug][2]}</span></div></div></div></section>
-    <section className="section light-section"><div className="shell detail-grid"><div className="section-label">THE OPPORTUNITY</div><div><h2>{service.intro}</h2><p>Every business has a different starting point. We take time to understand yours and focus on the work that will make a meaningful difference.</p></div></div></section>
-    <section className="section"><div className="shell two-col"><div><div className="section-label">WHAT WE FOCUS ON</div><h2>From problem to progress.</h2></div><div className="outcome-list">{service.outcomes.map((outcome, index) => <div key={outcome}><span>0{index + 1}</span><p>{outcome}</p></div>)}</div></div></section>
-    <section className="section muted-section"><div className="shell"><div className="deliverables-intro"><div><div className="section-label">WHAT A PROJECT CAN INCLUDE</div><h2>Built around what you need.</h2></div><img className="service-illustration" src={illustration} alt={`Abstract illustration for ${service.name}`} /></div><div className="deliverables">{service.deliverables.map((deliverable, index) => <div key={deliverable}><span>0{index + 1}</span><span className="deliverable-illustration" aria-hidden="true" style={{ backgroundImage: `url(${deliverableSprite})`, backgroundPosition: deliverableIllustrations[index] }} /><h3>{deliverable}</h3></div>)}</div></div></section>
-    <section className="section"><div className="shell two-col"><div><div className="section-label">COMMON QUESTIONS</div><h2>Good questions deserve clear answers.</h2></div><div className="faq-list">{service.questions.map((item) => <details key={item.q}><summary>{item.q}<span aria-hidden="true">+</span></summary><p>{item.a}</p></details>)}</div></div></section>
-    <section className="section related"><div className="shell"><div className="section-label">EXPLORE MORE</div><div className="related-grid">{related.map((item) => <Link href={`/services/${item.slug}`} key={item.slug}><span>{item.number} / SERVICE</span><h3>{item.name} <span aria-hidden="true">↗</span></h3></Link>)}</div></div></section>
-    <Cta title={`Let’s talk ${service.name.toLowerCase()}.`} />
-    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
-  </main>;
+const benefitIcons = [Layers3, Workflow, Check];
+const channels = ['WhatsApp Business', 'Instagram', 'Facebook Messenger', 'TikTok'];
+
+export default async function ServicePage({ params }: ServicePageProps) {
+  const { slug } = await params;
+  const service = services.find((item) => item.slug === slug);
+  if (!service) notFound();
+
+  const includesMessaging = slug === 'custom-software' || slug === 'automation';
+  const related = services.filter((item) => item.slug !== slug).slice(0, 2);
+  const schema = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: service.name,
+    description: service.description,
+    provider: { '@type': 'Organization', name: 'Velaro', url: siteUrl },
+    url: `${siteUrl}/services/${slug}`,
+  };
+
+  return (
+    <main id="main" className={`service-page service-page-${slug}`}>
+      <section className="page-hero svc-hero">
+        <div className="shell svc-hero-grid">
+          <div className="svc-hero-copy">
+            <Link href="/#services" className="back-link"><ArrowLeft size={14} aria-hidden="true" /> All services</Link>
+            <p className="eyebrow svc-kicker">{service.number} / {service.name}</p>
+            <h1>{service.headline}</h1>
+            <p className="intro-text svc-hero-description">{service.description}</p>
+            <div className="svc-actions">
+              <Link className="button button-primary" href={`/contact?service=${slug}`}>
+                {service.cta}<ArrowUpRight size={17} aria-hidden="true" />
+              </Link>
+              <a className="text-link" href="#possibilities">Explore what’s possible <ArrowDown size={16} aria-hidden="true" /></a>
+            </div>
+          </div>
+          <div className="svc-hero-preview">
+            <PlatformPreview variant={service.preview} />
+          </div>
+        </div>
+      </section>
+
+      <section className="section svc-introduction">
+        <div className="shell">
+          <div className="svc-intro-grid">
+            <SectionHeading eyebrow="WHY IT MATTERS" title={service.intro} />
+            <p className="svc-intro-text">{service.introduction}</p>
+          </div>
+          <div className="svc-benefits">
+            {service.benefits.map((benefit, index) => {
+              const Icon = benefitIcons[index];
+              return (
+                <article className="svc-benefit" key={benefit.title}>
+                  <div className="svc-benefit-icon"><Icon size={23} strokeWidth={1.6} aria-hidden="true" /></div>
+                  <div><h3>{benefit.title}</h3><p>{benefit.description}</p></div>
+                </article>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      <section className="section dark-section svc-connected">
+        <div className="shell svc-connected-grid">
+          <div className="svc-connected-copy">
+            <p className="eyebrow">{service.band.eyebrow}</p>
+            <h2>{service.band.title}</h2>
+            <p>{service.band.text}</p>
+            <ul className="svc-outcomes">
+              {service.outcomes.map((outcome) => <li key={outcome}><Check size={16} aria-hidden="true" /><span>{outcome}</span></li>)}
+            </ul>
+            <Link className="button button-accent" href={`/contact?service=${slug}`}>Let’s map your process <ArrowUpRight size={17} aria-hidden="true" /></Link>
+          </div>
+          <div className="svc-connected-preview">
+            <PlatformPreview variant={service.band.preview} compact />
+          </div>
+        </div>
+      </section>
+
+      <section className="section svc-capabilities" id="possibilities">
+        <div className="shell">
+          <SectionHeading eyebrow="WHAT WE CAN BUILD" title="Shaped around what you need." description="A useful starting point, tailored to your team, tools and priorities." />
+          <div className="svc-capability-list">
+            {service.capabilities.map((capability, index) => (
+              <article className="svc-capability" key={capability.title}>
+                <span className="svc-number" aria-hidden="true">0{index + 1}</span>
+                <h3>{capability.title}</h3>
+                <p>{capability.description}</p>
+                <ArrowUpRight className="svc-capability-arrow" size={21} strokeWidth={1.5} aria-hidden="true" />
+              </article>
+            ))}
+          </div>
+          {includesMessaging && (
+            <aside className="svc-channels" aria-label="Business messaging integrations">
+              <div className="svc-channel-heading"><MessageCircle size={18} aria-hidden="true" /><span>Conversations connected to your business</span></div>
+              <div className="svc-channel-list">{channels.map((channel) => <span key={channel}>{channel}</span>)}</div>
+              <p>Available channels and features depend on your accounts, region and each platform’s approved access. Your team can step in when needed.</p>
+            </aside>
+          )}
+          <div className="svc-delivery">
+            <p className="eyebrow">A PROJECT CAN INCLUDE</p>
+            <ul>{service.deliverables.map((item) => <li key={item}><Check size={14} aria-hidden="true" />{item}</li>)}</ul>
+          </div>
+        </div>
+      </section>
+
+      <section className="section soft-section svc-process" id="process">
+        <div className="shell">
+          <SectionHeading eyebrow="A CLEAR, PRACTICAL PROCESS" title="Start with the right problem." description="Understand the work. Design the solution. Build, test and improve it together." />
+          <ProcessSteps />
+        </div>
+      </section>
+
+      <section className="section svc-faq">
+        <div className="shell two-col">
+          <SectionHeading eyebrow="COMMON QUESTIONS" title="A little more clarity." description="Every project begins with a conversation about your business." />
+          <div className="faq-list">
+            {service.questions.map(({ q, a }) => (
+              <details key={q}>
+                <summary>{q}<Plus size={18} strokeWidth={1.5} aria-hidden="true" /></summary>
+                <p>{a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section svc-related">
+        <div className="shell">
+          <p className="eyebrow">PART OF A CONNECTED BUSINESS</p>
+          <div className="svc-related-grid">
+            {related.map((item) => (
+              <Link className="svc-related-link" href={`/services/${item.slug}`} key={item.slug}>
+                <span className="svc-related-number">{item.number} / SERVICE</span>
+                <h3>{item.name}<ArrowUpRight size={24} aria-hidden="true" /></h3>
+                <p>{item.short}</p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <Cta title={service.closing} text="Tell us where the work gets complicated. We’ll help you find a useful way forward." />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, '\\u003c') }} />
+    </main>
+  );
 }

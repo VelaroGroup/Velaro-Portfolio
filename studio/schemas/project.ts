@@ -4,6 +4,8 @@ export const project = defineType({name:'project',title:'Project',type:'document
   defineField({name:'slug',title:'URL slug',type:'slug',options:{source:'title'},validation:r=>r.required()}),
   defineField({name:'summary',title:'Short summary',type:'text',rows:3,validation:r=>r.required()}),
   defineField({name:'service',title:'Service category',type:'string',options:{list:['Automation','Web development','E-commerce','Custom software & platforms']},validation:r=>r.required()}),
+  defineField({name:'kind',title:'Project type',type:'string',description:'Concepts are illustrative. Publish a case study only with approved project information and verified claims.',options:{list:[{title:'Illustrative concept',value:'concept'},{title:'Approved case study',value:'case-study'}],layout:'radio'},initialValue:'concept',validation:r=>r.required()}),
+  defineField({name:'visual',title:'Interface preview',type:'string',description:'Used when no cover image is provided. Previews contain illustrative sample information.',options:{list:[{title:'Messaging inbox',value:'inbox'},{title:'Connected workflow',value:'workflow'},{title:'Custom platform',value:'platform'},{title:'Website',value:'website'},{title:'Online store',value:'commerce'}]}}),
   defineField({name:'year',title:'Year',type:'string'}),
   defineField({name:'featured',title:'Feature on the work page',type:'boolean',initialValue:false}),
   defineField({name:'client',title:'Client (only if approved to name)',type:'string'}),

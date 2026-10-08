@@ -1,23 +1,78 @@
 import Link from 'next/link';
+import { ArrowRight, ArrowUpRight, Check, Layers3, MessageCircle, Workflow } from 'lucide-react';
 import { Cta } from '@/components/cta';
-import { services, getProjects } from '@/lib/content';
+import { PlatformPreview } from '@/components/platform-preview';
+import { ProcessSteps, SectionHeading } from '@/components/section-heading';
+import { WorkflowExplorer } from '@/components/workflow-explorer';
+import { services } from '@/lib/services';
+import { site } from '@/lib/site';
 
-const serviceIllustrations: Record<string, string> = {
-  automation: '/service-illustrations/automation.png',
-  web: '/service-illustrations/web-development.png',
-  ecommerce: '/service-illustrations/ecommerce.png',
-  'custom-software': '/service-illustrations/custom-software.png',
-};
+export default function Home() {
+  return (
+    <main id="main">
+      <section className="home-hero">
+        <div className="shell hero-grid">
+          <div className="hero-copy">
+            <span className="eyebrow"><span className="eyebrow-dash" /> Custom platforms & automation</span>
+            <h1>Less busywork.<br /><span>More possibility.</span></h1>
+            <p>We find the repetitive work holding your business back, then build custom platforms and automations that move it forward.</p>
+            <div className="hero-actions">
+              <Link href="/contact" className="button button-primary">Let’s simplify your work <ArrowRight size={19} /></Link>
+              <Link href="#how-it-works" className="text-link">See how it works <ArrowUpRight size={17} /></Link>
+            </div>
+            <div className="hero-assurance"><span><Check size={14} /> Built around your process</span><span><Check size={14} /> Connected to your tools</span></div>
+          </div>
+          <div className="hero-preview-wrap"><PlatformPreview variant="inbox" /><div className="hero-preview-note"><span className="hero-note-icon"><Workflow size={19} /></span><div><strong>One message. A connected next step.</strong><span>Reply → customer record → task → follow-up</span></div></div></div>
+        </div>
+        <div className="shell hero-footnote"><span>Your business has its own way of working.<strong> Your software should too.</strong></span><a href="#possibilities" aria-label="Explore what we can automate">EXPLORE WHAT’S POSSIBLE <ArrowRight size={14} /></a></div>
+      </section>
 
-export default async function Home() {
-  const projects = (await getProjects()).slice(0, 2);
+      <section className="channel-strip" aria-label="Channels and tools we can connect"><div className="shell"><span>Connect the conversations.<br /><strong>Keep the work moving.</strong></span><div className="channel-names"><span><b className="channel-icon whatsapp">W</b>WhatsApp Business</span><span><b className="channel-icon instagram">I</b>Instagram</span><span><b className="channel-icon facebook">f</b>Messenger</span><span><b className="channel-icon tiktok">♪</b>TikTok</span><span className="other-tools">+ your everyday tools</span></div></div></section>
 
-  return <main id="main">
-    <section className="hero"><div className="shell hero-grid"><div className="hero-copy"><div className="eyebrow"><span className="eyebrow-line" /> DIGITAL ENGINEERING STUDIO</div><h1>Ideas are good.<br /><em>Working systems</em><br />are better.</h1><p>We design and build the digital tools behind better business—from automation and custom platforms to websites and online stores.</p><div className="hero-actions"><Link href="/contact" className="button button-primary">Tell us what you’re building <span aria-hidden="true">↗</span></Link><Link href="#services" className="text-link">Explore our services <span aria-hidden="true">↓</span></Link></div></div><div className="hero-art" aria-hidden="true"><div className="art-grid" /><div className="art-glow" /><div className="art-mark"><img src="/velaro-logo.png" alt="" /></div><div className="art-caption"><span>STRATEGY <b>→</b> DESIGN <b>→</b> BUILD</span><span>01 / 04</span></div></div></div><div className="shell hero-bottom"><span>Built around your business. Designed for what’s next.</span><span>SCROLL TO EXPLORE ↓</span></div></section>
-    <section className="section intro-section"><div className="shell intro-grid"><div className="section-label">WHAT WE DO <span>01 / 03</span></div><div><h2>Technology should make your work <span className="accent-text">simpler.</span></h2><p>Too many businesses work around disconnected tools and digital experiences that no longer fit. We bring the pieces together with practical thinking, considered design, and solid engineering.</p></div></div></section>
-    <section id="services" className="section services-section"><div className="shell"><div className="section-heading"><div><div className="section-label">OUR EXPERTISE <span>02 / 03</span></div><h2>Four ways to move forward.</h2></div><p>Start with the challenge. We’ll shape the right solution around it.</p></div><div className="services-list">{services.map((service) => <Link className="service-row" href={`/services/${service.slug}`} key={service.slug}><span className="service-number">{service.number}</span><div><h3>{service.name}</h3><p>{service.description}</p></div><img className="service-row-illustration" src={serviceIllustrations[service.slug]} alt="" /><span className="service-arrow" aria-hidden="true">↗</span></Link>)}</div></div></section>
-    <section className="section approach-section"><div className="shell approach-grid"><div><div className="section-label">HOW WE WORK <span>03 / 03</span></div><h2>Clear thinking.<br />Confident delivery.</h2><p>Good work begins with the right questions. We define the problem, design the experience, build with care, and keep improving what matters.</p><Link href="/about" className="text-link">More about Velaro <span aria-hidden="true">↗</span></Link></div><div className="steps">{[['01', 'Understand', 'Get close to your goals, users, and current systems.'], ['02', 'Shape', 'Agree on priorities, scope, and a sensible path forward.'], ['03', 'Build', 'Design, develop, test, and launch the solution.'], ['04', 'Improve', 'Learn from use and evolve as your business grows.']].map(([number, title, description]) => <div className="step" key={number}><span>{number}</span><div><h3>{title}</h3><p>{description}</p></div></div>)}</div></div></section>
-    <section className="section work-section"><div className="shell"><div className="section-heading"><div><div className="section-label">SELECTED WORK</div><h2>Work that speaks for itself.</h2></div><Link href="/work" className="text-link">Explore our work <span aria-hidden="true">↗</span></Link></div>{projects.length ? <div className="project-grid">{projects.map((project) => <Link href={`/work/${project.slug}`} className="project-card" key={project.slug}><div className="project-visual">{project.image ? <img src={project.image} alt={project.imageAlt || project.title} /> : <span>{project.title.slice(0, 1)}</span>}</div><div className="project-meta"><span>{project.service}</span><span>{project.year}</span></div><h3>{project.title} <span aria-hidden="true">↗</span></h3><p>{project.summary}</p></Link>)}</div> : <div className="work-empty"><span className="work-empty-mark">V<span>.</span></span><div><h3>New work is on the way.</h3><p>We’re preparing case studies that show the thinking and outcomes behind our projects. Have a challenge of your own? We’d like to hear it.</p><Link href="/contact" className="text-link">Talk to us <span aria-hidden="true">↗</span></Link></div></div>}</div></section>
-    <Cta />
-  </main>;
+      <section id="possibilities" className="section">
+        <div className="shell">
+          <SectionHeading eyebrow="Start with what slows you down" title="There’s a better way to do the everyday." description="You know where the friction is. We turn it into a clear process, useful software and fewer manual steps." />
+          <WorkflowExplorer />
+        </div>
+      </section>
+
+      <section className="section dark-section platform-section">
+        <div className="shell platform-section-grid">
+          <div><span className="eyebrow">Your process. Your platform.</span><h2>Everything working<br />better, together.</h2><p>Your customer conversations, operations and team deserve a shared home. We build a platform around your business, with the workflows that make it work.</p><ul className="plain-checks"><li><Check />One place for your team and information</li><li><Check />Automations shaped around your rules</li><li><Check />Clear roles, approvals and human handoffs</li></ul><Link href="/services/custom-software" className="button button-accent">Explore custom platforms <ArrowRight size={18} /></Link></div>
+          <PlatformPreview variant="platform" />
+        </div>
+      </section>
+
+      <section className="section" id="services">
+        <div className="shell">
+          <SectionHeading eyebrow="What we can build for you" title="The right tools. One connected business." description="A custom platform at the centre. Automations, websites and online stores that work with it." />
+          <div className="service-list">{services.map(service => <Link key={service.slug} href={`/services/${service.slug}`} className="service-row"><span className="service-number">{service.number}</span><div><h3>{service.name}</h3><p>{service.description}</p></div><span className="service-row-tag">{service.slug === 'custom-software' ? 'Built around you' : service.slug === 'automation' ? 'Less manual work' : service.slug === 'web' ? 'A better first impression' : 'From shop to operations'}</span><span className="service-arrow"><ArrowUpRight size={22} /></span></Link>)}</div>
+        </div>
+      </section>
+
+      <section className="section soft-section messaging-section">
+        <div className="shell two-col">
+          <div><span className="eyebrow">From a message to meaningful action</span><h2>More than<br />an automatic reply.</h2><p className="intro-text">Answer common questions, capture a lead, check an order, arrange a booking or bring in your team. Each conversation becomes part of a workflow designed for your business.</p><Link href="/services/automation" className="text-link">Explore messaging automation <ArrowRight size={18} /></Link></div>
+          <div className="messaging-features">
+            {[{ Icon: MessageCircle, title: 'Replies with a purpose', text: 'Helpful answers based on your information and the way you want to communicate.' }, { Icon: Workflow, title: 'The next step, connected', text: 'Move from an inquiry to a customer record, appointment, task or order update.' }, { Icon: Layers3, title: 'Your team stays in control', text: 'Route complex conversations to the right person, with the context they need.' }].map(({ Icon, title, text }) => <div key={title}><span className="feature-icon"><Icon size={23} /></span><div><h3>{title}</h3><p>{text}</p></div></div>)}
+            <p className="integration-note">{site.messagingNote}</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="how-it-works" className="section">
+        <div className="shell"><SectionHeading eyebrow="How we work" title="First, understand. Then, make it work." description="We start with your actual day-to-day work, and stay close from the first conversation to the next improvement." /><ProcessSteps /></div>
+      </section>
+
+      <section className="section work-teaser-section">
+        <div className="shell"><SectionHeading eyebrow="A little of what’s possible" title="Thoughtful on the outside. Connected underneath." />
+          <div className="home-work-grid">
+            <Link href="/work/preview-software-project" className="home-work-card"><PlatformPreview variant="platform" compact /><div className="home-work-title"><div><span className="concept-label">Illustrative concept</span><h3>A shared home for the work.</h3><p>A custom workspace for people, projects and approvals.</p></div><ArrowUpRight size={24} /></div></Link>
+            <Link href="/work/preview-ecommerce-project" className="home-work-card"><PlatformPreview variant="commerce" compact /><div className="home-work-title"><div><span className="concept-label">Illustrative concept</span><h3>A store that works behind the scenes.</h3><p>From a thoughtful shopping experience to connected operations.</p></div><ArrowUpRight size={24} /></div></Link>
+          </div><Link href="/work" className="text-link work-all-link">Explore all concepts <ArrowRight size={17} /></Link>
+        </div>
+      </section>
+      <Cta />
+    </main>
+  );
 }
