@@ -4,7 +4,7 @@ Reviewed on 8 October 2026 in the Windows workspace and the Linux deployment wor
 
 ## SEO and indexing audit, 8 October 2026
 
-The live baseline (`1638bb3`) had no observed crawl/indexing blocker across its 20 sitemap pages. This audit checked every public page, canonical URL, title, description, internal destination, unknown-route response and sitemap entry, plus the application and Cloudflare configuration. Search Console ownership and Google's actual index coverage were not available in this session; crawl eligibility is not proof of indexing or ranking.
+The live baseline (`1638bb3`) had no observed crawl/indexing blocker across its 20 sitemap pages. This audit checked every public page, canonical URL, title, description, internal destination, unknown-route response and sitemap entry, plus the application and Cloudflare configuration. The existing Google Search Console domain property was subsequently accessible through the signed-in browser, and sitemap resubmission was confirmed. Crawl eligibility and sitemap submission are not proof that every current page is indexed or ranked.
 
 | Finding | Change / verification |
 | --- | --- |
@@ -29,7 +29,15 @@ Responsive candidate screenshots sampled the revised Work collection at 320px, 3
 
 Before substantial portfolio growth, optimize remote CMS covers, use separate summary/detail/sitemap queries, add pagination and measure representative content. KV remains eventually consistent; instant publication needs additional coordinated cache infrastructure. These are future growth requirements, not current indexing blockers. New genuine case studies should use approved evidence; the six bundled examples remain labeled concepts.
 
-Search Console still needs an owner-verified `velaro.group` property, sitemap submission at `https://www.velaro.group/sitemap.xml`, and URL Inspection/index-coverage review. No submission or indexing was claimed. The robots sitemap declaration already supports discovery. Guidance was checked against Google's [technical requirements](https://developers.google.com/search/docs/essentials/technical), [sitemap guidance](https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap), [canonicalization guidance](https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls), [site-name data](https://developers.google.com/search/docs/appearance/site-names), [Organization data](https://developers.google.com/search/docs/appearance/structured-data/organization) and [OpenNext image behavior](https://opennext.js.org/cloudflare/howtos/image).
+### Published release and Google submission
+
+Commit `59410ddf9339e87a52e3e69ab46d1a4a05904730` passed the full [GitHub/Cloudflare workflow](https://github.com/VelaroGroup/Velaro-Portfolio/actions/runs/37823801142): **938** checks in each local Next/Worker runtime, **928** on the intentionally non-indexable Worker alias, and **937** on the public domain. An independent public-domain repeat also passed all 937 checks, with normal TLS validation and the expected release on all 20 pages. All three fingerprinted optimized images returned WebP and immutable cache headers; the alias returned noindex and the public pages remained indexable.
+
+The [post-deployment mobile report](https://pagespeed.web.dev/analysis/https-www-velaro-group/2mbyoi5xml?form_factor=mobile), captured at 22:32 GST, scored **95 performance, 100 accessibility, 100 best practices and 100 SEO**, with FCP **1.4s**, LCP **2.6s**, total blocking time **0ms**, CLS **0** and speed index **3.9s**. This supersedes the baseline as the latest measured run. Lab timing varies; neither run establishes field Core Web Vitals. The earlier efficient-cache-lifetime warning was absent after the immutable-image fix. Remaining diagnostics include approximately 15KiB unused CSS and 29KiB unused JavaScript, to revisit alongside future content growth.
+
+In the existing `velaro.group` Search Console property, `https://www.velaro.group/sitemap.xml` was already registered. It was resubmitted after deployment and Google displayed **“Sitemap submitted successfully.”** The index-coverage report predates this release; it must be allowed to update before assessing the new 20-page collection. Private account/report observations and the submission screenshot remain in the parent workspace, outside the public repository. A fresh URL-level inspection of every page was not completed, and no claim of all-page indexing is made.
+
+The robots sitemap declaration also supports discovery. Guidance was checked against Google's [technical requirements](https://developers.google.com/search/docs/essentials/technical), [sitemap guidance](https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap), [canonicalization guidance](https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls), [site-name data](https://developers.google.com/search/docs/appearance/site-names), [Organization data](https://developers.google.com/search/docs/appearance/structured-data/organization) and [OpenNext image behavior](https://opennext.js.org/cloudflare/howtos/image).
 
 ## Release scope
 

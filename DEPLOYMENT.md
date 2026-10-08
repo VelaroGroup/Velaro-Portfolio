@@ -111,7 +111,7 @@ When verifying the Worker alias or a noindex build, set `VELARO_EXPECT_INDEXABLE
 
 Dependency security fixes are pinned in the lockfile and `pnpm-workspace.yaml`. Keep the workspace policy file in the build context, even for this single application. Re-run the audit when preparing future releases; an earlier clean result is not a permanent security guarantee.
 
-The standard Node commands support development and portability; they do not replace Worker runtime and post-deployment verification. [TEST_REPORT.md](TEST_REPORT.md) records individual workflow outcomes, audit evidence and the dated [Google mobile PageSpeed baseline](https://pagespeed.web.dev/analysis/https-www-velaro-group/fxnm2kxk5b?form_factor=mobile): 99 performance, 100 accessibility, 100 best practices and 100 SEO, with 2.0 s LCP and 0 CLS. This is a lab measurement; real-user data was unavailable.
+The standard Node commands support development and portability; they do not replace Worker runtime and post-deployment verification. [TEST_REPORT.md](TEST_REPORT.md) records individual workflow outcomes, audit evidence and the [post-deployment Google mobile PageSpeed report](https://pagespeed.web.dev/analysis/https-www-velaro-group/2mbyoi5xml?form_factor=mobile): 95 performance, 100 accessibility, 100 best practices and 100 SEO, with 2.6 s LCP and 0 CLS. This is a lab measurement; real-user data was unavailable.
 
 ## Environment and content
 
@@ -136,7 +136,7 @@ Work, category pages, project details and the sitemap explicitly use 300-second 
 
 Without CMS configuration, validated local projects are used. Once the CMS is configured, network, timeout, response and validation errors throw a sanitized error instead of silently substituting the local collection. Failed regeneration can preserve successful cached content; a cold failure remains an error rather than falsely treating a CMS-only project as missing. Test successful publication and failed-refresh behavior in the actual hosting environment before relying on the optional CMS.
 
-The [canonical sitemap](https://www.velaro.group/sitemap.xml) currently contains 20 bundled public URLs and includes additional published projects automatically. It omits invented modification dates. Search Console ownership verification and sitemap submission are separate owner actions; sitemap availability does not establish indexing. A static 1200×630 Open Graph image is generated at `/opengraph-image`; verify it after deployment.
+The [canonical sitemap](https://www.velaro.group/sitemap.xml) currently contains 20 bundled public URLs and includes additional published projects automatically. It omits invented modification dates. Google Search Console confirmed sitemap resubmission on 8 October 2026. Future domain/ownership changes need corresponding Search Console verification; sitemap availability does not establish indexing. A static 1200×630 Open Graph image is generated at `/opengraph-image`; verify it after deployment.
 
 Local optimized images are allowed under `/images/`, `/projects/`, `/_next/static/media/`, plus `/velaro-logo.png` and `/velaro-mark.png`, without source query parameters. Static imports of the original logo and concept photos produce hashed sources; OpenNext returns immutable optimized responses for these sources. Original files are unchanged. Keep new local covers under `/projects/` or `/images/`. Remote CMS covers currently use their validated HTTPS originals without optimization; add an approved responsive image loader or restricted optimizer configuration before substantial image growth.
 
