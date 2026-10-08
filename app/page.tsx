@@ -1,78 +1,74 @@
+import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, ArrowUpRight, Check, Layers3, MessageCircle, Workflow } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Check, Globe2, Layers3, ShoppingBag, Workflow } from 'lucide-react';
 import { Cta } from '@/components/cta';
 import { PlatformPreview } from '@/components/platform-preview';
 import { ProcessSteps, SectionHeading } from '@/components/section-heading';
 import { WorkflowExplorer } from '@/components/workflow-explorer';
-import { services } from '@/lib/services';
 import { site } from '@/lib/site';
 
+const offerings = [
+  { slug: 'custom-software', number: '01', name: 'Custom platforms', line: 'Your business. Your own system.', description: 'Business software, team workspaces and customer portals, shaped around your operations and available under your brand.', details: 'Business systems · Portals · White-label', Icon: Layers3 },
+  { slug: 'automation', number: '02', name: 'Business automation', line: 'Less repetition. More progress.', description: 'Connect the tools you use, automate repeated tasks and bring customer conversations into a useful workflow.', details: 'Workflows · Messaging · Integrations', Icon: Workflow },
+  { slug: 'web', number: '03', name: 'Websites', line: 'A stronger first impression.', description: 'Thoughtful design, clear content and responsive development that help people understand your business and take the next step.', details: 'Strategy · Design · Development', Icon: Globe2 },
+  { slug: 'ecommerce', number: '04', name: 'E-commerce', line: 'Beautiful to shop. Practical to run.', description: 'Online stores built around your products and customers, from discovery and checkout to the work behind each order.', details: 'Storefronts · Checkout · Operations', Icon: ShoppingBag },
+] as const;
+
+function ServiceOverview() {
+  return <div className="service-overview" aria-label="Explore Velaro’s four core services">
+    <div className="overview-top"><span>DESIGN + TECHNOLOGY</span><span className="overview-studio">VELARO</span></div>
+    <div className="overview-title"><span className="overview-label">ONE STUDIO. YOUR NEXT CHAPTER.</span><p>Everything starts<br />with your business.</p></div>
+    <div className="overview-services">{offerings.map(({ slug, number, name, Icon }) => <Link key={slug} href={'/services/' + slug} className="overview-service"><span className="overview-service-top"><Icon size={23} aria-hidden="true" /><span>{number}</span></span><strong>{name}</strong><ArrowUpRight className="overview-arrow" size={17} aria-hidden="true" /></Link>)}</div>
+    <div className="overview-note"><span />Built individually. Connected where it matters.</div>
+  </div>;
+}
+
 export default function Home() {
-  return (
-    <main id="main">
-      <section className="home-hero">
-        <div className="shell hero-grid">
-          <div className="hero-copy">
-            <span className="eyebrow"><span className="eyebrow-dash" /> Custom platforms & automation</span>
-            <h1>Less busywork.<br /><span>More possibility.</span></h1>
-            <p>We find the repetitive work holding your business back, then build custom platforms and automations that move it forward.</p>
-            <div className="hero-actions">
-              <Link href="/contact" className="button button-primary">Let’s simplify your work <ArrowRight size={19} /></Link>
-              <Link href="#how-it-works" className="text-link">See how it works <ArrowUpRight size={17} /></Link>
-            </div>
-            <div className="hero-assurance"><span><Check size={14} /> Built around your process</span><span><Check size={14} /> Connected to your tools</span></div>
-          </div>
-          <div className="hero-preview-wrap"><PlatformPreview variant="inbox" /><div className="hero-preview-note"><span className="hero-note-icon"><Workflow size={19} /></span><div><strong>One message. A connected next step.</strong><span>Reply → customer record → task → follow-up</span></div></div></div>
+  return <main id="main" className="home-page">
+    <section className="home-hero">
+      <div className="shell hero-grid">
+        <div className="hero-copy">
+          <span className="eyebrow"><span className="eyebrow-dash" /> YOUR DIGITAL GROWTH STUDIO</span>
+          <h1>Digital solutions.<br /><span>Built around you.</span></h1>
+          <p>Custom platforms, business automation, websites and online stores. We bring design and technology together around your business, your customers and your next step.</p>
+          <div className="hero-actions"><Link href="/contact" className="button button-primary">Let’s build your next chapter <ArrowRight size={19} aria-hidden="true" /></Link><Link href="#services" className="text-link">Explore our services <ArrowUpRight size={17} aria-hidden="true" /></Link></div>
+          <div className="hero-assurance"><span><Check size={14} aria-hidden="true" /> Shaped around your business</span><span><Check size={14} aria-hidden="true" /> Designed for your brand</span></div>
         </div>
-        <div className="shell hero-footnote"><span>Your business has its own way of working.<strong> Your software should too.</strong></span><a href="#possibilities" aria-label="Explore what we can automate">EXPLORE WHAT’S POSSIBLE <ArrowRight size={14} /></a></div>
-      </section>
+        <ServiceOverview />
+      </div>
+      <div className="shell hero-footnote"><span>Based in Lebanon.<strong> Working across the Middle East and beyond.</strong></span><Link href="/about">MEET VELARO <ArrowRight size={14} aria-hidden="true" /></Link></div>
+    </section>
 
-      <section className="channel-strip" aria-label="Channels and tools we can connect"><div className="shell"><span>Connect the conversations.<br /><strong>Keep the work moving.</strong></span><div className="channel-names"><span><b className="channel-icon whatsapp">W</b>WhatsApp Business</span><span><b className="channel-icon instagram">I</b>Instagram</span><span><b className="channel-icon facebook">f</b>Messenger</span><span><b className="channel-icon tiktok">♪</b>TikTok</span><span className="other-tools">+ your everyday tools</span></div></div></section>
+    <section className="section home-services" id="services"><div className="shell">
+      <SectionHeading eyebrow="FOUR CORE SERVICES" title="The right solution for your next step." description="Choose one service or bring them together. Every project starts with what your business needs." />
+      <div className="home-service-grid">{offerings.map(({ slug, number, name, line, description, details, Icon }) => <Link key={slug} href={'/services/' + slug} className="home-service-card"><div className="home-service-card-top"><span>{number}</span><Icon size={27} aria-hidden="true" /></div><h3>{name}</h3><p className="home-service-line">{line}</p><p>{description}</p><div className="home-service-card-bottom"><span>{details}</span><ArrowUpRight size={21} aria-hidden="true" /></div></Link>)}</div>
+    </div></section>
 
-      <section id="possibilities" className="section">
-        <div className="shell">
-          <SectionHeading eyebrow="Start with what slows you down" title="There’s a better way to do the everyday." description="You know where the friction is. We turn it into a clear process, useful software and fewer manual steps." />
-          <WorkflowExplorer />
-        </div>
-      </section>
+    <section className="section dark-section platform-section"><div className="shell platform-section-grid">
+      <div><span className="eyebrow">OUR SPECIALTY · CUSTOM BUSINESS PLATFORMS</span><h2>Your business logic.<br />Your brand.<br />Your platform.</h2><p>A system should fit the way your business works. We map your operations, find the repeated work and build an automated platform around your team, customers and business rules.</p><ul className="plain-checks"><li><Check aria-hidden="true" />Workflows built around your actual process</li><li><Check aria-hidden="true" />Connected information, tools and permissions</li><li><Check aria-hidden="true" />White-label delivery with your brand and identity</li></ul><Link href="/services/custom-software" className="button button-accent">Explore custom platforms <ArrowRight size={18} aria-hidden="true" /></Link></div>
+      <div className="platform-specialty-visual"><PlatformPreview variant="platform" /><p className="platform-brand-note">Your name, colours and experience. Designed for your business.</p></div>
+    </div></section>
 
-      <section className="section dark-section platform-section">
-        <div className="shell platform-section-grid">
-          <div><span className="eyebrow">Your process. Your platform.</span><h2>Everything working<br />better, together.</h2><p>Your customer conversations, operations and team deserve a shared home. We build a platform around your business, with the workflows that make it work.</p><ul className="plain-checks"><li><Check />One place for your team and information</li><li><Check />Automations shaped around your rules</li><li><Check />Clear roles, approvals and human handoffs</li></ul><Link href="/services/custom-software" className="button button-accent">Explore custom platforms <ArrowRight size={18} /></Link></div>
-          <PlatformPreview variant="platform" />
-        </div>
-      </section>
+    <section className="section home-presence"><div className="shell">
+      <SectionHeading eyebrow="WEBSITES & E-COMMERCE" title="Make the first impression count." description="A website that tells your story. A store that makes shopping feel effortless. Each deserves a considered experience of its own." />
+      <div className="home-work-grid">
+        <Link href="/services/web" className="home-work-card"><PlatformPreview variant="website" compact /><div className="home-work-title"><div><span className="concept-label">WEBSITE DESIGN & DEVELOPMENT</span><h3>A clear story. A confident next step.</h3><p>Turn your expertise into a website people can understand, explore and act on.</p></div><ArrowUpRight size={24} aria-hidden="true" /></div></Link>
+        <Link href="/services/ecommerce" className="home-work-card"><PlatformPreview variant="commerce" compact /><div className="home-work-title"><div><span className="concept-label">ONLINE STORES & COMMERCE</span><h3>A better journey, from browse to buy.</h3><p>Bring your products, brand and shopping experience together in a store built to grow.</p></div><ArrowUpRight size={24} aria-hidden="true" /></div></Link>
+      </div><Link href="/work" className="text-link work-all-link">Explore our work & concepts <ArrowRight size={17} aria-hidden="true" /></Link>
+    </div></section>
 
-      <section className="section" id="services">
-        <div className="shell">
-          <SectionHeading eyebrow="What we can build for you" title="The right tools. One connected business." description="A custom platform at the centre. Automations, websites and online stores that work with it." />
-          <div className="service-list">{services.map(service => <Link key={service.slug} href={`/services/${service.slug}`} className="service-row"><span className="service-number">{service.number}</span><div><h3>{service.name}</h3><p>{service.description}</p></div><span className="service-row-tag">{service.slug === 'custom-software' ? 'Built around you' : service.slug === 'automation' ? 'Less manual work' : service.slug === 'web' ? 'A better first impression' : 'From shop to operations'}</span><span className="service-arrow"><ArrowUpRight size={22} /></span></Link>)}</div>
-        </div>
-      </section>
+    <section id="possibilities" className="section home-automation"><div className="shell">
+      <SectionHeading eyebrow="BUSINESS AUTOMATION" title="Give repetitive work a better process." description="From messages and follow-ups to data entry and approvals. Explore a few starting points for a workflow built around you." />
+      <WorkflowExplorer />
+      <div className="home-automation-footer"><p>Messaging can include WhatsApp Business, Instagram, Facebook Messenger and TikTok. {site.messagingNote}</p><Link href="/services/automation" className="text-link">Explore automation <ArrowRight size={17} aria-hidden="true" /></Link></div>
+    </div></section>
 
-      <section className="section soft-section messaging-section">
-        <div className="shell two-col">
-          <div><span className="eyebrow">From a message to meaningful action</span><h2>More than<br />an automatic reply.</h2><p className="intro-text">Answer common questions, capture a lead, check an order, arrange a booking or bring in your team. Each conversation becomes part of a workflow designed for your business.</p><Link href="/services/automation" className="text-link">Explore messaging automation <ArrowRight size={18} /></Link></div>
-          <div className="messaging-features">
-            {[{ Icon: MessageCircle, title: 'Replies with a purpose', text: 'Helpful answers based on your information and the way you want to communicate.' }, { Icon: Workflow, title: 'The next step, connected', text: 'Move from an inquiry to a customer record, appointment, task or order update.' }, { Icon: Layers3, title: 'Your team stays in control', text: 'Route complex conversations to the right person, with the context they need.' }].map(({ Icon, title, text }) => <div key={title}><span className="feature-icon"><Icon size={23} /></span><div><h3>{title}</h3><p>{text}</p></div></div>)}
-            <p className="integration-note">{site.messagingNote}</p>
-          </div>
-        </div>
-      </section>
+    <section className="section home-about"><div className="shell home-about-grid">
+      <div className="home-about-identity"><Image src="/velaro-mark.png" alt="" width={100} height={100} sizes="100px" /><span className="eyebrow">ABOUT US</span><h2>Thoughtful people.<br />Practical thinking.</h2></div>
+      <div className="home-about-copy"><p className="intro-text">Velaro is a digital growth studio based in Lebanon, working with businesses across the Middle East and beyond.</p><p>Our name comes from velocity: steady, confident progress. We bring that approach to everything we build, from your public presence to the systems behind it.</p><div className="home-about-pillars"><span>Velocity</span><span>Vision</span><span>Value</span></div><Link href="/about" className="text-link">Get to know Velaro <ArrowUpRight size={18} aria-hidden="true" /></Link></div>
+    </div></section>
 
-      <section id="how-it-works" className="section">
-        <div className="shell"><SectionHeading eyebrow="How we work" title="First, understand. Then, make it work." description="We start with your actual day-to-day work, and stay close from the first conversation to the next improvement." /><ProcessSteps /></div>
-      </section>
-
-      <section className="section work-teaser-section">
-        <div className="shell"><SectionHeading eyebrow="A little of what’s possible" title="Thoughtful on the outside. Connected underneath." />
-          <div className="home-work-grid">
-            <Link href="/work/preview-software-project" className="home-work-card"><PlatformPreview variant="platform" compact /><div className="home-work-title"><div><span className="concept-label">Illustrative concept</span><h3>A shared home for the work.</h3><p>A custom workspace for people, projects and approvals.</p></div><ArrowUpRight size={24} /></div></Link>
-            <Link href="/work/preview-ecommerce-project" className="home-work-card"><PlatformPreview variant="commerce" compact /><div className="home-work-title"><div><span className="concept-label">Illustrative concept</span><h3>A store that works behind the scenes.</h3><p>From a thoughtful shopping experience to connected operations.</p></div><ArrowUpRight size={24} /></div></Link>
-          </div><Link href="/work" className="text-link work-all-link">Explore all concepts <ArrowRight size={17} /></Link>
-        </div>
-      </section>
-      <Cta />
-    </main>
-  );
+    <section id="how-it-works" className="section home-process"><div className="shell"><SectionHeading eyebrow="HOW WE WORK" title="A clear path, from idea to everyday use." description="One collaborative approach, whether we’re building your website, store, automation or custom platform." /><ProcessSteps /></div></section>
+    <Cta title="What’s next for your business?" text="A new presence, a better process or a platform of your own. Tell us what you have in mind, and we’ll help shape the right solution." />
+  </main>;
 }

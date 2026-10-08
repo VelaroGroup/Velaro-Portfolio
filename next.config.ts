@@ -37,6 +37,7 @@ const nextConfig: NextConfig = {
       { source: '/website-development-middle-east', destination: '/services/web', permanent: true },
       { source: '/shopify-store-lebanon', destination: '/services/ecommerce', permanent: true },
       { source: '/packages', destination: '/contact', permanent: true },
+      { source: '/about-us', destination: '/about', permanent: true },
     ];
   },
   async headers() {

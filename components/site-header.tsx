@@ -52,10 +52,12 @@ export function SiteHeader() {
     }}>
       <div className="shell header-inner">
         <Link href="/" aria-label="Velaro home" onClick={closeMenus}><Brand /></Link>
+        <Link href="/about" className="mobile-about-link" onClick={closeMenus} aria-current={pathname === '/about' ? 'page' : undefined}>About Us</Link>
         <button ref={menuButton} className="menu-toggle" type="button" aria-label={menuOpen ? 'Close navigation' : 'Open navigation'} aria-expanded={menuOpen} aria-controls="primary-navigation" onClick={() => { setMenuOpen(!menuOpen); setServicesOpen(false); }}>
           {menuOpen ? <X size={23} /> : <Menu size={23} />}
         </button>
         <nav id="primary-navigation" className={`nav${menuOpen ? ' nav-open' : ''}`} aria-label="Primary navigation">
+          <Link href="/about" className="nav-about" onClick={closeMenus} aria-current={pathname === '/about' ? 'page' : undefined}>About Us</Link>
           <div className="nav-services">
             <button ref={servicesButton} type="button" className={`nav-service-trigger${pathname.startsWith('/services/') ? ' current' : ''}`} aria-expanded={servicesOpen} aria-controls="services-menu" onClick={() => setServicesOpen(!servicesOpen)}>
               Services <ChevronDown size={14} aria-hidden="true" />
@@ -70,7 +72,6 @@ export function SiteHeader() {
             </div>
           </div>
           <Link href="/work" onClick={closeMenus} aria-current={pathname.startsWith('/work') ? 'page' : undefined}>Work</Link>
-          <Link href="/about" onClick={closeMenus} aria-current={pathname === '/about' ? 'page' : undefined}>About</Link>
           <Link href="/contact" className="button button-primary nav-cta" onClick={closeMenus}>Let’s talk <ArrowRight size={17} aria-hidden="true" /></Link>
         </nav>
       </div>

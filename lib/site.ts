@@ -4,6 +4,6 @@ export const site = {
   name: 'Velaro',
   email: 'info@velaro.group',
   region: 'Lebanon · Middle East',
-  description: 'Custom platforms and business automation built around the way you work. Velaro connects customer conversations, people and processes, alongside websites and online stores.',
+  description: 'Websites, e-commerce, automation and custom software from Velaro. Built around your business, with white-label platforms available under your own brand.',
   messagingNote: 'Available channels and features depend on your accounts, region and each platform’s approved access.',
 } as const;

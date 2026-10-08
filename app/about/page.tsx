@@ -8,7 +8,7 @@ import { pageMetadata } from '@/lib/metadata';
 
 export function generateMetadata(_props: unknown, parent: ResolvingMetadata) {
   return pageMetadata({
-    title: 'About Velaro',
+    title: 'About Us',
     description: 'Meet Velaro, a digital growth studio based in Lebanon. We build custom platforms, business automation, websites and stores for the Middle East and beyond.',
     path: '/about',
   }, parent);
@@ -31,10 +31,10 @@ export default function About() {
     <section className="page-hero about-hero">
       <div className="shell about-hero-grid">
         <div>
-          <span className="eyebrow">ABOUT VELARO</span>
-          <h1>A clearer way<br />to move forward.</h1>
+          <span className="eyebrow">DIGITAL GROWTH STUDIO</span>
+          <h1>About Velaro</h1>
           <p className="intro-text">Velaro is a digital growth studio based in Lebanon, working with businesses across the Middle East and beyond.</p>
-          <p className="about-hero-detail">We connect thoughtful design with practical technology: custom platforms, automated workflows, websites and online stores.</p>
+          <p className="about-hero-detail">We build custom business platforms, automate everyday processes, design websites and create e-commerce stores. Each one starts with how your business works.</p>
           <div className="about-hero-actions">
             <Link href="/contact" className="button button-primary">Start a conversation <ArrowUpRight aria-hidden="true" /></Link>
             <a href="#our-approach" className="text-link">How we work</a>
@@ -59,6 +59,7 @@ export default function About() {
           <p>Velaro started with a simple question: how can we make the web side of a business feel organised and under control?</p>
           <p>Our name comes from <em>velocity</em>: steady, confident progress. That belief shaped our work on websites and online stores, and it guides the custom platforms and automation we build today.</p>
           <p>Growth also depends on what happens behind the screen: how an inquiry becomes a customer, how information moves, and how a team gets work done. We bring those pieces together so the digital side of your business feels easier to run.</p>
+          <p>For agencies and partners, we also offer white-label delivery under your brand.</p>
         </div>
       </div>
     </section>

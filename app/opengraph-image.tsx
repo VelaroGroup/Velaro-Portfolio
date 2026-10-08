@@ -2,7 +2,7 @@ import { ImageResponse } from 'next/og';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
-export const alt = 'Velaro — Less busywork. More possibility. Custom platforms and business automation.';
+export const alt = 'Velaro — Digital solutions. Built around you. Websites, e-commerce, automation and custom platforms.';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -22,13 +22,13 @@ export default async function OpenGraphImage() {
         <img src={logoSource} width={74} height={74} alt="" />
         <div style={{ display: 'flex', fontSize: 32, fontWeight: 700, letterSpacing: 4 }}>VELARO</div>
       </div>
-      <div style={{ display: 'flex', marginTop: 40, color: '#22d3ee', fontSize: 18, letterSpacing: 3 }}>CUSTOM PLATFORMS & AUTOMATION</div>
+      <div style={{ display: 'flex', marginTop: 40, color: '#22d3ee', fontSize: 18, letterSpacing: 3 }}>WEBSITES / E-COMMERCE / AUTOMATION / CUSTOM PLATFORMS</div>
       <div style={{ display: 'flex', flexDirection: 'column', marginTop: 24, fontSize: 78, fontWeight: 700, letterSpacing: -4, lineHeight: 1.12 }}>
-        <span>Less busywork.</span>
-        <span style={{ color: '#22d3ee' }}>More possibility.</span>
+        <span>Digital solutions.</span>
+        <span style={{ color: '#22d3ee' }}>Built around you.</span>
       </div>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto', borderTop: '1px solid #1e3a8a', paddingTop: 27, fontSize: 19 }}>
-        <span>Built around the way your business works.</span>
+        <span>From your online presence to the way your business works.</span>
         <span style={{ color: '#22d3ee' }}>velaro.group</span>
       </div>
     </div>,

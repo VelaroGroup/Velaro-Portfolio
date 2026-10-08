@@ -1,0 +1,94 @@
+/* Homepage: a balanced introduction to the studio and its four core services. */
+.home-page .hero-grid { grid-template-columns: 1fr 1fr; gap: clamp(36px, 5vw, 72px); padding-block: 80px 64px; }
+.home-page .hero-copy h1 { font-size: clamp(43px, 4.5vw, 66px); }
+.home-page .hero-copy > p { max-width: 535px; }
+.home-page .hero-actions { gap: 15px 25px; }
+.home-page .hero-assurance { gap: 12px 22px; }
+.service-overview { min-width: 0; padding: 30px; border: 1px solid #233652; border-radius: 10px; color: white; background: radial-gradient(ellipse at 100% 0%, #1e3a8a80, transparent 66%), var(--navy); box-shadow: 0 22px 70px #0a162812; }
+.overview-top { display: flex; justify-content: space-between; align-items: center; gap: 16px; font-size: 9px; letter-spacing: .12em; color: #b9ccea; }
+.overview-studio { color: white; font-weight: 700; letter-spacing: .14em; }
+.overview-title { padding-block: 35px 28px; }
+.overview-label { color: var(--brand-cyan); font-size: 9px; letter-spacing: .1em; line-height: 1.6; }
+.overview-title p { font-family: var(--heading-font); font-size: clamp(27px, 2.7vw, 38px); font-weight: 550; line-height: 1.18; letter-spacing: -.04em; margin-top: 13px; }
+.overview-services { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.overview-service { display: grid; grid-template-columns: minmax(0, 1fr) 17px; align-items: end; gap: 22px 10px; min-width: 0; padding: 21px 18px; border: 1px solid #385070; border-radius: 5px; background: #132641; transition: border-color .2s, background .2s; }
+.overview-service:hover { border-color: var(--brand-cyan); background: #193454; }
+.overview-service:focus-visible { outline-color: var(--brand-cyan); outline-offset: 3px; }
+.overview-service-top { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; color: var(--brand-cyan); }
+.overview-service-top > span { font-size: 10px; color: #c3cee0; }
+.overview-service strong { font-size: clamp(12px, 1.15vw, 15px); font-weight: 550; line-height: 1.45; overflow-wrap: anywhere; }
+.overview-arrow { color: #c5d8f5; }
+.overview-note { display: flex; align-items: center; gap: 9px; font-size: 10px; color: #c5d3e6; line-height: 1.6; margin-top: 22px; }
+.overview-note > span { width: 5px; height: 5px; background: var(--brand-cyan); border-radius: 50%; flex-shrink: 0; }
+.home-services { background: white; border-top: 1px solid var(--line); }
+.home-service-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
+.home-service-card { min-width: 0; display: flex; flex-direction: column; padding: 27px 23px; border: 1px solid var(--line); border-radius: 6px; background: var(--brand-pale); transition: border-color .2s, box-shadow .2s; }
+.home-service-card:hover { border-color: #9cb6ec; box-shadow: 0 8px 25px #0a162807; }
+.home-service-card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 31px; }
+.home-service-card-top span { font-size: 11px; color: var(--ink-muted); }
+.home-service-card-top svg { color: var(--brand-blue); stroke-width: 1.5; }
+.home-service-card h3 { font-size: 23px; min-height: 60px; }
+.home-service-card > p { font-size: 13px; color: var(--ink-muted); line-height: 1.8; }
+.home-service-card > .home-service-line { font-size: 12px; font-weight: 550; color: var(--brand-blue); margin: 8px 0 15px; }
+.home-service-card-bottom { display: flex; gap: 13px; align-items: end; justify-content: space-between; margin-top: auto; padding-top: 29px; }
+.home-service-card-bottom span { font-size: 10px; line-height: 1.8; color: var(--ink-muted); }
+.home-service-card-bottom svg { color: var(--brand-action); }
+.platform-specialty-visual { min-width: 0; }
+.platform-specialty-visual .platform-brand-note { margin: 18px 0 0; font-size: 12px; color: #c8d5e8; text-align: center; line-height: 1.7; }
+.home-page .plain-checks li { align-items: flex-start; line-height: 1.7; }
+.home-page .plain-checks svg { margin-top: 3px; }
+.home-presence .platform-preview { pointer-events: none; }
+.home-automation { background: var(--brand-soft); }
+.home-automation-footer { display: flex; gap: 35px; align-items: center; justify-content: space-between; margin-top: 25px; }
+.home-automation-footer > p { max-width: 760px; color: var(--ink-muted); font-size: 11px; line-height: 1.85; }
+.home-automation-footer .text-link { flex-shrink: 0; }
+.home-about { background: white; }
+.home-about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 90px; align-items: center; }
+.home-about-grid > * { min-width: 0; }
+.home-about-identity > img { width: 65px; height: 65px; margin-bottom: 25px; }
+.home-about-identity h2 { margin-top: 19px; }
+.home-about-copy > p { color: var(--ink-muted); font-size: 15px; line-height: 1.85; }
+.home-about-copy > .intro-text { color: var(--navy); font-size: 20px; margin-bottom: 19px; }
+.home-about-pillars { display: flex; flex-wrap: wrap; gap: 15px 27px; margin: 25px 0 17px; padding-top: 23px; border-top: 1px solid var(--line); color: var(--brand-blue); font-size: 12px; font-weight: 600; }
+.home-process { border-top: 1px solid var(--line); }
+@media (max-width: 1100px) {
+  .home-page .hero-grid { gap: 36px; }
+  .service-overview { padding: 24px; }
+  .overview-service { padding: 19px 14px; }
+  .home-service-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .home-service-card { padding: 29px; }
+  .home-service-card h3 { min-height: 0; font-size: 26px; }
+  .home-service-card > p { font-size: 14px; }
+  .home-service-card-bottom { align-items: center; }
+  .home-about-grid { gap: 50px; }
+}
+@media (max-width: 820px) {
+  .home-page .hero-grid { grid-template-columns: 1fr; gap: 36px; padding-block: 57px 43px; }
+  .home-page .hero-copy { max-width: 660px; }
+  .home-page .hero-copy h1 { font-size: clamp(43px, 7vw, 64px); }
+  .service-overview { width: 100%; max-width: 650px; margin-inline: auto; padding: 30px; }
+  .overview-title { padding-block: 26px; }
+  .overview-title p { font-size: 36px; }
+  .overview-service strong { font-size: 15px; }
+  .home-about-grid { grid-template-columns: 1fr; gap: 35px; }
+  .home-about-identity > img { width: 55px; height: 55px; }
+  .home-automation-footer { flex-direction: column; align-items: flex-start; gap: 15px; }
+}
+@media (max-width: 580px) {
+  .home-page .hero-grid { padding-top: 43px; }
+  .home-page .hero-copy h1 { font-size: clamp(38px, 9.4vw, 53px); }
+  .home-page .hero-assurance { font-size: 10px; }
+  .home-service-grid { grid-template-columns: 1fr; gap: 16px; }
+  .home-service-card { padding: 25px; }
+  .home-service-card-top { margin-bottom: 24px; }
+  .home-service-card h3 { font-size: 26px; }
+  .service-overview { padding: 24px 18px; }
+  .overview-services { gap: 9px; }
+  .overview-service { padding: 16px 12px; gap: 20px 7px; }
+  .overview-service strong { font-size: 12px; }
+  .overview-title p { font-size: 32px; }
+  .overview-label, .overview-top { font-size: 8px; }
+  .overview-note { align-items: flex-start; font-size: 10px; }
+  .overview-note > span { margin-top: 5px; }
+  .home-about-copy > .intro-text { font-size: 18px; }
+}

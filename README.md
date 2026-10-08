@@ -53,6 +53,8 @@ The design follows Velaro's established blue/cyan logo and Inter typography, wit
 
 The About page preserves Velaro's original studio identity, Lebanon/Middle East positioning, name origin and **Velocity, Vision, Value** principles, alongside the current custom platform and automation offer. Company history and results must stay grounded in verified material.
 
+The homepage introduces all four core services before highlighting custom business platforms, automation and white-label delivery as the studio's specialty. About Us is directly available in desktop and compact navigation, with a homepage introduction and a permanent `/about-us` redirect. Work categories share one page frame and use scroll-preserving Next navigation, visible result counts and keyboard focus controls. The challenge explorer keeps a stable natural height across its four examples and respects reduced-motion preferences.
+
 The website includes metadata, JSON-LD, canonical URLs, robots rules and a 20-URL sitemap for the bundled public collection and preserved policy pages. Sitemap modification dates are omitted until a content source provides real dates. The 1200×630 Open Graph image is generated from static, trusted content. Update the domain and contact details in `lib/site.ts` when appropriate.
 
 ## Project content and Sanity

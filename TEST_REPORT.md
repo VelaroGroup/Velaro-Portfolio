@@ -13,7 +13,17 @@ Reviewed on 8 October 2026 in the Windows workspace and the Linux deployment wor
 - Added production response headers, restricted image optimization, optional standalone output, preview noindex support and deployment documentation.
 - Updated Next.js and its ESLint configuration to 16.3.8, with compatible transitive security fixes in the lockfile and pnpm workspace policy.
 
-## Brand fidelity update, 8 October 2026
+## Service positioning and browsing update, 8 October 2026
+
+- Rebalanced the homepage around all four core services, followed by a dedicated custom business platform and white-label specialty section, websites/e-commerce examples, automation, About Us and a shared project process. Updated service copy and social metadata consistently.
+- Made About Us explicit in desktop and compact navigation and added the `/about-us` permanent redirect. Its page retains the original logo, story and brand pillars.
+- Replaced differing Work category layouts with one shared frame, scroll-preserving framework links, active filters, counts and a result announcement. Kept server-rendered project cards and public category metadata separate from the client interaction layer.
+- Rebuilt the four challenge panels with numbered steps, natural shared height, inactive inert scenes, concise announcements and reduced-motion behavior. Fixed nested preview-heading and mobile icon CSS conflicts found during review.
+- Full lint, TypeScript production compilation and Next build passed. Local production verification passed **696 checks** across 20 pages, 51 internal destinations, five legacy redirects, three unknown routes and three optimized images.
+- Browser keyboard interaction confirmed that Work switches from All work to Automation with the correct URL, title and result count; About Us opens from navigation; and the challenge selection updates its visible content and ordered steps. Screenshot capture and viewport override were unavailable in this browser session, so fresh visual overlap and pixel-level scroll-position validation are not established by these checks. Earlier screenshots below describe earlier releases.
+- Publication uses the existing push-to-master Cloudflare workflow, including Worker runtime and exact-release public-domain checks. The workflow associated with this update records its final deployment result.
+
+## Earlier brand fidelity evidence, 8 October 2026
 
 - Matched the existing Velaro document identity: navy, royal/action blue, cyan, cool white surfaces and Inter. The supplied square mark is copied unchanged and used in the header/footer, concept previews, About, browser icons, organization metadata and sharing card.
 - Rebuilt About around the original public studio story, Lebanon and Middle East positioning, velocity name origin, and Velocity/Vision/Value principles. The current custom platform and automation offer is integrated with that story.

@@ -21,6 +21,7 @@ const legacyRedirects = [
   ['/website-development-middle-east', '/services/web'],
   ['/shopify-store-lebanon', '/services/ecommerce'],
   ['/packages', '/contact'],
+  ['/about-us', '/about'],
 ];
 const failures = [];
 let assertions = 0;

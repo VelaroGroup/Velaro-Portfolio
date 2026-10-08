@@ -1,8 +1,6 @@
 import type { Metadata, ResolvingMetadata } from 'next';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { Cta } from '@/components/cta';
-import { ProjectGrid } from '@/components/project-grid';
+import { WorkCollection } from '@/components/work-collection';
 import { getProjects, projectCategories } from '@/lib/projects';
 import { pageMetadata } from '@/lib/metadata';
 
@@ -29,15 +27,5 @@ export default async function WorkCategoryPage({ params }: { params: Promise<{ c
   if (!item) notFound();
   const projects = await getProjects();
 
-  return <main id="main" className="secondary-page">
-    <section className="page-hero work-category-hero"><div className="shell">
-      <Link href="/work" className="back-link"><span aria-hidden="true">←</span> All work & possibilities</Link>
-      <div className="eyebrow">EXPLORE THE POSSIBILITIES</div>
-      <h1>{item.shortLabel}</h1>
-      <p className="intro-text">{descriptions[category]}</p>
-      <p className="work-context">Concepts are clearly marked and demonstrate possible solutions.</p>
-    </div></section>
-    <section className="section work-category-content"><div className="shell"><ProjectGrid projects={projects} activeCategory={item.label} /></div></section>
-    <Cta title="Your business. Your way of working." text="Tell us where things get repetitive or complicated. We’ll help you map a clearer path." />
-  </main>;
+  return <WorkCollection projects={projects} activeCategory={item.label} />;
 }

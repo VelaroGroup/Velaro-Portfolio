@@ -7,6 +7,9 @@ import './design-system.css';
 import './previews.css';
 import './services.css';
 import './secondary.css';
+import './home.css';
+import './about-navigation.css';
+import './workflow-explorer.css';
 
 const inter = localFont({ src: '../public/fonts/inter-latin.woff2', variable: '--font-body', weight: '100 900', display: 'swap' });
 
@@ -14,11 +17,11 @@ export const viewport: Viewport = { themeColor: '#0a1628' };
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: { default: 'Velaro | Custom Platforms & Business Automation', template: '%s | Velaro' },
+  title: { default: 'Velaro | Websites, E-commerce, Automation & Custom Platforms', template: '%s | Velaro' },
   description: site.description,
   alternates: { canonical: '/' },
   openGraph: {
-    type: 'website', siteName: site.name, title: 'Velaro | Less busywork. More possibility.',
+    type: 'website', siteName: site.name, title: 'Velaro | Digital solutions. Built around you.',
     description: site.description, url: siteUrl,
   },
   twitter: { card: 'summary_large_image' },
