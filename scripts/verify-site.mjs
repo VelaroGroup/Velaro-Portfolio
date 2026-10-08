@@ -15,6 +15,12 @@ const routes = [
   ...['automation', 'custom-software', 'web-development', 'ecommerce'].map(slug => `/work/category/${slug}`),
   ...['automation', 'web', 'ecommerce', 'software', 'platform', 'commerce'].map(slug => `/work/preview-${slug}-project`),
 ];
+const legacyRedirects = [
+  ['/website-development-lebanon', '/services/web'],
+  ['/website-development-middle-east', '/services/web'],
+  ['/shopify-store-lebanon', '/services/ecommerce'],
+  ['/packages', '/contact'],
+];
 const failures = [];
 let assertions = 0;
 
@@ -176,6 +182,42 @@ for (const path of ['/services/does-not-exist', '/work/category/does-not-exist',
   check(response.status === 404, `${path}: expected 404, received ${response.status}`);
 }
 
+await inBatches(legacyRedirects, async ([source, destination]) => {
+  const requestUrl = new URL(`${source}?source=legacy-link`, base);
+  try {
+    const response = await fetch(requestUrl, { redirect: 'manual', signal: AbortSignal.timeout(30000) });
+    check([301, 308].includes(response.status), `${source}: expected a permanent redirect, received ${response.status}`);
+    const location = response.headers.get('location');
+    const expected = new URL(`${destination}?source=legacy-link`, base);
+    check(Boolean(location) && new URL(location, requestUrl).href === expected.href, `${source}: redirect destination or preserved query is incorrect`);
+    await response.body?.cancel();
+  } catch (error) { check(false, `${source}: redirect check failed (${error.message})`); }
+});
+
+// Exercise the canonical host rule locally without contacting another live host.
+if (['localhost', '127.0.0.1', '[::1]'].includes(base.hostname)) {
+  for (const path of ['/?source=legacy-link', '/about?source=legacy-link']) {
+    try {
+      const response = await fetch(new URL(path, base), {
+        headers: { Host: 'velaro.group' }, redirect: 'manual', signal: AbortSignal.timeout(30000),
+      });
+      check([301, 308].includes(response.status), `apex host ${path}: expected a permanent redirect, received ${response.status}`);
+      check(response.headers.get('location') === new URL(path, canonicalBase).href, `apex host ${path}: canonical redirect must preserve path and query`);
+      await response.body?.cancel();
+    } catch (error) { check(false, `apex host ${path}: redirect check failed (${error.message})`); }
+  }
+  for (const path of ['/', '/about']) {
+    try {
+      const response = await fetch(new URL(path, base), {
+        headers: { Host: 'www.velaro.group' }, redirect: 'manual', signal: AbortSignal.timeout(30000),
+      });
+      check(response.status === 200, `www host ${path}: expected 200 without a redirect loop, received ${response.status}`);
+      check(!response.headers.has('location'), `www host ${path}: unexpected redirect location`);
+      await response.body?.cancel();
+    } catch (error) { check(false, `www host ${path}: request failed (${error.message})`); }
+  }
+}
+
 for (const service of ['custom-software', 'automation']) {
   const path = `/contact?service=${service}`;
   const page = await getPage(path);
@@ -246,5 +288,5 @@ if (failures.length) {
   failures.forEach(failure => console.error(`- ${failure}`));
   process.exitCode = 1;
 } else {
-  console.log(`PASS: ${assertions} checks across ${routes.length} pages, ${links.size} internal destinations, 3 unknown routes, 2 contact selections and 2 optimized photos, including SEO, response security headers and sitemap coverage.`);
+  console.log(`PASS: ${assertions} checks across ${routes.length} pages, ${links.size} internal destinations, ${legacyRedirects.length} legacy redirects, 3 unknown routes, 2 contact selections and 2 optimized photos, including SEO, response security headers and sitemap coverage.`);
 }

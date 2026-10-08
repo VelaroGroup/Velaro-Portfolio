@@ -6,7 +6,7 @@
   "compatibility_date": "2026-10-08",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "workers_dev": true,
-  // Domain attachment is managed separately after the workers.dev release passes checks.
+  // Custom Domains stay detached until candidate host-routing checks pass.
   "assets": {
     "directory": ".open-next/assets",
     "binding": "ASSETS"

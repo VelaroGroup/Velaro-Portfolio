@@ -19,8 +19,14 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
-        source: '/:path*',
-        has: [{ type: 'host', value: 'velaro.group' }],
+        source: '/',
+        has: [{ type: 'host', value: '^velaro\\.group$' }],
+        destination: 'https://www.velaro.group/',
+        permanent: true,
+      },
+      {
+        source: '/:path+',
+        has: [{ type: 'host', value: '^velaro\\.group$' }],
         destination: 'https://www.velaro.group/:path*',
         permanent: true,
       },

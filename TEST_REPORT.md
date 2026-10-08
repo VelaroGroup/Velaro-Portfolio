@@ -1,6 +1,6 @@
 # Velaro website validation report
 
-Reviewed on 8 October 2026 in the Windows workspace. This report covers the public `velaro-website` repository; the sibling private platform was not modified.
+Reviewed on 8 October 2026 in the Windows workspace and the Linux deployment workflow. This report covers the public `velaro-website` repository; the sibling private platform was not modified.
 
 ## Release scope
 
@@ -9,11 +9,13 @@ Reviewed on 8 October 2026 in the Windows workspace. This report covers the publ
 - Used typed service data and shared layouts across the homepage, four services, Work, four categories, six concept details, About and Contact.
 - Kept illustrative inbox/channel and business-challenge interactions, with concepts clearly distinguished from client case studies and live integrations.
 - Improved narrow layouts, preview readability, navigation resize/blur behavior, form validation and shared error recovery.
-- Added a static 1200×630 Open Graph image and an 18-URL sitemap, without fabricated modification timestamps.
+- Added a static 1200×630 Open Graph image and a 20-URL sitemap, including the preserved privacy and terms pages, without fabricated modification timestamps.
 - Added production response headers, restricted image optimization, optional standalone output, preview noindex support and deployment documentation.
 - Updated Next.js and its ESLint configuration to 16.3.8, with compatible transitive security fixes in the lockfile and pnpm workspace policy.
 
-## Automated evidence
+## Earlier local automated evidence
+
+These results describe the local release candidate before Cloudflare deployment preparation. The later launch evidence below supersedes the earlier page counts and hosting status.
 
 | Check | Recorded result |
 | --- | --- |
@@ -30,7 +32,23 @@ Reviewed on 8 October 2026 in the Windows workspace. This report covers the publ
 
 The HTTP checks cover unique meaningful titles, one main landmark and h1, clean headings, exact header/footer wordmarks, English document language, responsive viewport metadata, descriptions and canonical URLs, parseable structured data, internal route/hash destinations, unknown-route 404s, contact service preselection, response security headers, robots/sitemap coverage, valid optimized photos and rejection of unapproved image-source queries. They issue read-only requests and do not send messages.
 
-The final integrated production run includes project-detail prerendering, shorter contact labels, About spacing, route-specific sharing metadata and the generated sharing image. The image returned a valid 1200×630 PNG and was visually reviewed. The project-detail response also confirmed `s-maxage=300` caching. The compiled candidate is running locally at http://127.0.0.1:3001/; development remains on port 3000.
+The earlier integrated production run included project-detail prerendering, shorter contact labels, About spacing, route-specific sharing metadata and the generated sharing image. The image returned a valid 1200×630 PNG and was visually reviewed. The project-detail response also confirmed `s-maxage=300` caching. At that review, the compiled candidate ran locally at http://127.0.0.1:3001/ and development used port 3000. These local responses are not evidence of live hosting behavior.
+
+## Cloudflare launch evidence, 8 October 2026
+
+The initial [GitHub Actions deployment run 37799387456](https://github.com/VelaroGroup/Velaro-Portfolio/actions/runs/37799387456) completed successfully. Its Linux checks covered the production build, OpenNext Worker build, local Worker runtime verification, deployment and post-deployment HTTP verification at [the Worker address](https://velaro-portfolio.weathered-mud-0703.workers.dev). This establishes a successful deployed Worker independently of the earlier Windows adapter packaging failure.
+
+| Check | Recorded launch result |
+| --- | --- |
+| Manual candidate HTTP verification | 672 checks passed across 20 public pages, 51 internal destinations and four legacy redirects; this is candidate verification, separate from the live Worker check |
+| Linux CI and automatic deployment | Initial run passed, including local runtime checks and live Worker HTTP verification |
+| Final production dependency audit | 0 critical, high, moderate, low or informational advisories across 601 packages (460 dependencies and 141 optional dependencies) |
+| Source credential-pattern scan | 0 findings in 163 text files from 180 tracked or intended untracked files; 17 binary assets excluded. The scan did not read the access-token file or print credential values |
+| Preserved public policy routes | Privacy and terms retained; the sitemap contains 20 public URLs |
+| Domain cutover rehearsal | Initial attachment preserved all 17 other DNS records. Custom-domain checks exposed a hostname redirect loop, so both old DNS destinations were restored while the corrected candidate is verified. |
+| Final-domain HTTPS and redirects | **Pending final verification** against `https://www.velaro.group` and the apex domain; attachment alone does not establish certificate readiness or final-domain behavior |
+
+The live Worker check uses `https://www.velaro.group` as the expected canonical origin. Its success does not substitute for the pending HTTPS checks on the custom domain. Dependency and credential scans are dated checks within the stated scope, not an exhaustive security assessment.
 
 ## Responsive visual review
 
@@ -56,19 +74,19 @@ Launch evidence is stored in the parent workspace at `.workspace-logs/website-la
 
 The deployment path now uses pinned OpenNext 1.20.9 and Wrangler 4.148.0, with KV incremental caching, a Durable Object revalidation queue and an Images binding. It preserves the standard Next build. Four explicit old-site redirects and the apex-to-www host redirect were added. Privacy and terms routes are retained, bringing the public route collection and sitemap to 20 pages. Design review artifacts remain local and ignored.
 
-The Windows OpenNext attempt passed the Next.js compilation, TypeScript stage and generation of the then-current 23 build routes. Adapter packaging subsequently stopped with `EPERM` while creating a directory symlink under `.open-next`. No workaround was applied to framework code or machine permissions. Therefore this attempt does **not** establish a successful Worker build, dry-run or runtime verification; the Linux GitHub workflow must pass those checks before deployment. Existing Node production verification remains evidence for the Next artifact only.
+The earlier Windows OpenNext attempt passed the Next.js compilation, TypeScript stage and generation of the then-current 23 build routes. Adapter packaging subsequently stopped with `EPERM` while creating a directory symlink under `.open-next`. No workaround was applied to framework code or machine permissions. That attempt did **not** establish a successful Worker build, dry-run or runtime verification. The subsequent successful Linux deployment and runtime checks are recorded in the Cloudflare launch section above; the earlier Node production verification remains evidence for the Next artifact only.
 
 The Cloudflare adapter introduced an older `brace-expansion` transitive version; the workspace now pins its compatible 5.0.12 security patch. Exact-version release-age exceptions cover only the explicitly reviewed Cloudflare toolchain releases, retaining the normal seven-day rule elsewhere. Dependency audit results below describe the earlier launch pass; the deployment workflow must use the final lockfile, and new audit results supersede those dated counts.
 
 KV was selected because the deployment account has KV available while R2 requires separate dashboard activation. Timed ISR and deployment cache seeding remain supported, with KV's eventual-consistency limitation documented in the deployment guide. No immediate cross-region publication guarantee is made. R2 remains the recommended future option if update volume or consistency needs increase.
 
-The production dependency audit is clean after the compatible patches. The full development/alternate-worker audit still reports **48 advisories: 25 high, 17 moderate and 6 low**, including inherited tool chains and an unpatched `braces` advisory. That result is separate from the clean production dependency set. No blind major-version replacements were made to suppress it. Keep development tools private and review the alternate-worker dependencies before choosing that deployment target.
+Before Cloudflare preparation, the full development/alternate-worker audit reported **48 advisories: 25 high, 17 moderate and 6 low**, including inherited tool chains and an unpatched `braces` advisory. These are historical counts, not a current audit of the final Cloudflare lockfile. The final production dependency audit is clean, as recorded above. No blind major-version replacements were made to suppress earlier findings. Keep development tools private and review alternate-worker dependencies before choosing another deployment target.
 
-The standard Next production target was built and checked locally. Optional standalone output was checked at configuration level; a packaged standalone artifact needs its own runtime validation. The Cloudflare/Vinext adapter and a live Sanity Studio publishing workflow were not exercised in this launch pass.
+The standard Next production target was built and checked locally. Optional standalone output was checked at configuration level; a packaged standalone artifact needs its own runtime validation. The alternate Vinext adapter and a live Sanity Studio publishing workflow were not exercised. The OpenNext Cloudflare deployment was subsequently verified through the Linux workflow above.
 
-The CI workflow in `.github/workflows/website.yml` pins official action revisions and runs locked installation, lint, type checking, build and production HTTP verification. The corresponding commands were validated locally; no successful remote GitHub Actions run is claimed.
+The CI workflow in `.github/workflows/website.yml` pins official action revisions and runs locked installation, lint, type checking, build and production HTTP verification. Its later Cloudflare stages verify the local Worker runtime, deploy on a push to `master` and check the deployed Worker. The successful initial remote run is linked above.
 
-No hosting account, domain certificate, DNS record or old deployment was changed. Hosting credentials/target, the old URL inventory and redirect map, mailbox reception and final-domain HTTPS checks remain release requirements. The old live domain could not be resolved during the local fetch, so its complete route inventory was not verified.
+Before this Cloudflare release, the local refactor had not changed any hosting account, domain certificate, DNS record or old deployment. Hosting and domain attachment have since proceeded as recorded above. Mailbox reception and final-domain HTTPS checks remain outstanding. The old live domain could not be resolved during the earlier local fetch, so its complete route inventory was not verified; four known legacy redirects are now covered by the candidate checks.
 
 ## Product behavior and remaining manual checks
 

@@ -2,7 +2,9 @@
 
 Velaro's public marketing website, built with Next.js 16.3.8, React 19, and TypeScript. The primary offer is custom automated platforms: understand the repetitive work, connect the process, and build useful software around the business. Supporting services cover messaging and workflow automation, websites, and connected e-commerce.
 
-See [deployment instructions](DEPLOYMENT.md) for hosting, production checks, scaling and replacement of the existing site. [The validation report](TEST_REPORT.md) records the checks completed and their limits.
+The new website's Cloudflare deployment candidate is available at the [workers.dev address](https://velaro-portfolio.weathered-mud-0703.workers.dev). Its intended canonical address is **[www.velaro.group](https://www.velaro.group)**, with [velaro.group](https://velaro.group) redirecting to www. Public domains currently retain the previous site while the corrected hostname redirects complete deployment checks; `wrangler.jsonc` intentionally omits custom-domain routes until that candidate is verified.
+
+Pushes to **`master`** automatically run the GitHub checks, build and verify the Next and Workers runtimes, deploy to Cloudflare, and verify the deployed website. Pull requests and `main` pushes run checks without deploying. See [deployment instructions](DEPLOYMENT.md) for configuration, release checks and rollback by reverting a source change and pushing. [The validation report](TEST_REPORT.md) records the earlier design review and its limits.
 
 ## Run locally
 
@@ -26,7 +28,7 @@ corepack pnpm run start
 
 Run `verify:site` while the local development website is running on port 3000, or pass another URL: `corepack pnpm run verify:site http://127.0.0.1:3001`. After building and starting the production server, run `corepack pnpm run verify:production http://127.0.0.1:3000`. It additionally requires production framing protection. Both commands check routes, page structure, internal links, contact preselection, 404 handling, metadata, structured data, sitemap coverage, response security headers and optimized images.
 
-The workflow in `.github/workflows/website.yml` uses pinned official actions to install the lockfile, lint, check types, build and verify a local production process. Its commands have been validated locally; a successful remote GitHub Actions run is a separate release check.
+The workflow in `.github/workflows/website.yml` uses pinned official actions and the frozen lockfile. The first full Linux build, runtime verification, deployment and post-deployment checks succeeded in [GitHub Actions run 37799387456](https://github.com/VelaroGroup/Velaro-Portfolio/actions/runs/37799387456), from commit `d8e0e9b`. It published the first new-site Worker version `55dc7df7-e917-4aec-9b76-f513fb5a8af0`. A separate workers.dev check passed 672 checks across 20 pages, 51 internal destinations and four legacy redirects. Subsequent custom-domain checks exposed a redirect loop caused by the adapter's unanchored hostname matching; the next candidate adds exact matching, a separate homepage rule, and explicit apex/www regression checks.
 
 The Cloudflare target uses OpenNext to adapt the same Next.js build to Workers. Run `pnpm run build:cloudflare`, then `pnpm run preview:cloudflare` to test that artifact locally. `pnpm run deploy:cloudflare` publishes the already-built artifact and populates its KV cache. The `build:worker` and `dev:worker` aliases now use OpenNext; inherited Sites/Vinext files are outside the deployment path. Use Linux for deployment builds: local Windows packaging encountered a symlink restriction. See the deployment guide before using a remote deployment command.
 
@@ -77,7 +79,7 @@ This repository lives in `VelaroPlatform/velaro-website`. The sibling `VelaroPla
 
 Deploy only the `velaro-website` project for the public website. Do not include the parent workspace, internal-platform files, internal credentials, or private operational data in its build context. The marketing previews are self-contained and do not read from or authenticate against the internal platform. Design mockups under `design-concepts/` are review artifacts, not production routes.
 
-## Before production deployment
+## Before publishing future changes
 
 - Retain `pnpm-workspace.yaml` with the pinned lockfile; it contains compatible security overrides. Validate the OpenNext Worker artifact when deploying to Cloudflare.
 - Confirm the service descriptions, contact address, regional positioning, and canonical domain.
