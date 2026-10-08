@@ -6,7 +6,7 @@
 .workflow-explorer .pain-options button[aria-pressed="true"] { border-color: #c6d5f0; box-shadow: 0 3px 12px #0a162806; }
 .workflow-explorer .pain-options button:focus-visible { outline: 2px solid var(--brand-action); outline-offset: 3px; }
 .workflow-explorer .workflow-option-icon { display: grid; place-items: center; width: 36px; height: 36px; border: 1px solid var(--line); border-radius: 8px; background: var(--brand-surface); color: var(--ink-muted); }
-.workflow-explorer .workflow-option-icon > svg { display: block; margin: 0; }
+.workflow-explorer .pain-options .workflow-option-icon > svg { display: block; margin: 0; }
 .workflow-explorer .pain-options button[aria-pressed="true"] .workflow-option-icon { background: var(--brand-soft); border-color: #c6d5f0; color: var(--brand-blue); }
 .workflow-explorer .pain-options button > svg:last-child { display: block; width: 17px; height: 17px; margin: 0; opacity: .35; }
 .workflow-explorer .pain-options button[aria-pressed="true"] > svg:last-child { opacity: 1; }

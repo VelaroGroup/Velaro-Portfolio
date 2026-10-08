@@ -13,7 +13,7 @@ export function WorkCollection({ projects, activeCategory = 'All work' }: { proj
   return <main id="main" className="secondary-page">
     <section className="page-hero work-intro"><div className="shell">
       <div className="eyebrow">WORK & POSSIBILITIES</div>
-      <h1>See what better<br />could look like.</h1>
+      <h1>See what better{' '}<br />could look like.</h1>
       <p className="intro-text">From the first customer message to the work behind it. Explore websites, workflows, and custom platforms built around a business.</p>
       <p className="work-context">{onlyConcepts ? 'Our current collection is a set of illustrative concepts, showing the problems we can help you solve.' : 'Explore the collection. Illustrative concepts are clearly marked throughout.'}</p>
     </div></section>
