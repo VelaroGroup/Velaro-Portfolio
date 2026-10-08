@@ -18,10 +18,10 @@
     "verify:production": "node scripts/verify-site.mjs --production",
     "db:generate": "drizzle-kit generate",
     "build:cloudflare": "opennextjs-cloudflare build",
-    "preview:cloudflare": "opennextjs-cloudflare preview",
+    "preview:cloudflare": "node scripts/preview-cloudflare.mjs",
     "deploy:cloudflare": "opennextjs-cloudflare deploy",
     "dry-run:cloudflare": "wrangler deploy --dry-run --outdir .open-next/dry-run",
-    "dev:worker": "opennextjs-cloudflare preview",
+    "dev:worker": "node scripts/preview-cloudflare.mjs",
     "build:worker": "opennextjs-cloudflare build"
   },
   "dependencies": {

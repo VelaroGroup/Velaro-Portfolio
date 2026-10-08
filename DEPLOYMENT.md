@@ -60,7 +60,11 @@ corepack pnpm run verify:production http://127.0.0.1:8787
 
 `build:cloudflare` invokes the normal `build` script, including project generation, then creates `.open-next`. It uses `.next` during that process, so do not run two production builds concurrently. A Node production server using a previous `.next` artifact should be restarted after rebuilding. Linux is the preferred deployment build environment; OpenNext does not guarantee full Windows support.
 
-The preview command seeds local cache state and runs the actual Worker runtime. It does not deploy. The dry-run only bundles and validates configuration; it does not provision resources or prove that account bindings are enabled. Use Linux for release builds and validate the Worker artifact before publishing:
+The preview command seeds local cache state and runs the actual Worker runtime. It does not deploy. The dry-run only bundles and validates configuration; it does not provision resources or prove that account bindings are enabled. Use Linux for release builds and validate the Worker artifact before publishing.
+
+`preview:cloudflare` derives the ignored `.wrangler-preview.jsonc` from the production configuration, removing domain routes only for the local process. Keeping it beside `wrangler.jsonc` preserves relative paths and uses the same bindings. This prevents Wrangler from replacing every local request's Host with the first production domain, allowing apex/www regression checks to exercise the actual incoming hostname. Production deployment continues to use `wrangler.jsonc` with both Custom Domains intact.
+
+Publish the verified artifact with:
 
 ```sh
 corepack pnpm run deploy:cloudflare
@@ -70,7 +74,7 @@ Use the OpenNext deployment command, not bare `wrangler deploy`, because it also
 
 The configuration retains `workers.dev` and both exact Custom Domain entries with `custom_domain: true`. Preserve both entries on future deployments. Canonical metadata is `https://www.velaro.group`. The host-specific redirect uses an anchored, escaped apex match and separate root/nonempty-path rules to exclude www and preserve paths and queries. Localhost and workers.dev are unaffected. Keep optional CMS settings available at both build and runtime. A separate staging deployment can use `SITE_NOINDEX=1` at build time; do not apply that setting to the public production Worker. Noindex is not access protection.
 
-The private repository is `VelaroGroup/Velaro-Portfolio`. Its `.github/workflows/website.yml` owns automatic deployment for successful **pushes to `master`** in that repository. It installs the frozen lockfile, runs lint and TypeScript, builds and checks the Node production server, then builds and checks the actual Workers preview. Only after those checks pass does it seed the remote cache and publish that artifact. It then verifies the workers.dev endpoint and public domain. Pull requests, `main` pushes and manually dispatched check runs do not trigger the deployment step.
+The public repository is `VelaroGroup/Velaro-Portfolio`. Its `.github/workflows/website.yml` owns automatic deployment for successful **pushes to `master`** in that repository. It installs the frozen lockfile, runs lint and TypeScript, builds and checks the Node production server, then builds and checks the actual Workers preview. Only after those checks pass does it seed the remote cache and publish that artifact. It then verifies the workers.dev endpoint and public domain. Pull requests, `main` pushes and manually dispatched check runs do not trigger the deployment step.
 
 `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` are configured as encrypted GitHub repository secrets and exposed only to the deployment step. Their values are not stored in source files. Keep Cloudflare Workers Builds from independently deploying the same production Worker, so one workflow controls release order. Inspect the Actions run after each push; a post-deployment check failure does not automatically undo a deployment.
 

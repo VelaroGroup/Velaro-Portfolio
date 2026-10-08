@@ -61,6 +61,8 @@ async function getPage(path) {
       try {
         const response = await fetch(url, {
           headers: { Accept: 'text/html', 'User-Agent': 'VelaroIntegrationCheck/1.0' },
+          // A candidate must serve its own pages, not silently redirect to a live release.
+          redirect: 'manual',
           signal: AbortSignal.timeout(30000),
         });
         const html = await response.text();
