@@ -1,0 +1,18 @@
+{
+  "title": "Supplier onboarding, with every file in place",
+  "slug": "supplier-onboarding-automation",
+  "service": "Automation",
+  "summary": "A document workflow that collects supplier information, flags missing items, and gives reviewers a complete record.",
+  "challenge": "A purchasing team collects supplier forms and certificates through email. Documents arrive in several versions, missing information is discovered late, and renewal dates depend on someone remembering to check a spreadsheet.",
+  "approach": "Create a guided submission flow with requirements matched to the supplier type. Check file presence and format, suggest extracted details for human review, and route the record to the responsible reviewer. Keep decisions and document versions together, and create renewal tasks ahead of recorded expiry dates.",
+  "outcome": "The concept gives the team a visible path from incomplete submission to reviewed supplier record, with reminders attached to the relevant documents. Approval remains with the responsible person. The intended benefit is less document chasing and clearer records, subject to the business's actual review requirements.",
+  "workflowSteps": [
+    { "title": "Collect the documents", "description": "The supplier submits the information and files required for their supplier type." },
+    { "title": "Check the submission", "description": "Flag missing files and prepare extracted details for a person to review." },
+    { "title": "Review and decide", "description": "The responsible reviewer approves the record or returns it with clear next steps." },
+    { "title": "Track upcoming renewals", "description": "Create renewal tasks before recorded expiry dates and retain earlier document versions." }
+  ],
+  "kind": "concept",
+  "visual": "documents",
+  "featured": false
+}

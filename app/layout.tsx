@@ -7,6 +7,7 @@ import { site, siteUrl } from '@/lib/site';
 import { organizationSchema } from '@/lib/structured-data';
 import './design-system.css';
 import './previews.css';
+import './project-samples.css';
 import './services.css';
 import './secondary.css';
 import './home.css';

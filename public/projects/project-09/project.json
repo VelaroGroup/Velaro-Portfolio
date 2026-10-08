@@ -1,0 +1,18 @@
+{
+  "title": "A booking that keeps everyone in sync",
+  "slug": "appointment-booking-automation",
+  "service": "Automation",
+  "summary": "A connected appointment journey for availability, booking confirmations, reminders, and changes of plan.",
+  "challenge": "A consultation business books appointments across forms, messages, and phone calls. Staff repeatedly check calendars, send reminders by hand, and update several records when a customer changes their time.",
+  "approach": "Connect a booking form to agreed services, staff availability, appointment lengths, and buffer times. Check availability when a booking is confirmed, create the customer record, and schedule appropriate reminders through connected channels. Let customers request a new time, update the linked calendar, and route exceptions to the team.",
+  "outcome": "The proposed journey makes the appointment and its next action visible to both customer and team. It explores fewer routine scheduling exchanges and more consistent follow-up, without claiming a measured change in attendance or a live calendar integration.",
+  "workflowSteps": [
+    { "title": "Choose a time", "description": "The customer selects a service and an available slot that fits the booking rules." },
+    { "title": "Confirm the booking", "description": "Recheck availability, create the appointment, and share its confirmed details." },
+    { "title": "Send a reminder", "description": "Send an agreed reminder with useful preparation details and a way to request changes." },
+    { "title": "Keep calendars aligned", "description": "An accepted time change updates the appointment record and the connected calendar." }
+  ],
+  "kind": "concept",
+  "visual": "booking",
+  "featured": false
+}

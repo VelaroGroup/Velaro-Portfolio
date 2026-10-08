@@ -8,5 +8,5 @@
   "outcome": "The proposed system gives every inquiry a visible owner and status. The goal is less copying, more consistent responses, and a clear handoff whenever a person is needed. These are intended benefits of the concept, not measured client results.",
   "kind": "concept",
   "visual": "inbox",
-  "featured": true
+  "featured": false
 }

@@ -1,0 +1,18 @@
+{
+  "title": "From booked job to signed-off work",
+  "slug": "field-service-operations",
+  "service": "Custom software & platforms",
+  "summary": "A custom field-service workspace that connects scheduling, job details, technician updates, and completion records.",
+  "challenge": "A maintenance team coordinates visits through calls and group messages. Schedules change during the day, technicians receive incomplete job details, and office staff chase photos and completion notes before they can close a job.",
+  "approach": "Bring incoming jobs into a dispatch board with appointment windows, locations, required skills, and assigned technicians. Provide a mobile job view for checklists, photos, parts used, and customer sign-off. Route delays back to the dispatcher and prepare the next administrative step when the completion record is ready.",
+  "outcome": "The concept aims to keep the office and field team working from the same job record, with clear responsibility when plans change. Its intended benefit is a more complete handover from scheduling to completion; scheduling rules and real working conditions would be tested with the team before launch.",
+  "workflowSteps": [
+    { "title": "Capture the job", "description": "Collect the location, appointment window, and service details in one job record." },
+    { "title": "Assign the technician", "description": "The dispatcher matches the job to a technician with the right skills and availability." },
+    { "title": "Record the work", "description": "The technician adds checklist updates, photos, and parts used from the job site." },
+    { "title": "Close the job", "description": "Customer sign-off and completion notes give the office a clear handover." }
+  ],
+  "kind": "concept",
+  "visual": "dispatch",
+  "featured": false
+}

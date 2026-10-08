@@ -6,9 +6,14 @@ import { JsonLd } from '@/components/json-ld';
 import { PlatformPreview } from '@/components/platform-preview';
 import { ProcessSteps, SectionHeading } from '@/components/section-heading';
 import { WorkflowExplorer } from '@/components/workflow-explorer';
+import { getProjects, projectCategoryLabel } from '@/lib/projects';
 import { site } from '@/lib/site';
 import { websiteSchema } from '@/lib/structured-data';
 import velaroMark from '@/public/velaro-mark.png';
+
+export const revalidate = 300;
+
+const selectedConceptSlugs = ['white-label-client-platform', 'appointment-booking-automation', 'b2b-ordering-portal'];
 
 const offerings = [
   { slug: 'custom-software', number: '01', name: 'Custom platforms', line: 'Your business. Your own system.', description: 'Business software, team workspaces and customer portals, shaped around your operations and available under your brand.', details: 'Business systems · Portals · White-label', Icon: Layers3 },
@@ -26,7 +31,11 @@ function ServiceOverview() {
   </div>;
 }
 
-export default function Home() {
+export default async function Home() {
+  const concepts = (await getProjects()).filter((project) => project.kind === 'concept');
+  const selectedConcepts = selectedConceptSlugs.flatMap((slug) => concepts.find((project) => project.slug === slug) || []);
+  const homeConcepts = [...selectedConcepts, ...concepts.filter((project) => !selectedConcepts.includes(project))].slice(0, 3);
+
   return <main id="main" className="home-page">
     <section className="home-hero">
       <div className="shell hero-grid">
@@ -65,6 +74,17 @@ export default function Home() {
       <WorkflowExplorer />
       <div className="home-automation-footer"><p>Messaging can include WhatsApp Business, Instagram, Facebook Messenger and TikTok. {site.messagingNote}</p><Link href="/services/automation" className="text-link">Explore automation <ArrowRight size={17} aria-hidden="true" /></Link></div>
     </div></section>
+
+    {homeConcepts.length > 0 && <section className="section home-concepts"><div className="shell">
+      <SectionHeading eyebrow="SELECTED CONCEPTS" title="Possibilities for the way you work." description="Explore a few illustrative concepts, from a platform under your own brand to the everyday processes behind it." />
+      <div className="home-concept-grid">{homeConcepts.map((project, index) => <article className="home-concept-card" key={project.slug}>
+        <div className="home-concept-meta"><span className="home-concept-number" aria-hidden="true">0{index + 1}</span><span>{projectCategoryLabel(project.service)}</span></div>
+        <h3>{project.title}</h3>
+        <p>{project.summary}</p>
+        <Link href={`/work/${project.slug}`} className="home-concept-link" aria-label={`Explore concept: ${project.title}`}>Explore concept <ArrowUpRight size={18} aria-hidden="true" /></Link>
+      </article>)}</div>
+      <div className="home-concept-footer"><p>Design and workflow explorations with sample information.</p><Link href="/work" className="text-link">Explore all work & concepts <ArrowRight size={17} aria-hidden="true" /></Link></div>
+    </div></section>}
 
     <section className="section home-about"><div className="shell home-about-grid">
       <div className="home-about-identity"><Image src={velaroMark} alt="" width={100} height={100} sizes="100px" /><span className="eyebrow">ABOUT US</span><h2>Thoughtful people.<br />Practical thinking.</h2></div>

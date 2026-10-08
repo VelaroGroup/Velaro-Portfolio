@@ -2,6 +2,17 @@
 
 // Read-only integration checks. Start the site, then run:
 // node scripts/verify-site.mjs [http://127.0.0.1:3000]
+import { readdirSync, readFileSync } from 'node:fs';
+
+const projectDirectory = new URL('../public/projects/', import.meta.url);
+const localProjectRoutes = readdirSync(projectDirectory, { withFileTypes: true })
+  .filter(entry => entry.isDirectory() && !entry.name.startsWith('_'))
+  .flatMap(entry => {
+    const directory = new URL(`${entry.name}/`, projectDirectory);
+    if (!readdirSync(directory).includes('project.json')) return [];
+    const project = JSON.parse(readFileSync(new URL('project.json', directory), 'utf8'));
+    return [`/work/${project.slug || entry.name}`];
+  });
 const args = process.argv.slice(2);
 const productionCheck = args.includes('--production');
 const base = new URL(args.find(arg => !arg.startsWith('--')) || 'http://127.0.0.1:3000');
@@ -14,7 +25,7 @@ const requiredRoutes = [
   '/', '/about', '/contact', '/work', '/privacy', '/terms',
   ...['custom-software', 'automation', 'web', 'ecommerce'].map(slug => `/services/${slug}`),
   ...['automation', 'custom-software', 'web-development', 'ecommerce'].map(slug => `/work/category/${slug}`),
-  ...['automation', 'web', 'ecommerce', 'software', 'platform', 'commerce'].map(slug => `/work/preview-${slug}-project`),
+  ...localProjectRoutes,
 ];
 const legacyRedirects = [
   ['/website-development-lebanon', '/services/web'],

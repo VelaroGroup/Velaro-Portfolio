@@ -1,0 +1,18 @@
+{
+  "title": "Your business, your branded platform",
+  "slug": "white-label-client-platform",
+  "service": "Custom software & platforms",
+  "summary": "A white-label client portal that puts requests, project progress, documents, and ongoing support under your own brand.",
+  "challenge": "A service business manages each client through a mixture of emails, shared folders, and internal tools. Clients keep asking for updates, and the team spends time gathering information that already exists in different places.",
+  "approach": "Design a branded portal around the service the business actually delivers. Give each client access to their own requests, milestones, files, and decisions. Connect new requests to internal assignments, send relevant updates automatically, and keep client access separate from the team's working records.",
+  "outcome": "The intended experience gives clients one familiar place to work with the business and gives the team a shared view of what needs attention. The platform could grow to support additional services and client groups while retaining the business's identity. This is an illustrative concept, with no live client results claimed.",
+  "workflowSteps": [
+    { "title": "Submit a request", "description": "The client shares their brief and files through a portal carrying your brand." },
+    { "title": "Agree the scope", "description": "The team confirms requirements, assigns an owner, and sets visible milestones." },
+    { "title": "Follow the delivery", "description": "Progress updates and shared files stay connected to the client's request." },
+    { "title": "Review and approve", "description": "The client reviews the work and records feedback or approval in one place." }
+  ],
+  "kind": "concept",
+  "visual": "white-label",
+  "featured": true
+}

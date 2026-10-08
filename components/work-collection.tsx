@@ -14,7 +14,7 @@ export function WorkCollection({ projects, activeCategory = 'All work' }: { proj
     <section className="page-hero work-intro"><div className="shell">
       <div className="eyebrow">WORK & POSSIBILITIES</div>
       <h1>See what better{' '}<br />could look like.</h1>
-      <p className="intro-text">From the first customer message to the work behind it. Explore websites, workflows, and custom platforms built around a business.</p>
+      <p className="intro-text">From a branded client portal to a booking flow that takes care of the follow-up. Explore custom platforms, automation, websites, and commerce built around a business.</p>
       <p className="work-context">{onlyConcepts ? 'Our current collection is a set of illustrative concepts, showing the problems we can help you solve.' : 'Explore the collection. Illustrative concepts are clearly marked throughout.'}</p>
     </div></section>
     {featured && <section className="work-featured-section"><div className="shell">

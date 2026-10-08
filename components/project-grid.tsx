@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 import { PlatformPreview } from '@/components/platform-preview';
+import { ProjectSamplePreview } from '@/components/project-sample-preview';
 import { WorkGallery } from '@/components/work-gallery';
 import { projectCategories, projectCategoryLabel, type Project } from '@/lib/projects';
 
@@ -9,7 +10,17 @@ export function ProjectVisual({ project, compact = false }: { project: Project; 
   if (project.image) {
     return <div className="project-cover"><Image src={project.image} alt={project.imageAlt || project.title} fill sizes={compact ? '(max-width: 700px) 100vw, 50vw' : '(max-width: 700px) 100vw, 85vw'} unoptimized={project.image.startsWith('http')} /></div>;
   }
-  return <PlatformPreview variant={project.visual || 'platform'} compact={compact} />;
+  switch (project.visual) {
+    case 'white-label':
+    case 'dispatch':
+    case 'booking':
+    case 'documents':
+    case 'wholesale':
+    case 'hospitality':
+      return <ProjectSamplePreview variant={project.visual} compact={compact} />;
+    default:
+      return <PlatformPreview variant={project.visual || 'platform'} compact={compact} />;
+  }
 }
 
 export function ProjectGrid({ projects, activeCategory = 'All work' }: { projects: Project[]; activeCategory?: string }) {

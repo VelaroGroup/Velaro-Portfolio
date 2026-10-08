@@ -1,0 +1,18 @@
+{
+  "title": "Trade ordering, built around each account",
+  "slug": "b2b-ordering-portal",
+  "service": "E-commerce",
+  "summary": "A trade ordering portal with account-specific catalogues, repeat orders, purchasing approvals, and clear order status.",
+  "challenge": "A wholesaler takes repeat orders through emailed spreadsheets and messages. Each account has different prices and buying rules, so staff check the same details, re-enter product codes, and send frequent status updates.",
+  "approach": "Give approved trade customers a portal with their catalogue, agreed pricing, saved order lists, and purchasing permissions. Apply pack sizes and minimum quantities, route orders for approval where required, and connect accepted orders to fulfilment. Recheck price and availability before confirmation and make exceptions visible to the sales team.",
+  "outcome": "The proposed portal puts everyday reordering within reach of the customer while keeping account rules and unusual requests under the team's control. It illustrates a connected trade experience; stock accuracy, purchasing rules, and system integrations would be validated before a live launch.",
+  "workflowSteps": [
+    { "title": "Build the order", "description": "The buyer selects products from their account catalogue or a saved order list." },
+    { "title": "Check buying rules", "description": "Apply pack sizes, quantity limits, and any required purchasing approval." },
+    { "title": "Confirm and fulfil", "description": "Recheck price and availability before passing the accepted order to fulfilment." },
+    { "title": "Keep buyers updated", "description": "Show order progress in the portal and send exceptions to the sales team." }
+  ],
+  "kind": "concept",
+  "visual": "wholesale",
+  "featured": false
+}

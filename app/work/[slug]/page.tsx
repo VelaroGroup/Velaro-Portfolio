@@ -27,7 +27,9 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
   const project = projects.find((item) => item.slug === slug);
   if (!project) notFound();
   const isConcept = project.kind === 'concept';
-  const related = projects.find((item) => item.slug !== slug && item.service === project.service) || projects.find((item) => item.slug !== slug);
+  const serviceProjects = projects.filter((item) => item.service === project.service);
+  const nextInService = serviceProjects[(serviceProjects.findIndex((item) => item.slug === slug) + 1) % serviceProjects.length];
+  const related = nextInService?.slug !== slug ? nextInService : projects.find((item) => item.slug !== slug);
 
   return <main id="main" className="secondary-page">
     <section className="page-hero case-hero"><div className="shell">
@@ -44,7 +46,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
     </div></section>
     {isConcept && <section className="section dark-section"><div className="shell case-connected">
       <div><span className="eyebrow">BEHIND THE EXPERIENCE</span><h2>The next step<br />is already connected.</h2><p>A useful interface is only part of the picture. The workflow behind it keeps information, people, and actions moving together.</p><ul className="case-checks"><li><Check aria-hidden="true" /> Clear ownership at each step</li><li><Check aria-hidden="true" /> Connected records and useful context</li><li><Check aria-hidden="true" /> A person available when needed</li></ul></div>
-      <div className="case-connected-preview"><PlatformPreview variant="workflow" compact /></div>
+      <div className="case-connected-preview">{project.workflowSteps ? <div className="case-workflow"><span className="eyebrow">EXAMPLE WORKFLOW</span><ol>{project.workflowSteps.map((step, index) => <li key={step.title}><span className="case-workflow-number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span><div><h3>{step.title}</h3><p>{step.description}</p></div></li>)}</ol><p className="case-workflow-note">Adapted to your team, systems, and business rules.</p></div> : <PlatformPreview variant="workflow" compact />}</div>
     </div></section>}
     {related && <section className="section"><div className="shell case-related"><div><span className="eyebrow">KEEP EXPLORING</span><h2>Another possibility.</h2></div><Link href={`/work/${related.slug}`}><span>{related.kind === 'concept' ? 'Illustrative concept' : 'Project'} / {projectCategoryLabel(related.service)}</span><h3>{related.title}<ArrowUpRight aria-hidden="true" /></h3><p>{related.summary}</p></Link></div></section>}
     <Cta title="Let’s solve your next business challenge." text="We’ll look at how work happens today and shape a solution around what needs to improve." />

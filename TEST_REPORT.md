@@ -170,3 +170,17 @@ Channel planning should recheck the official documentation because account, regi
 - [TikTok Business Messaging API](https://business-api.tiktok.com/portal/bm-api/education-hub)
 
 Security patch rationale was checked against the maintainers’ [Next.js image-generation advisory](https://github.com/vercel/next.js/security/advisories/GHSA-vcvr-r3jv-pc5j), [Next.js self-hosted cache advisory](https://github.com/vercel/next.js/security/advisories/GHSA-4jqv-mc3x-m676) and [Sharp advisory](https://github.com/lovell/sharp/security/advisories/GHSA-wq5f-xc86-pv6w). Audit results are a dated dependency check, not an exhaustive security assessment.
+
+## Work collection expansion — 9 October 2026
+
+The bundled collection now contains twelve clearly labelled illustrative concepts, with six additions: a white-label client portal, field-service operations, appointment booking automation, supplier onboarding, B2B ordering, and a hospitality website. Each new concept has its own responsive server-rendered interface preview, business scenario, and four-step proposed workflow. No delivered-client or measured-performance claims were added. The white-label platform is featured, and the homepage links to three curated concepts. The sitemap contains 26 public pages.
+
+Validation of this candidate:
+
+- Repository ESLint and scoped preview/homepage ESLint passed; the final Next.js production build and TypeScript compilation passed.
+- Final local production verification passed **1,150 checks across 26 pages**, 63 internal destinations, five legacy redirects, four unknown routes, two contact selections and three optimized images, including metadata, canonical URLs, indexability and sitemap coverage.
+- Browser review used real production pages in 320px, 390px and 820px viewport frames, plus the actual production preview HTML and CSS at 252px and 600px component widths. The browser viewport override and some scroll/capture commands were unreliable, so a temporary read-only local review helper provided fixed-width views. This is sampled visual evidence, not a claim of exhaustive browser/device coverage.
+- Narrow review found a selected appointment time wrapping across lines. The final CSS keeps times together and uses two columns below 300px component width; the rebuilt narrow screenshot confirms the fix. No overlap was observed in the other inspected preview areas.
+- Screenshots and temporary helper files are private, outside the public repository, under `.workspace-logs/work-expansion/` in the parent workspace. Key captures: `work-responsive.png`, `samples-narrow-top.png`, `samples-narrow-lower.png`, and `samples-desktop-top.png`.
+
+The release workflow performs the authoritative Linux Worker build, runtime checks, deployment and public-domain verification after this candidate is pushed. Consult its run for deployment status; the local checks above do not by themselves establish a completed Cloudflare deployment.

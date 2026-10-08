@@ -1,0 +1,18 @@
+{
+  "title": "A thoughtful first impression, before arrival",
+  "slug": "hospitality-website",
+  "service": "Web development",
+  "summary": "A hospitality website that brings the setting, rooms, and local experience into a clear path from discovery to booking.",
+  "challenge": "An independent hospitality business needs visitors to understand what makes a stay special. Essential details are scattered across pages, room options are difficult to compare on a phone, and inquiries arrive without dates or guest information.",
+  "approach": "Build a visual story around the property, supported by clear room details, practical travel information, and accessible navigation. Make accommodation easy to compare across screen sizes. Connect booking calls to action to the chosen reservation system, or use a focused availability inquiry that captures dates and guest needs for the team.",
+  "outcome": "The concept aims to help visitors choose with confidence and give the reservations team useful context from the first inquiry. The design would use approved property photography and accurate information before publication; no named property, live booking connection, or conversion result is represented here.",
+  "workflowSteps": [
+    { "title": "Explore the stay", "description": "Introduce the setting, local experiences, and practical details for planning a visit." },
+    { "title": "Compare the rooms", "description": "Help guests compare accommodation with clear layouts, amenities, and guest capacity." },
+    { "title": "Choose your dates", "description": "Collect preferred dates, guest numbers, and any needs the reservations team should know." },
+    { "title": "Complete the booking journey", "description": "Send guests to the reservation system or pass a complete inquiry to the team." }
+  ],
+  "kind": "concept",
+  "visual": "hospitality",
+  "featured": false
+}

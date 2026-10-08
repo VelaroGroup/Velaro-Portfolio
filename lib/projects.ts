@@ -5,7 +5,8 @@ import { z } from 'zod';
 
 export { projectCategories, projectCategoryLabel } from './project-categories';
 
-export type ProjectVisual = 'inbox' | 'workflow' | 'platform' | 'website' | 'commerce';
+const projectVisuals = ['inbox', 'workflow', 'platform', 'website', 'commerce', 'white-label', 'dispatch', 'booking', 'documents', 'wholesale', 'hospitality'] as const;
+export type ProjectVisual = typeof projectVisuals[number];
 
 export type Project = {
   slug: string;
@@ -22,6 +23,7 @@ export type Project = {
   imageAlt?: string;
   kind?: 'concept' | 'case-study';
   visual?: ProjectVisual;
+  workflowSteps?: { title: string; description: string }[];
 };
 
 const optionalText = z.preprocess(
@@ -47,7 +49,11 @@ const projectSchema = z.object({
   }),
   imageAlt: optionalText,
   kind: z.enum(['concept', 'case-study']).nullish().transform((value) => value ?? undefined),
-  visual: z.enum(['inbox', 'workflow', 'platform', 'website', 'commerce']).nullish().transform((value) => value ?? undefined),
+  visual: z.enum(projectVisuals).nullish().transform((value) => value ?? undefined),
+  workflowSteps: z.array(z.object({
+    title: z.string().trim().min(1),
+    description: z.string().trim().min(1),
+  })).min(2).max(6).nullish().transform((value) => value ?? undefined),
 });
 
 const projectCollectionSchema = z.array(projectSchema).refine(
@@ -63,7 +69,7 @@ if (!localResult.success) {
 export const localProjects: Project[] = localResult.data;
 
 const getPublishedProjects = unstable_cache(async (id: string, dataset: string): Promise<Project[]> => {
-  const query = encodeURIComponent('*[_type == "project" && defined(slug.current)] | order(featured desc, _createdAt desc){"slug":slug.current,title,summary,service,year,client,featured,challenge,approach,outcome,kind,visual,"image":cover.asset->url,"imageAlt":cover.alt}');
+  const query = encodeURIComponent('*[_type == "project" && defined(slug.current)] | order(featured desc, _createdAt desc){"slug":slug.current,title,summary,service,year,client,featured,challenge,approach,outcome,kind,visual,workflowSteps[]{title,description},"image":cover.asset->url,"imageAlt":cover.alt}');
 
   try {
     const response = await fetch(`https://${id}.api.sanity.io/v2025-02-19/data/query/${dataset}?query=${query}`, {

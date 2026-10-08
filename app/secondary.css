@@ -8,6 +8,7 @@
 .work-featured { border: 1px solid var(--line); }
 .work-featured-visual { position: relative; background: var(--brand-soft); padding: 56px 9% 30px; }
 .work-featured-visual .platform-preview { max-width: 880px; margin: 0 auto; }
+.work-featured-visual .project-sample-preview { max-width: 880px; margin-inline: auto; }
 .project-kind { position: absolute; z-index: 2; top: 18px; left: 20px; display: inline-flex; padding: 6px 10px; background: #ffffffd9; border: 1px solid var(--line); border-radius: 3px; color: var(--ink-muted); font-size: 10px; line-height: 1.4; font-weight: 600; letter-spacing: .025em; }
 .work-featured-copy { padding: 32px 40px; display: flex; align-items: center; justify-content: space-between; gap: 40px; background: var(--brand-surface); }
 .work-featured-copy h2 { max-width: 790px; margin: 12px 0 12px; font-size: clamp(26px, 3.1vw, 42px); line-height: 1.18; letter-spacing: -.045em; }
@@ -35,6 +36,12 @@
 .project-visual { position: relative; min-height: 340px; height: auto; display: flex; align-items: center; justify-content: center; padding: 50px 20px 14px; background: var(--brand-soft); border: 1px solid var(--line); overflow: hidden; }
 .project-visual--website { background: #e7e8df; }
 .project-visual--commerce { background: #efece4; }
+.project-visual--white-label { background: #e8eef9; }
+.project-visual--dispatch { background: #e8f1ee; }
+.project-visual--booking { background: #eeedf8; }
+.project-visual--documents { background: #edf1f7; }
+.project-visual--wholesale { background: #e7eff3; }
+.project-visual--hospitality { background: #eee9df; }
 .project-visual--workflow { background: var(--brand-soft); }
 .project-visual--inbox { background: var(--brand-soft); }
 .project-visual .platform-preview { width: 100%; margin: 0; }
@@ -69,6 +76,7 @@
 .case-facts span + span { border-left: 1px solid var(--line); padding-left: 30px; }
 .case-showcase { background: var(--brand-soft); border: 1px solid var(--line); padding: 48px 7% 26px; }
 .case-showcase .platform-preview { max-width: 1000px; margin-inline: auto; }
+.case-showcase .project-sample-preview { max-width: 1000px; margin-inline: auto; }
 .case-showcase .project-cover { aspect-ratio: 16 / 9; }
 .case-image-caption { margin: 14px 0 0; font-size: 11px; color: var(--ink-muted); }
 .case-story { display: grid; grid-template-columns: .85fr 1.15fr; gap: 90px; }
@@ -84,6 +92,14 @@
 .case-checks li { display: flex; gap: 12px; align-items: center; color: #d0dfe3; font-size: 13px; margin-top: 15px; }
 .case-checks svg { width: 15px; color: var(--brand-cyan); }
 .case-connected-preview { min-width: 0; }
+.case-workflow { padding: clamp(20px, 4vw, 36px); border: 1px solid #ffffff26; border-radius: 12px; background: #ffffff06; }
+.case-workflow ol { list-style: none; padding: 0; margin: 20px 0 0; }
+.case-workflow li { display: grid; grid-template-columns: 32px minmax(0, 1fr); gap: 16px; padding-block: 20px; border-bottom: 1px solid #ffffff20; }
+.case-workflow li:last-child { border: 0; }
+.case-workflow-number { color: var(--brand-cyan); font-size: 12px; padding-top: 3px; font-variant-numeric: tabular-nums; }
+.case-workflow h3 { margin: 0 0 7px; font-size: 18px; letter-spacing: -.025em; line-height: 1.4; }
+.case-workflow li p, .case-workflow-note { margin: 0; color: #c9d7e9; font-size: 13px; line-height: 1.8; }
+.case-workflow-note { border-top: 1px solid #ffffff26; padding-top: 20px; }
 .case-related { display: grid; grid-template-columns: .8fr 1.2fr; gap: 70px; }
 .case-related h2 { font-size: clamp(28px, 3.5vw, 40px); letter-spacing: -.045em; margin-top: 16px; }
 .case-related > a { border-block: 1px solid var(--line); padding: 25px 0; }
