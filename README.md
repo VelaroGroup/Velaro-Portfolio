@@ -6,6 +6,8 @@ The website is live at **[www.velaro.group](https://www.velaro.group)** on Cloud
 
 Pushes to **`master`** automatically run the GitHub checks, build and verify the Next and Workers runtimes, deploy to Cloudflare, and verify the deployed website. Pull requests and `main` pushes run checks without deploying. See [deployment instructions](DEPLOYMENT.md) for configuration, release checks and rollback by reverting a source change and pushing. [The validation report](TEST_REPORT.md) records the earlier design review and its limits.
 
+Deployment verification checks the public commit identity in every page's metadata. It retries briefly during Cloudflare rollout, then fails if the expected release or any content check remains incorrect. A response from the previous version cannot satisfy a new release check.
+
 ## Run locally
 
 Use Node.js 22.13 or newer and the pnpm version in `package.json`.

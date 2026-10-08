@@ -22,6 +22,7 @@ export const metadata: Metadata = {
     description: site.description, url: siteUrl,
   },
   twitter: { card: 'summary_large_image' },
+  other: { 'velaro-release': process.env.VELARO_RELEASE_SHA || 'local' },
   robots: { index: true, follow: true },
   icons: {
     icon: { url: '/velaro-mark.png', type: 'image/png', sizes: '680x680' },

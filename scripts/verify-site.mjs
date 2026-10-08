@@ -8,6 +8,7 @@ const base = new URL(args.find(arg => !arg.startsWith('--')) || 'http://127.0.0.
 if (!['http:', 'https:'].includes(base.protocol)) throw new Error('Use an HTTP or HTTPS base URL.');
 const canonicalBase = new URL(process.env.VELARO_EXPECTED_SITE_URL || 'https://www.velaro.group');
 const expectIndexable = process.env.VELARO_EXPECT_INDEXABLE !== '0';
+const expectedRelease = process.env.VELARO_EXPECTED_RELEASE;
 
 const routes = [
   '/', '/about', '/contact', '/work', '/privacy', '/terms',
@@ -105,6 +106,10 @@ for (const [index, page] of pages.entries()) {
   check(/<html\b[^>]*\blang="en(?:-[^"]+)?"/i.test(page.markup), `${path}: missing English document language`);
 
   const metas = [...page.markup.matchAll(/<meta\b([^>]*)>/gi)];
+  if (expectedRelease) {
+    const release = metas.find(match => attribute(match[1], 'name') === 'velaro-release');
+    check(attribute(release?.[1] || '', 'content') === expectedRelease, `${path}: the expected release has not reached this page`);
+  }
   const description = metas.find(match => attribute(match[1], 'name') === 'description');
   check((attribute(description?.[1] || '', 'content') || '').length >= 40, `${path}: missing meaningful meta description`);
   const viewport = metas.find(match => attribute(match[1], 'name') === 'viewport');
