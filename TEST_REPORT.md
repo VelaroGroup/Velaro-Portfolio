@@ -46,9 +46,11 @@ The initial [GitHub Actions deployment run 37799387456](https://github.com/Velar
 | Source credential-pattern scan | 0 findings in 163 text files from 180 tracked or intended untracked files; 17 binary assets excluded. The scan did not read the access-token file or print credential values |
 | Preserved public policy routes | Privacy and terms retained; the sitemap contains 20 public URLs |
 | Domain cutover rehearsal | Initial attachment preserved all 17 other DNS records. Custom-domain checks exposed a hostname redirect loop, so both old DNS destinations were restored while the corrected candidate is verified. |
-| Final-domain HTTPS and redirects | **Pending final verification** against `https://www.velaro.group` and the apex domain; attachment alone does not establish certificate readiness or final-domain behavior |
+| Corrected deployment | [GitHub Actions run 37801008410](https://github.com/VelaroGroup/Velaro-Portfolio/actions/runs/37801008410), commit `33d9c58`, passed both runtime suites, deployment, and live Worker verification. Version `99263a5d-dd1c-4f21-a9c1-3641f2f9cb48`. |
+| Final-domain HTTPS and redirects | **680 checks passed** on `https://www.velaro.group` after reattachment: 20 pages, 51 internal destinations, four legacy redirects, three unknown routes, two contact selections, optimized photos, metadata, sitemap, and real HTTP/HTTPS/apex redirects preserving paths and queries. Public DNS resolvers were used because the local system resolver retained a negative www lookup; normal TLS hostname/certificate verification remained enabled. |
+| DNS preservation | Both exact custom domains now route to `velaro-portfolio`. All 17 other records, including Google Workspace MX and application subdomains, match the pre-migration snapshot. Squarespace registration is unchanged. |
 
-The live Worker check uses `https://www.velaro.group` as the expected canonical origin. Its success does not substitute for the pending HTTPS checks on the custom domain. Dependency and credential scans are dated checks within the stated scope, not an exhaustive security assessment.
+The live Worker check uses `https://www.velaro.group` as the expected canonical origin. The separate custom-domain suite additionally exercised HTTPS and the real apex/HTTP redirects. Dependency and credential scans are dated checks within the stated scope, not an exhaustive security assessment.
 
 ## Responsive visual review
 
@@ -86,7 +88,7 @@ The standard Next production target was built and checked locally. Optional stan
 
 The CI workflow in `.github/workflows/website.yml` pins official action revisions and runs locked installation, lint, type checking, build and production HTTP verification. Its later Cloudflare stages verify the local Worker runtime, deploy on a push to `master` and check the deployed Worker. The successful initial remote run is linked above.
 
-Before this Cloudflare release, the local refactor had not changed any hosting account, domain certificate, DNS record or old deployment. Hosting and domain attachment have since proceeded as recorded above. Mailbox reception and final-domain HTTPS checks remain outstanding. The old live domain could not be resolved during the earlier local fetch, so its complete route inventory was not verified; four known legacy redirects are now covered by the candidate checks.
+Before this Cloudflare release, the local refactor had not changed any hosting account, domain certificate, DNS record or old deployment. Hosting, domain attachment and the final-domain HTTPS checks subsequently passed as recorded above. Mailbox reception remains an owner check. The old sitemap was later retrieved using its verified Vercel origin, and the observed legacy routes are preserved or permanently redirected.
 
 ## Product behavior and remaining manual checks
 
@@ -94,11 +96,11 @@ Before this Cloudflare release, the local refactor had not changed any hosting a
 - Social messaging and platform interfaces are illustrative. No live social account was connected and no customer messages were automated. Production integrations require approved channel/account access and a separately implemented backend.
 - Confirm all public business details, any genuine case studies, the final canonical domain and hosting configuration before promotion.
 - Complete menu, keyboard, form and demonstration interaction checks in supported browsers before promotion; the automation tool could not dispatch all of these reliably.
-- After domain attachment, run production verification against the HTTPS domain, review redirects and social sharing metadata, and submit the sitemap. Preserve the old release for rollback.
+- Production HTTP verification and redirect/social metadata checks passed on the HTTPS domain. Search-console sitemap submission and mailbox reception are separate owner checks. Preserve the recorded known-good release for rollback.
 
 ## Asset and policy references
 
-Supporting photographs in `public/images/concept-architecture.png` and `public/images/concept-ceramics.png` were generated with built-in ImageGen. Exact prompts and provenance are saved in [implementation image notes](design-concepts/implementation-image-notes.json). Font source notes and licenses are in `public/fonts/`.
+Supporting photographs in `public/images/concept-architecture.png` and `public/images/concept-ceramics.png` were generated with built-in ImageGen. Exact prompts and provenance are retained locally in `design-concepts/implementation-image-notes.json`; design review artifacts are excluded from the public repository. Font source notes and licenses are in `public/fonts/`.
 
 Channel planning should recheck the official documentation because account, region and feature eligibility vary:
 

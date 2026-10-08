@@ -224,6 +224,24 @@ if (['localhost', '127.0.0.1', '[::1]'].includes(base.hostname)) {
   }
 }
 
+// On the public release, also verify HTTPS enforcement and the real apex host.
+if (base.origin === canonicalBase.origin) {
+  const publicRedirects = [
+    ['https://velaro.group/?source=release-check', 'https://www.velaro.group/?source=release-check'],
+    ['https://velaro.group/about?source=release-check', 'https://www.velaro.group/about?source=release-check'],
+    ['http://velaro.group/about?source=release-check', 'https://velaro.group/about?source=release-check'],
+    ['http://www.velaro.group/about?source=release-check', 'https://www.velaro.group/about?source=release-check'],
+  ];
+  for (const [url, destination] of publicRedirects) {
+    try {
+      const response = await fetch(url, { redirect: 'manual', signal: AbortSignal.timeout(30000) });
+      check([301, 308].includes(response.status), `${url}: expected a permanent public-domain redirect, received ${response.status}`);
+      check(response.headers.get('location') === destination, `${url}: public redirect must preserve path and query`);
+      await response.body?.cancel();
+    } catch (error) { check(false, `${url}: public redirect check failed (${error.message})`); }
+  }
+}
+
 for (const service of ['custom-software', 'automation']) {
   const path = `/contact?service=${service}`;
   const page = await getPage(path);

@@ -6,7 +6,10 @@
   "compatibility_date": "2026-10-08",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "workers_dev": true,
-  // Custom Domains stay detached until candidate host-routing checks pass.
+  "routes": [
+    { "pattern": "velaro.group", "custom_domain": true },
+    { "pattern": "www.velaro.group", "custom_domain": true }
+  ],
   "assets": {
     "directory": ".open-next/assets",
     "binding": "ASSETS"
