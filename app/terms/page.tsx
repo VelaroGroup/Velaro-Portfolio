@@ -6,7 +6,7 @@ import { site } from '@/lib/site';
 export function generateMetadata(_props: unknown, parent: ResolvingMetadata) {
   return pageMetadata({
     title: 'Terms of Service',
-    description: 'Review the key principles and terms that govern how Velaro works with clients on website and online store projects.',
+    description: 'Read the terms for working with Velaro on custom platforms, business automation, websites and online stores.',
     path: '/terms',
   }, parent);
 }

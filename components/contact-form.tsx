@@ -6,8 +6,8 @@ import { site } from '@/lib/site';
 
 const topics = [
   { value: 'custom-software', label: 'Custom platform' },
-  { value: 'automation', label: 'Workflow automation' },
-  { value: 'web', label: 'Website design' },
+  { value: 'automation', label: 'Business automation' },
+  { value: 'web', label: 'Web development' },
   { value: 'ecommerce', label: 'E-commerce' },
   { value: 'not-sure', label: 'Help me decide' },
 ];

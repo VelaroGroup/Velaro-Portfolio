@@ -89,7 +89,7 @@ const pages = await inBatches(routes, getPage);
 const titles = new Map();
 const links = new Map();
 const photoUrls = new Map();
-const expectedPhotos = ['/images/concept-architecture.png', '/images/concept-ceramics.png'];
+const expectedPhotos = ['/images/concept-architecture.png', '/images/concept-ceramics.png', '/velaro-mark.png'];
 
 for (const [index, page] of pages.entries()) {
   const path = routes[index];
@@ -281,6 +281,21 @@ for (const photo of expectedPhotos) {
   }
 }
 
+// Browser icons must resolve to an actual square image, not an HTML fallback.
+const homeMarkup = pages[0].markup;
+for (const rel of ['icon', 'apple-touch-icon']) {
+  const link = [...homeMarkup.matchAll(/<link\b([^>]*)>/gi)].find(match => attribute(match[1], 'rel') === rel);
+  const href = attribute(link?.[1] || '', 'href');
+  check(Boolean(href), rel + ': missing browser brand image');
+  if (!href) continue;
+  try {
+    const response = await fetch(new URL(href, base), { signal: AbortSignal.timeout(30000) });
+    const png = Buffer.from(await response.arrayBuffer());
+    check(response.status === 200 && response.headers.get('content-type')?.startsWith('image/png'), rel + ': expected PNG image');
+    check(png.length > 24 && png.readUInt32BE(16) === png.readUInt32BE(20) && png.readUInt32BE(16) >= 180, rel + ': expected square image suitable for mobile icons');
+  } catch (error) { check(false, rel + ': ' + error.message); }
+}
+
 try {
   const response = await fetch(new URL('/opengraph-image', base), { signal: AbortSignal.timeout(30000) });
   const png = Buffer.from(await response.arrayBuffer());
@@ -314,5 +329,5 @@ if (failures.length) {
   failures.forEach(failure => console.error(`- ${failure}`));
   process.exitCode = 1;
 } else {
-  console.log(`PASS: ${assertions} checks across ${routes.length} pages, ${links.size} internal destinations, ${legacyRedirects.length} legacy redirects, 3 unknown routes, 2 contact selections and 2 optimized photos, including SEO, response security headers and sitemap coverage.`);
+  console.log(`PASS: ${assertions} checks across ${routes.length} pages, ${links.size} internal destinations, ${legacyRedirects.length} legacy redirects, 3 unknown routes, 2 contact selections and 3 optimized images (including the Velaro mark), including SEO, response security headers and sitemap coverage.`);
 }

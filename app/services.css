@@ -20,64 +20,64 @@
 .svc-actions .button { max-width: 100%; font-size: 13px; text-align: center; }
 .svc-hero-preview { min-width: 0; position: relative; }
 
-.svc-introduction { background: #fff; border-top: 1px solid #e3e6e5; }
+.svc-introduction { background: var(--brand-surface); border-top: 1px solid var(--line); }
 .svc-intro-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: end; gap: 70px; }
 .svc-intro-grid .section-heading { margin-bottom: 0; }
-.svc-intro-text { max-width: 520px; margin: 0 0 4px; color: #5b6d79; font-size: 16px; line-height: 1.85; }
+.svc-intro-text { max-width: 520px; margin: 0 0 4px; color: var(--ink-muted); font-size: 16px; line-height: 1.85; }
 .svc-benefits { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 50px; }
-.svc-benefit { display: flex; gap: 20px; padding: 4px 32px; border-left: 1px solid #dfe6e7; }
+.svc-benefit { display: flex; gap: 20px; padding: 4px 32px; border-left: 1px solid var(--line); }
 .svc-benefit:first-child { padding-left: 0; border-left: 0; }
 .svc-benefit:last-child { padding-right: 0; }
-.svc-benefit-icon { display: grid; place-items: center; flex: 0 0 48px; width: 48px; height: 48px; color: #0b526f; background: #e8f4f6; border-radius: 8px; }
+.svc-benefit-icon { display: grid; place-items: center; flex: 0 0 48px; width: 48px; height: 48px; color: var(--brand-blue); background: var(--brand-pale); border-radius: 8px; }
 .svc-benefit h3 { margin: 1px 0 9px; font-size: 17px; line-height: 1.35; letter-spacing: -0.025em; }
-.svc-benefit p { margin: 0; color: #5b6d79; font-size: 13px; line-height: 1.75; }
+.svc-benefit p { margin: 0; color: var(--ink-muted); font-size: 13px; line-height: 1.75; }
 
 .svc-connected { overflow: hidden; }
 .svc-connected-grid { display: grid; grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr); align-items: center; gap: 90px; }
 .svc-connected-copy, .svc-benefit > div { min-width: 0; overflow-wrap: anywhere; }
-.svc-connected-copy h2 { max-width: 550px; margin: 19px 0 23px; font-size: clamp(32px, 3.5vw, 47px); line-height: 1.15; letter-spacing: -0.04em; color: #fff; }
-.svc-connected-copy > p:not(.eyebrow) { max-width: 500px; color: #becfd8; font-size: 15px; line-height: 1.9; }
+.svc-connected-copy h2 { max-width: 550px; margin: 19px 0 23px; font-size: clamp(32px, 3.5vw, 47px); line-height: 1.15; letter-spacing: -0.04em; color: var(--brand-surface); }
+.svc-connected-copy > p:not(.eyebrow) { max-width: 500px; color: #c9d7e9; font-size: 15px; line-height: 1.9; }
 .svc-outcomes { display: grid; gap: 13px; list-style: none; margin: 27px 0 32px; padding: 0; }
-.svc-outcomes li { display: flex; gap: 11px; color: #dbe7ec; font-size: 13px; line-height: 1.65; }
-.svc-outcomes svg { flex-shrink: 0; margin-top: 3px; color: #2ac3e6; }
+.svc-outcomes li { display: flex; gap: 11px; color: #dce6f4; font-size: 13px; line-height: 1.65; }
+.svc-outcomes svg { flex-shrink: 0; margin-top: 3px; color: var(--brand-cyan); }
 .svc-connected-preview { min-width: 0; }
 
 .svc-capabilities { scroll-margin-top: 100px; }
 .svc-capabilities .section-heading { max-width: 720px; }
-.svc-capability-list { margin-top: 45px; border-top: 1px solid #ccd7db; }
-.svc-capability { display: grid; grid-template-columns: 52px minmax(0, 0.95fr) minmax(0, 1.5fr) 24px; align-items: start; gap: 26px; border-bottom: 1px solid #ccd7db; padding: 27px 0; overflow-wrap: anywhere; }
-.svc-number { color: #70909e; font-size: 23px; font-weight: 400; line-height: 1.3; letter-spacing: -0.04em; }
+.svc-capability-list { margin-top: 45px; border-top: 1px solid var(--line); }
+.svc-capability { display: grid; grid-template-columns: 52px minmax(0, 0.95fr) minmax(0, 1.5fr) 24px; align-items: start; gap: 26px; border-bottom: 1px solid var(--line); padding: 27px 0; overflow-wrap: anywhere; }
+.svc-number { color: var(--brand-blue); font-size: 23px; font-weight: 400; line-height: 1.3; letter-spacing: -0.04em; }
 .svc-capability h3 { max-width: 260px; margin: 2px 0 0; font-size: 20px; line-height: 1.35; letter-spacing: -0.035em; }
-.svc-capability p { max-width: 570px; margin: 3px 0 0; color: #5b6d79; font-size: 14px; line-height: 1.8; }
-.svc-capability-arrow { margin-top: 5px; color: #087d9b; }
-.svc-channels { margin-top: 35px; padding: 27px 30px; background: #eaf2f2; border-radius: 7px; }
+.svc-capability p { max-width: 570px; margin: 3px 0 0; color: var(--ink-muted); font-size: 14px; line-height: 1.8; }
+.svc-capability-arrow { margin-top: 5px; color: var(--brand-action); }
+.svc-channels { margin-top: 35px; padding: 27px 30px; background: var(--brand-pale); border-radius: 7px; }
 .svc-channel-heading { display: flex; align-items: center; gap: 11px; font-size: 13px; font-weight: 600; }
-.svc-channel-heading svg { color: #19718a; }
+.svc-channel-heading svg { color: var(--brand-blue); }
 .svc-channel-list { display: flex; flex-wrap: wrap; gap: 9px; margin: 20px 0 16px; }
-.svc-channel-list span { display: block; max-width: 100%; overflow-wrap: anywhere; padding: 7px 13px; border: 1px solid #cedcde; border-radius: 4px; background: rgba(255,255,255,.62); font-size: 12px; font-weight: 500; }
-.svc-channels > p { margin: 0; color: #5c727e; font-size: 11px; line-height: 1.7; }
+.svc-channel-list span { display: block; max-width: 100%; overflow-wrap: anywhere; padding: 7px 13px; border: 1px solid var(--line); border-radius: 4px; background: var(--brand-surface); font-size: 12px; font-weight: 500; }
+.svc-channels > p { margin: 0; color: var(--ink-muted); font-size: 11px; line-height: 1.7; }
 .svc-delivery { display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 35px; align-items: start; margin-top: 38px; }
 .svc-delivery > .eyebrow { margin-top: 4px; }
 .svc-delivery ul { display: flex; flex-wrap: wrap; list-style: none; gap: 12px 28px; margin: 0; padding: 0; }
-.svc-delivery li { display: flex; min-width: 0; overflow-wrap: anywhere; align-items: center; gap: 8px; color: #57707d; font-size: 12px; }
-.svc-delivery li svg { color: #087d9b; }
+.svc-delivery li { display: flex; min-width: 0; overflow-wrap: anywhere; align-items: center; gap: 8px; color: var(--ink-muted); font-size: 12px; }
+.svc-delivery li svg { color: var(--brand-action); }
 
 .svc-process { scroll-margin-top: 100px; }
 .svc-faq .section-heading { max-width: 385px; }
 .svc-faq .faq-list details summary { display: flex; min-height: 44px; overflow-wrap: anywhere; justify-content: space-between; gap: 24px; align-items: center; list-style: none; cursor: pointer; }
 .svc-faq summary::-webkit-details-marker { display: none; }
-.svc-faq summary svg { flex-shrink: 0; color: #0985a4; transition: transform 160ms ease; }
+.svc-faq summary svg { flex-shrink: 0; color: var(--brand-action); transition: transform 160ms ease; }
 .svc-faq details[open] summary svg { transform: rotate(45deg); }
-.svc-faq .faq-list details > p { color: #5b6d79; font-size: 14px; line-height: 1.9; }
+.svc-faq .faq-list details > p { color: var(--ink-muted); font-size: 14px; line-height: 1.9; }
 .svc-related { padding-top: 0; }
 .svc-related-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 45px; margin-top: 23px; }
 .svc-related-link { min-width: 0; overflow-wrap: anywhere; }
-.svc-related-link { display: block; padding: 27px 0 24px; border-top: 1px solid #ccd7db; color: inherit; text-decoration: none; }
-.svc-related-number { color: #708692; font-size: 10px; font-weight: 600; letter-spacing: 0.12em; }
+.svc-related-link { display: block; padding: 27px 0 24px; border-top: 1px solid var(--line); color: inherit; text-decoration: none; }
+.svc-related-number { color: var(--ink-muted); font-size: 10px; font-weight: 600; letter-spacing: 0.12em; }
 .svc-related-link h3 { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin: 15px 0 10px; font-size: clamp(22px, 2.3vw, 30px); font-weight: 600; letter-spacing: -0.045em; }
-.svc-related-link h3 svg { flex-shrink: 0; color: #0787a7; transition: transform 160ms ease; }
+.svc-related-link h3 svg { flex-shrink: 0; color: var(--brand-action); transition: transform 160ms ease; }
 .svc-related-link:hover h3 svg { transform: translate(3px, -3px); }
-.svc-related-link > p { margin: 0; color: #637987; font-size: 13px; line-height: 1.7; }
+.svc-related-link > p { margin: 0; color: var(--ink-muted); font-size: 13px; line-height: 1.7; }
 
 @media (max-width: 1100px) {
   .svc-hero-grid { gap: 38px; grid-template-columns: repeat(2, minmax(0, 1fr)); }

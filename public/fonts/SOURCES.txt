@@ -23,3 +23,19 @@ U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
 U+2212, U+2215, U+FEFF, U+FFFD.
 
 Use an appropriate fallback for other scripts. No font conversion or editing was performed.
+
+Open Graph image fonts, retrieved 2026-10-08
+Files: inter-og-400.ttf and inter-og-700.ttf
+Inter normal, static weights 400 and 700, downloaded unchanged from Google Fonts.
+These small official text subsets are for the fixed English sharing card only.
+License: Inter-OFL.txt (same SIL Open Font License 1.1 as the website Inter font).
+No local font conversion or editing was performed.
+
+Google Fonts CSS endpoint (contains the exact supported characters):
+https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap&text=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789%20.%2C%26%3B%3A%21%3F-%2F%E2%80%99
+
+400 source:
+https://fonts.gstatic.com/l/font?kit=UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuLyfMZhzxpWhvcP5Vx69KLV5G1MJhxEXQs4GQGNDMK2G94Mwwltu0Ui4EYtQJAr75AndK3OOwT8nQQz7KoVMLXlF5F_cp6XBaGOD_zlQasNieg&skey=c491285d6722e4fa&v=v20
+
+700 source:
+https://fonts.gstatic.com/l/font?kit=UcCO3FwrK3iLTeHuS_nVMrMxCp50SjIw2boKoduKmMEVuFuYMZhzxpWhvcP5Vx69KLV5G1MJhxEXQs4GQGNDMK2G94Mwwltu0Ui4EYtQJAr75AndK3OOwT8nQQz7KoVMLXlF5F_cp6XBaGOD_zlQasNieg&skey=c491285d6722e4fa&v=v20

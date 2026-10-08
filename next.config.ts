@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
   images: {
     localPatterns: [
       { pathname: '/velaro-logo.png', search: '' },
+      { pathname: '/velaro-mark.png', search: '' },
       { pathname: '/images/**', search: '' },
       { pathname: '/projects/**', search: '' },
       { pathname: '/_next/static/media/**', search: '' },

@@ -11,12 +11,13 @@ export function generateMetadata(_props: unknown, parent: ResolvingMetadata) {
   }, parent);
 }
 
-// Policy wording preserved from https://www.velaro.group/privacy on 2026-10-08.
+// Policy wording preserved from https://www.velaro.group/privacy on 2026-10-08,
+// with the studio introduction updated to reflect the current service offering.
 // The separate form note describes the current website's email handoff.
 const sections = [
   {
     title: '1. Who we are',
-    content: <p>Velaro is a digital studio focused on websites and online stores. This Privacy Policy explains how we handle information when you visit our website or contact us about a project.</p>,
+    content: <p>Velaro is a digital studio building custom platforms, business automations, websites and online stores. This Privacy Policy explains how we handle information when you visit our website or contact us about a project.</p>,
   },
   {
     title: '2. Information you share with us',

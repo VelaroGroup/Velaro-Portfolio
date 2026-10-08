@@ -47,7 +47,9 @@ The Cloudflare target uses OpenNext to adapt the same Next.js build to Workers, 
 | Shared error recovery and social link image | `app/error.tsx`, `app/opengraph-image.tsx` |
 | Production configuration and HTTP checks | `next.config.ts`, `scripts/verify-site.mjs` |
 
-The design uses warm ivory, deep navy, and cyan with a consistent **VELARO** wordmark without trailing punctuation. Manrope headings and Inter body text are loaded locally from `public/fonts/` through `next/font/local`; font loading does not require a Google Fonts request. Keep the supplied font licences with those assets.
+The design follows Velaro's established blue/cyan logo and Inter typography, with navy `#0a1628`, blue `#1e3a8a`, action blue `#2f6cf4`, cyan `#22d3ee`, white and cool canvas `#f5f7fb`. Shared tokens live in `app/design-system.css`. The **VELARO** wordmark has no trailing punctuation. The supplied square `public/velaro-mark.png` is displayed unchanged in the brand, About page, browser icons and sharing image; the original padded `velaro-logo.png` remains available. Inter headings and body text load locally through `next/font/local`; fonts require no runtime external request. Keep the supplied font licences with those assets.
+
+The About page preserves Velaro's original studio identity, Lebanon/Middle East positioning, name origin and **Velocity, Vision, Value** principles, alongside the current custom platform and automation offer. Company history and results must stay grounded in verified material.
 
 The website includes metadata, JSON-LD, canonical URLs, robots rules and a 20-URL sitemap for the bundled public collection and preserved policy pages. Sitemap modification dates are omitted until a content source provides real dates. The 1200×630 Open Graph image is generated from static, trusted content. Update the domain and contact details in `lib/site.ts` when appropriate.
 

@@ -5,13 +5,23 @@ Reviewed on 8 October 2026 in the Windows workspace and the Linux deployment wor
 ## Release scope
 
 - Rebuilt the public website around custom automated platforms, discovery of repetitive work, connected operations and messaging workflows.
-- Applied the ivory/navy/cyan design, locally loaded Manrope/Inter fonts and exact VELARO wordmark without trailing punctuation.
+- Restored Velaro’s original blue/cyan mark, navy/blue/cyan palette and locally loaded Inter throughout; kept the exact VELARO wordmark without trailing punctuation.
 - Used typed service data and shared layouts across the homepage, four services, Work, four categories, six concept details, About and Contact.
 - Kept illustrative inbox/channel and business-challenge interactions, with concepts clearly distinguished from client case studies and live integrations.
 - Improved narrow layouts, preview readability, navigation resize/blur behavior, form validation and shared error recovery.
 - Added a static 1200×630 Open Graph image and a 20-URL sitemap, including the preserved privacy and terms pages, without fabricated modification timestamps.
 - Added production response headers, restricted image optimization, optional standalone output, preview noindex support and deployment documentation.
 - Updated Next.js and its ESLint configuration to 16.3.8, with compatible transitive security fixes in the lockfile and pnpm workspace policy.
+
+## Brand fidelity update, 8 October 2026
+
+- Matched the existing Velaro document identity: navy, royal/action blue, cyan, cool white surfaces and Inter. The supplied square mark is copied unchanged and used in the header/footer, concept previews, About, browser icons, organization metadata and sharing card.
+- Rebuilt About around the original public studio story, Lebanon and Middle East positioning, velocity name origin, and Velocity/Vision/Value principles. The current custom platform and automation offer is integrated with that story.
+- Full ESLint, TypeScript and Next production build passed. Local production verification passed **692 checks** across 20 pages and 52 internal destinations, including the optimized mark, square PNG browser icons and 1200×630 sharing card.
+- Inspected the revised About page on desktop and at 390px, the homepage at 320px, and the custom platform service page at 900px. These observed layouts showed no text/element overlap. Existing responsive grid and reduced-motion rules remain.
+- Darkened concept-card captions and contact field boundaries after contrast review. Channel/status colors and distinct illustrative client branding remain separate from Velaro’s marketing palette.
+- This review used screenshots and accessible page structure. Browser automation could not dispatch interactive click/evaluate commands in this session, so it does not establish a fresh full interactive or accessibility audit.
+- Cloudflare publication uses the existing GitHub workflow, including isolated Worker verification and post-deployment public-domain checks. Inspect the workflow for the commit carrying this update for its release result.
 
 ## Earlier local automated evidence
 
