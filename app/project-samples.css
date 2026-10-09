@@ -352,4 +352,6 @@
 }
 @container project-sample (max-width: 300px) {
   .sample-time-slots { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sample-appointment { display: flex; }
+  .sample-appointment-time { margin: 10px 0 6px; }
 }

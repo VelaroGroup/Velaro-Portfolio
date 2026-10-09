@@ -184,3 +184,12 @@ Validation of this candidate:
 - Screenshots and temporary helper files are private, outside the public repository, under `.workspace-logs/work-expansion/` in the parent workspace. Key captures: `work-responsive.png`, `samples-narrow-top.png`, `samples-narrow-lower.png`, and `samples-desktop-top.png`.
 
 The release workflow performs the authoritative Linux Worker build, runtime checks, deployment and public-domain verification after this candidate is pushed. Consult its run for deployment status; the local checks above do not by themselves establish a completed Cloudflare deployment.
+
+## Work card alignment — 9 October 2026
+
+The two-column Work collection now shares five intrinsic grid tracks per card pair: preview, category, title, summary and link. Preview panels and captions align without clipping content or fixing text heights. Single-column mobile cards retain natural flow. The narrow appointment preview stacks its time and description below 300px component width to avoid splitting the appointment name.
+
+- ESLint and the final production build, including TypeScript compilation, passed. Production HTTP verification passed **1,150 checks across 26 pages**.
+- Sampled browser review used actual production card markup and styles in 1280px, 820px and 320px viewport frames. Desktop and tablet captures show aligned panel bottoms, text tracks and links; the final 320px capture confirms the corrected appointment label. This is sampled visual verification, not exhaustive device coverage.
+- Browser layout evaluation was unavailable, so no automated pixel-measurement claim is made. Screenshots and the temporary read-only review helper are retained privately under `.workspace-logs/card-alignment/` in the parent workspace.
+- The release workflow separately verifies the Worker build and public deployment after push.
