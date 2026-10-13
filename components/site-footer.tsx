@@ -17,7 +17,6 @@ export function SiteFooter() {
           <div><h2>Explore</h2><Link href="/work">Our work</Link><Link href="/about">About Velaro</Link><Link href="/contact">Start a conversation</Link><Link href="/privacy">Privacy policy</Link><Link href="/terms">Terms of service</Link></div>
           <div className="footer-contact"><h2>Say hello</h2><a href={`mailto:${site.email}`}>{site.email}<ArrowUpRight size={16} aria-hidden="true" /></a><p>{site.region}</p></div>
         </div>
-        <div className="footer-signature" aria-hidden="true"><span>VELARO</span><ArrowUpRight strokeWidth={0.8} /></div>
         <div className="footer-bottom"><span>© {new Date().getFullYear()} Velaro. All rights reserved.</span><span>Built around your business.</span></div>
       </div>
     </footer>
