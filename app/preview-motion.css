@@ -1,0 +1,56 @@
+/* A stationary hit area keeps pointer tracking smooth while the card tilts. */
+.preview-tilt-surface {
+  position: relative;
+  perspective: 1200px;
+}
+
+.preview-tilt .preview-frame {
+  position: relative;
+  border-color: color-mix(in srgb, var(--brand-action) 22%, var(--line));
+  box-shadow: 0 18px 46px #0a162812, 0 2px 7px #0a16280a;
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .preview-tilt .preview-frame {
+    transform: translateY(0) rotateX(0deg) rotateY(0deg);
+    transform-origin: center;
+    transition: transform 440ms cubic-bezier(.2, .75, .25, 1), box-shadow 440ms ease, border-color 440ms ease;
+  }
+
+  .preview-tilt .preview-frame::after {
+    content: '';
+    position: absolute;
+    z-index: 2;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: radial-gradient(circle at var(--preview-light-x, 50%) var(--preview-light-y, 50%), color-mix(in srgb, var(--brand-cyan) 13%, transparent), transparent 65%);
+    opacity: 0;
+    transition: opacity 350ms ease;
+  }
+
+  .preview-tilt-surface[data-tilting] .preview-frame {
+    transform: translateY(-5px) rotateX(var(--preview-rotate-x, 0deg)) rotateY(var(--preview-rotate-y, 0deg));
+    border-color: color-mix(in srgb, var(--brand-action) 58%, var(--line));
+    box-shadow: 0 30px 65px #0a162826, 0 8px 20px #0a162810, 0 0 0 1px color-mix(in srgb, var(--brand-cyan) 10%, transparent);
+    transition: transform 160ms ease-out, box-shadow 350ms ease, border-color 350ms ease;
+  }
+
+  .preview-tilt-surface[data-tilting] .preview-frame::after { opacity: 1; }
+
+  .preview-tilt :is(.kanban-card, .workflow-node) {
+    transition: transform 350ms ease, box-shadow 350ms ease;
+  }
+
+  .preview-tilt-surface[data-tilting] :is(.kanban-card, .workflow-node) {
+    transform: translateY(-3px);
+    box-shadow: 0 9px 16px #0a162810;
+  }
+}
+
+/* Touch and reduced-motion readers always get a stable, fully readable card. */
+@media (prefers-reduced-motion: reduce), (hover: none), (pointer: coarse) {
+  .preview-tilt .preview-frame,
+  .preview-tilt :is(.kanban-card, .workflow-node) { transform: none; }
+  .preview-tilt .preview-frame::after { display: none; }
+}

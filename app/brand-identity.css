@@ -1,0 +1,164 @@
+/* Velaro's forward-moving mark, blue/cyan palette and three founding principles. */
+:root {
+  --brand-deep: #071324;
+  --brand-rule: linear-gradient(90deg, var(--brand-blue), var(--brand-action) 55%, var(--brand-cyan));
+}
+
+.site-header { border-top: 3px solid var(--brand-action); }
+.site-header .brand { letter-spacing: .15em; }
+.section-heading .eyebrow::before {
+  content: "";
+  width: 18px;
+  height: 12px;
+  flex: 0 0 18px;
+  background: var(--brand-rule);
+  clip-path: polygon(0 20%, 36% 45%, 100% 0, 44% 100%);
+}
+.button-primary { background: #245de0; }
+
+/* An unmistakably Velaro first impression, using the original supplied mark. */
+.home-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--brand-deep);
+  color: white;
+}
+.home-hero::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 85% 35%, #17479265, transparent 55%),
+    linear-gradient(120deg, transparent 64%, #22d3ee08 64%, #22d3ee08 65%, transparent 65%);
+}
+.home-page .hero-grid { grid-template-columns: 1.15fr 1fr; padding-block: 78px 62px; }
+.home-page .hero-copy h1 { font-size: clamp(44px, 5vw, 72px); font-weight: 600; letter-spacing: -.065em; line-height: 1.06; }
+.home-hero .hero-copy h1 span { color: var(--brand-cyan); }
+.home-hero .hero-copy > p { max-width: 510px; color: #bdcee5; font-size: 16px; }
+.home-hero .hero-copy > .eyebrow { color: #b9cdec; }
+.home-hero .eyebrow-dash { height: 2px; background: var(--brand-cyan); }
+.home-hero .hero-actions { gap: 20px 26px; }
+.home-hero .button-primary { color: var(--navy); background: var(--brand-cyan); }
+.home-hero .button-primary:hover { background: #8beafa; box-shadow: 0 8px 30px #22d3ee20; }
+.home-hero .text-link { color: #f1f6fd; border-color: #536784; }
+.home-hero .text-link svg, .home-hero .hero-assurance svg { color: var(--brand-cyan); }
+.home-hero .hero-assurance { color: #b9cdec; }
+.home-hero :focus-visible { outline-color: var(--brand-cyan); }
+.home-hero .hero-footnote { border-color: #31415a; color: #a9bdd8; }
+.home-hero .hero-footnote strong, .home-hero .hero-footnote a { color: #e4edf9; }
+.home-hero .hero-footnote a svg { color: var(--brand-cyan); }
+
+.service-overview {
+  position: relative;
+  padding: 26px;
+  border: 1px solid #426087;
+  border-radius: 4px 32px 4px 4px;
+  background: linear-gradient(145deg, #122c50cc, #091829e6);
+  box-shadow: 0 25px 70px #00000030;
+}
+.service-overview::before { content: ""; position: absolute; top: -1px; left: 26px; width: 76px; height: 3px; background: var(--brand-cyan); }
+.overview-title { display: flex; align-items: center; gap: 10px; min-height: 218px; padding-block: 16px; }
+.overview-emblem { position: relative; flex: 0 1 220px; min-width: 0; }
+.overview-emblem img { position: relative; display: block; width: 100%; height: auto; filter: drop-shadow(0 14px 24px #006de540); }
+.overview-orbit { position: absolute; inset: 12%; border: 1px solid #79c9ff26; border-radius: 50%; }
+.overview-orbit::before, .overview-orbit::after { content: ""; position: absolute; inset: -18%; border: 1px solid #79c9ff12; border-radius: 50%; }
+.overview-orbit::after { inset: 20%; }
+.overview-manifesto { flex: 1; min-width: 0; }
+.overview-manifesto .overview-label { font-size: 8px; letter-spacing: .12em; }
+.overview-title p { font-size: clamp(23px, 2.15vw, 31px); font-weight: 500; line-height: 1.16; }
+.overview-service { position: relative; gap: 14px 8px; padding: 16px; border-color: #355172; border-radius: 3px; background: #132a46aa; }
+.overview-service strong { font-size: 13px; }
+.overview-service-top svg { width: 20px; height: 20px; }
+.overview-service:hover { background: #163758; }
+.overview-arrow { color: var(--brand-cyan); }
+.overview-note { font-size: 10px; }
+
+/* A recognisable rhythm: numbered principles, fine rules and angled accents. */
+.brand-principles { background: #eaf0fc; border-bottom: 1px solid #d5dfef; }
+.brand-principles-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.brand-principles-grid > div { display: flex; align-items: center; gap: 17px; padding: 26px 28px; border-left: 1px solid #d5dfef; }
+.brand-principles-grid > div:first-child { border-left: 0; padding-left: 0; }
+.brand-principles-grid > div:last-child { padding-right: 0; }
+.principle-index { color: var(--brand-blue); font-size: 10px; font-weight: 600; white-space: nowrap; }
+.brand-principles p { flex: 1; }
+.brand-principles strong { display: block; font-size: 19px; font-weight: 600; letter-spacing: -.03em; }
+.brand-principles p > span { display: block; margin-top: 4px; font-size: 11px; line-height: 1.6; color: #52627b; }
+.brand-principles svg { color: var(--brand-action); }
+.home-service-card { position: relative; overflow: hidden; border-radius: 4px 22px 4px 4px; background: white; transition: border-color .2s, box-shadow .2s, transform .2s; }
+.home-service-card::before { content: ""; position: absolute; inset: 0 0 auto; height: 3px; background: var(--brand-rule); }
+.home-service-card-top span { color: var(--brand-blue); font-variant-numeric: tabular-nums; }
+.home-service-card-top svg { box-sizing: content-box; padding: 11px; border-radius: 5px; background: var(--brand-soft); }
+.home-service-card:hover { border-color: #98b1e7; box-shadow: 0 18px 36px #0a16280d; transform: translateY(-4px); }
+.home-concept-card { border-top: 0; border-radius: 3px 22px 3px 3px; background: var(--brand-rule) top / 100% 3px no-repeat, white; }
+.home-concept-meta { padding-top: 3px; }
+.process-step-top > span { color: var(--brand-blue); }
+
+/* Carry the identity into service pages and the shared closing invitation. */
+.svc-hero { position: relative; isolation: isolate; background: linear-gradient(115deg, #f5f7fb 30%, #e9f0ff); }
+.svc-hero::before { content: ""; position: absolute; pointer-events: none; z-index: -1; inset: 0; background: linear-gradient(125deg, transparent 68%, #2f6cf408 68%, #2f6cf408 82%, transparent 82%); }
+.svc-kicker { color: var(--brand-blue); }
+.svc-connected { background: radial-gradient(ellipse at 90% 0, #1e3a8a66, transparent 60%), var(--brand-deep); }
+.cta-band { position: relative; isolation: isolate; overflow: hidden; border-top: 3px solid var(--brand-action); background: var(--brand-deep); color: white; }
+.cta-band::before { content: ""; position: absolute; z-index: -1; pointer-events: none; inset: 0; background: linear-gradient(128deg, transparent 68%, #22d3ee0b 68%, #22d3ee0b 83%, transparent 83%); }
+.cta-inner .eyebrow { color: var(--brand-cyan); }
+.cta-inner p { color: #bdcee5; }
+.cta-inner :focus-visible { outline-color: var(--brand-cyan); }
+.footer { border-top: 1px solid #293b56; }
+.footer-signature { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: 55px; color: #aac4e0; border-top: 1px solid #293b56; padding-top: 32px; }
+.footer-signature > span { font-size: clamp(60px, 15vw, 212px); line-height: .86; font-weight: 750; letter-spacing: .025em; }
+.footer-signature > svg { width: clamp(40px, 13vw, 180px); height: auto; color: var(--brand-cyan); }
+.footer-bottom { margin-top: 32px; }
+
+@media (max-width: 1100px) {
+  .home-page .hero-grid { grid-template-columns: 1.05fr 1fr; gap: 32px; }
+  .service-overview { padding: 23px; }
+  .overview-title { min-height: 185px; }
+  .overview-emblem { flex-basis: 170px; }
+  .overview-title p { font-size: 25px; }
+  .overview-service { padding: 13px; }
+  .brand-principles-grid > div { padding: 23px 18px; gap: 12px; }
+  .brand-principles svg { display: none; }
+}
+@media (max-width: 820px) {
+  .home-page .hero-grid { grid-template-columns: 1fr; gap: 42px; padding-block: 55px 42px; }
+  .home-page .hero-copy h1 { font-size: clamp(44px, 8vw, 66px); }
+  .service-overview { max-width: 650px; padding: 26px; }
+  .overview-title { justify-content: center; gap: 25px; }
+  .overview-emblem { flex-basis: 200px; }
+  .overview-manifesto { flex: 0 1 220px; }
+  .overview-title p { font-size: 32px; }
+  .overview-service { padding: 18px; }
+  .overview-service strong { font-size: 14px; }
+  .brand-principles-grid > div { gap: 10px; padding: 20px 14px; align-items: flex-start; }
+  .principle-index { margin-top: 7px; }
+  .brand-principles strong { font-size: 17px; }
+}
+@media (max-width: 580px) {
+  .home-page .hero-grid { padding-top: 42px; gap: 34px; }
+  .home-page .hero-copy h1 { font-size: clamp(35px, 9.5vw, 53px); letter-spacing: -.06em; }
+  .home-hero .hero-copy > p { font-size: 14px; line-height: 1.85; }
+  .home-hero .hero-actions { gap: 14px; }
+  .home-hero .hero-actions .button { gap: 14px; padding-inline: 17px; font-size: 12px; }
+  .service-overview { padding: 22px 18px; border-top-right-radius: 24px; }
+  .overview-title { min-height: 176px; gap: 12px; padding-block: 15px; }
+  .overview-emblem { flex-basis: 160px; }
+  .overview-manifesto { flex-basis: 150px; }
+  .overview-title p { font-size: clamp(22px, 6vw, 29px); }
+  .overview-manifesto .overview-label { font-size: 7px; }
+  .overview-service { padding: 14px 11px; }
+  .overview-service strong { font-size: 11px; }
+  .brand-principles-grid { grid-template-columns: 1fr; }
+  .brand-principles-grid > div, .brand-principles-grid > div:first-child, .brand-principles-grid > div:last-child { align-items: center; padding: 17px 0; border-left: 0; border-bottom: 1px solid #d5dfef; gap: 18px; }
+  .brand-principles-grid > div:last-child { border-bottom: 0; }
+  .brand-principles p { display: flex; align-items: baseline; flex-wrap: wrap; gap: 2px 16px; }
+  .brand-principles strong { min-width: 68px; }
+  .brand-principles p > span { margin: 0; font-size: 10px; }
+  .principle-index { margin: 0; }
+  .footer-signature { margin-top: 32px; padding-top: 24px; gap: 10px; }
+  .footer-signature > span { font-size: 15vw; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-service-card:hover { transform: none; }
+}

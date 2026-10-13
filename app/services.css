@@ -63,12 +63,22 @@
 .svc-delivery li svg { color: var(--brand-action); }
 
 .svc-process { scroll-margin-top: 100px; }
-.svc-faq .section-heading { max-width: 385px; }
-.svc-faq .faq-list details summary { display: flex; min-height: 44px; overflow-wrap: anywhere; justify-content: space-between; gap: 24px; align-items: center; list-style: none; cursor: pointer; }
+.svc-faq-grid { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: clamp(40px, 6vw, 90px); align-items: start; }
+.svc-faq-intro, .svc-faq .faq-list { min-width: 0; }
+.svc-faq .section-heading { display: block; max-width: 385px; margin-bottom: 0; }
+.svc-faq .section-heading h2 { font-size: clamp(32px, 3.5vw, 47px); line-height: 1.12; text-wrap: balance; }
+.svc-faq .section-heading > p { max-width: 36ch; margin: 22px 0 0; font-size: 15px; line-height: 1.8; overflow-wrap: anywhere; }
+.svc-faq-contact { display: inline-flex; min-height: 44px; align-items: center; gap: 10px; margin-top: 22px; font-size: 13px; }
+.svc-faq-contact svg { color: var(--brand-action); }
+.svc-faq .faq-list { display: grid; gap: 12px; }
+.svc-faq .faq-list details { min-width: 0; padding: 0; border: 1px solid var(--line); border-radius: 10px; background: var(--brand-surface); }
+.svc-faq .faq-list details[open] { border-color: color-mix(in srgb, var(--brand-action) 45%, var(--line)); box-shadow: inset 3px 0 0 var(--brand-action); }
+.svc-faq .faq-list details summary { display: grid; grid-template-columns: minmax(0, 1fr) auto; min-height: 76px; padding: 20px 22px; overflow-wrap: anywhere; gap: 20px; align-items: center; list-style: none; cursor: pointer; font-size: 15px; line-height: 1.6; border-radius: 9px; }
+.svc-faq .faq-list summary:focus-visible { outline: 2px solid var(--brand-action); outline-offset: 4px; }
 .svc-faq summary::-webkit-details-marker { display: none; }
-.svc-faq summary svg { flex-shrink: 0; color: var(--brand-action); transition: transform 160ms ease; }
+.svc-faq summary svg { width: 30px; height: 30px; padding: 5px; border-radius: 50%; background: var(--brand-pale); color: var(--brand-action); transition: transform 160ms ease; }
 .svc-faq details[open] summary svg { transform: rotate(45deg); }
-.svc-faq .faq-list details > p { color: var(--ink-muted); font-size: 14px; line-height: 1.9; }
+.svc-faq .faq-list details > p { margin: 0; padding: 0 22px 23px; color: var(--ink-muted); font-size: 14px; line-height: 1.85; overflow-wrap: anywhere; }
 .svc-related { padding-top: 0; }
 .svc-related-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 45px; margin-top: 23px; }
 .svc-related-link { min-width: 0; overflow-wrap: anywhere; }
@@ -109,6 +119,9 @@
   .svc-capability p { grid-column: 2; grid-row: 2; margin: 0; }
   .svc-capability-arrow { grid-column: 3; grid-row: 1; }
   .svc-delivery { grid-template-columns: 1fr; gap: 15px; }
+  .svc-faq-grid { grid-template-columns: 1fr; gap: 32px; }
+  .svc-faq .section-heading { max-width: 600px; }
+  .svc-faq .section-heading > p { max-width: 60ch; }
   .svc-related-grid { gap: 28px; }
 }
 
@@ -136,6 +149,9 @@
   .svc-channel-list { gap: 7px; }
   .svc-channel-list span { font-size: 10px; padding: 6px 9px; }
   .svc-delivery ul { display: grid; gap: 12px; }
+  .svc-faq .faq-list details summary { min-height: 72px; padding: 17px 16px; gap: 14px; font-size: 14px; }
+  .svc-faq .faq-list details > p { padding: 0 16px 20px; }
+  .svc-faq .section-heading > p { font-size: 14px; }
   .svc-related-grid { grid-template-columns: 1fr; gap: 8px; }
 }
 

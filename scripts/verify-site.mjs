@@ -212,7 +212,8 @@ for (const [index, page] of pages.entries()) {
     const section = page.markup.match(new RegExp(`<${landmark}\\b[^>]*>([\\s\\S]*?)<\\/${landmark}>`, 'i'))?.[1] || '';
     const wordmarks = [...section.matchAll(/<span\b[^>]*>([^<]*)<\/span>/gi)]
       .map(match => textContent(match[1])).filter(text => /^VELARO(?:\b|\.)/.test(text));
-    check(wordmarks.length === 1 && wordmarks[0] === 'VELARO' && !/VELARO\s*\./.test(textContent(section)), `${path}: ${landmark} must contain the exact VELARO wordmark without a dot`);
+    // The footer also has a decorative large wordmark; every instance must retain the brand spelling.
+    check(wordmarks.length >= 1 && wordmarks.every(wordmark => wordmark === 'VELARO') && !/VELARO\s*\./.test(textContent(section)), `${path}: ${landmark} must contain the exact VELARO wordmark without a dot`);
   }
 
   // Read real anchors only; Next's serialized scripts have already been removed.

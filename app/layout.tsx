@@ -7,12 +7,14 @@ import { site, siteUrl } from '@/lib/site';
 import { organizationSchema } from '@/lib/structured-data';
 import './design-system.css';
 import './previews.css';
+import './preview-motion.css';
 import './project-samples.css';
 import './services.css';
 import './secondary.css';
 import './home.css';
 import './about-navigation.css';
 import './workflow-explorer.css';
+import './brand-identity.css';
 
 const inter = localFont({ src: '../public/fonts/inter-latin.woff2', variable: '--font-body', weight: '100 900', display: 'swap' });
 

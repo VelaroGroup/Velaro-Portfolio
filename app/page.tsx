@@ -25,7 +25,10 @@ const offerings = [
 function ServiceOverview() {
   return <div className="service-overview" aria-label="Explore Velaro’s four core services">
     <div className="overview-top"><span>DESIGN + TECHNOLOGY</span><span className="overview-studio">VELARO</span></div>
-    <div className="overview-title"><span className="overview-label">ONE STUDIO. YOUR NEXT CHAPTER.</span><p>Everything starts<br />with your business.</p></div>
+    <div className="overview-title">
+      <div className="overview-emblem" aria-hidden="true"><span className="overview-orbit" /><Image src={velaroMark} alt="" width={240} height={240} sizes="(max-width: 580px) 160px, 220px" /></div>
+      <div className="overview-manifesto"><span className="overview-label">THE VELARO APPROACH</span><p>Vision.<br />Built into reality.</p></div>
+    </div>
     <div className="overview-services">{offerings.map(({ slug, number, name, Icon }) => <Link key={slug} href={'/services/' + slug} className="overview-service"><span className="overview-service-top"><Icon size={23} aria-hidden="true" /><span>{number}</span></span><strong>{name}</strong><ArrowUpRight className="overview-arrow" size={17} aria-hidden="true" /></Link>)}</div>
     <div className="overview-note"><span />Built individually. Connected where it matters.</div>
   </div>;
@@ -42,7 +45,7 @@ export default async function Home() {
         <div className="hero-copy">
           <span className="eyebrow"><span className="eyebrow-dash" /> YOUR DIGITAL GROWTH STUDIO</span>
           <h1>Digital solutions.<br /><span>Built around you.</span></h1>
-          <p>Custom platforms, business automation, websites and online stores. We bring design and technology together around your business, your customers and your next step.</p>
+          <p>We turn the way you work into a digital advantage. Custom platforms, business automation, websites and online stores — designed with purpose, built around your business.</p>
           <div className="hero-actions"><Link href="/contact" className="button button-primary">Let’s build your next chapter <ArrowRight size={19} aria-hidden="true" /></Link><Link href="#services" className="text-link">Explore our services <ArrowUpRight size={17} aria-hidden="true" /></Link></div>
           <div className="hero-assurance"><span><Check size={14} aria-hidden="true" /> Shaped around your business</span><span><Check size={14} aria-hidden="true" /> Designed for your brand</span></div>
         </div>
@@ -50,6 +53,12 @@ export default async function Home() {
       </div>
       <div className="shell hero-footnote"><span>Based in Lebanon.<strong> Working across the Middle East and beyond.</strong></span><Link href="/about">MEET VELARO <ArrowRight size={14} aria-hidden="true" /></Link></div>
     </section>
+
+    <div className="brand-principles" aria-label="The principles behind Velaro"><div className="shell brand-principles-grid">
+      <div><span className="principle-index" aria-hidden="true">01 /</span><p><strong>Velocity</strong><span>Move forward with purpose.</span></p><ArrowUpRight size={22} aria-hidden="true" /></div>
+      <div><span className="principle-index" aria-hidden="true">02 /</span><p><strong>Vision</strong><span>See what your business can become.</span></p><ArrowUpRight size={22} aria-hidden="true" /></div>
+      <div><span className="principle-index" aria-hidden="true">03 /</span><p><strong>Value</strong><span>Build what makes a difference.</span></p><ArrowUpRight size={22} aria-hidden="true" /></div>
+    </div></div>
 
     <section className="section home-services" id="services"><div className="shell">
       <SectionHeading eyebrow="FOUR CORE SERVICES" title="The right solution for your next step." description="Choose one service or bring them together. Every project starts with what your business needs." />

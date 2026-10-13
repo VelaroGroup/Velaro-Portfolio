@@ -48,10 +48,13 @@ The Cloudflare target uses OpenNext to adapt the same Next.js build to Workers, 
 | Shared navigation, footer, brand, CTA, and section components | `components/` |
 | Illustrative interfaces and workflow explorer | `components/platform-preview.tsx`, `components/workflow-explorer.tsx` |
 | Base design, interface previews, service and secondary page styles | `app/design-system.css`, `app/previews.css`, `app/services.css`, `app/secondary.css` |
+| Shared brand treatment and optional pointer-driven preview motion | `app/brand-identity.css`, `app/preview-motion.css` |
 | Shared error recovery and social link image | `app/error.tsx`, `app/opengraph-image.tsx` |
 | Production configuration and HTTP checks | `next.config.ts`, `scripts/verify-site.mjs` |
 
 The design follows Velaro's established blue/cyan logo and Inter typography, with navy `#0a1628`, blue `#1e3a8a`, action blue `#2f6cf4`, cyan `#22d3ee`, white and cool canvas `#f5f7fb`. Shared tokens live in `app/design-system.css`. The **VELARO** wordmark has no trailing punctuation. Original logo and concept image files remain unchanged. Their page components use static imports, producing hashed image sources and immutable optimized responses on Workers. Inter loads locally through `next/font/local`; keep the supplied font licences with those assets.
+
+The brand treatment adds a deep navy homepage hero, the original mark at display scale, a Velocity / Vision / Value strip, angled accents and a decorative footer wordmark. Service FAQs use a stacked introduction and native keyboard-accessible disclosure cards. On the custom software service page, the workspace and workflow previews opt into `PlatformPreview`'s `tilt` prop: pointer movement controls a gentle 3D rotation, while touch devices and reduced-motion preferences retain a static preview.
 
 The About page preserves Velaro's original studio identity, Lebanon/Middle East positioning, name origin and **Velocity, Vision, Value** principles, alongside the current custom platform and automation offer. Company history and results must stay grounded in verified material.
 

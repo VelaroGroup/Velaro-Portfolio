@@ -73,7 +73,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
             </div>
           </div>
           <div className="svc-hero-preview">
-            <PlatformPreview variant={service.preview} />
+            <PlatformPreview variant={service.preview} tilt={slug === 'custom-software'} />
           </div>
         </div>
       </section>
@@ -110,7 +110,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
             <Link className="button button-accent" href={`/contact?service=${slug}`}>Let’s map your process <ArrowUpRight size={17} aria-hidden="true" /></Link>
           </div>
           <div className="svc-connected-preview">
-            <PlatformPreview variant={service.band.preview} compact />
+            <PlatformPreview variant={service.band.preview} compact tilt={slug === 'custom-software'} />
           </div>
         </div>
       </section>
@@ -149,13 +149,16 @@ export default async function ServicePage({ params }: ServicePageProps) {
         </div>
       </section>
 
-      <section className="section svc-faq">
-        <div className="shell two-col">
-          <SectionHeading eyebrow="COMMON QUESTIONS" title="A little more clarity." description="Every project begins with a conversation about your business." />
+      <section className="section svc-faq" aria-label="Common questions">
+        <div className="shell svc-faq-grid">
+          <div className="svc-faq-intro">
+            <SectionHeading eyebrow="COMMON QUESTIONS" title="A little more clarity." description="Explore the scope, integrations and practical details before you start. Your goals and the tools you already use help shape the right next step." />
+            <Link className="text-link svc-faq-contact" href={`/contact?service=${slug}`}>Talk through your project <ArrowUpRight size={17} aria-hidden="true" /></Link>
+          </div>
           <div className="faq-list">
-            {service.questions.map(({ q, a }) => (
-              <details key={q}>
-                <summary>{q}<Plus size={18} strokeWidth={1.5} aria-hidden="true" /></summary>
+            {service.questions.map(({ q, a }, index) => (
+              <details key={q} open={index === 0}>
+                <summary><span>{q}</span><Plus size={20} strokeWidth={1.5} aria-hidden="true" /></summary>
                 <p>{a}</p>
               </details>
             ))}
