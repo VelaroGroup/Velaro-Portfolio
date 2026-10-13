@@ -41,7 +41,7 @@ export default function About() {
             <a href="#our-approach" className="text-link">How we work</a>
           </div>
         </div>
-        <figure className="about-brand-art">
+        <figure className="about-brand-art" data-card-motion="dark">
           <div className="about-brand-top"><span>DIGITAL GROWTH STUDIO</span><ArrowUpRight aria-hidden="true" /></div>
           <div className="about-brand-mark"><Image src={velaroMark} alt="Velaro’s original blue and cyan V logo" width={680} height={680} sizes="(max-width: 600px) 230px, 260px" /></div>
           <figcaption>
@@ -67,7 +67,7 @@ export default function About() {
     <section className="section about-values">
       <div className="shell">
         <SectionHeading eyebrow="OUR BRAND PILLARS" title="Three principles. One direction." />
-        <div className="about-principles">{principles.map(({ number, title, description, Icon }) => <article key={number}>
+        <div className="about-principles">{principles.map(({ number, title, description, Icon }) => <article key={number} data-card-motion>
           <div className="about-principle-top"><span>{number}</span><Icon aria-hidden="true" /></div>
           <h3>{title}</h3><p>{description}</p>
         </article>)}</div>

@@ -67,10 +67,12 @@ function HospitalityPreview({ compact }: { compact: boolean }) {
   return <div className="sample-hospitality"><div className="sample-stay-nav"><strong>THE STAY</strong><span>Spaces · Experience · Visit</span></div><div className="sample-stay-hero"><div className="sample-stay-copy"><span className="sample-eyebrow">A BOUTIQUE STAY CONCEPT</span><div className="sample-stay-title">A slower<br />kind of stay.</div><p>Quiet spaces. Considered details. Time that feels like yours.</p><span className="sample-stay-cta">Find your room <ArrowRight aria-hidden="true" /></span></div><div className="sample-stay-image"><Image src={architectureConcept} alt="Illustrative sunlit stone courtyard with an olive tree" fill sizes="(max-width: 600px) 85vw, (max-width: 1000px) 40vw, 600px" /><span>Illustrative setting</span></div></div><div className="sample-stay-explore"><div><span className="sample-section-label">SPACES TO UNWIND</span><strong>Courtyard suite</strong><span><Users aria-hidden="true" />2 guests <span aria-hidden="true">·</span> Private terrace</span></div>{!compact && <div className="sample-stay-detail"><span className="sample-section-label">MADE PERSONAL</span><strong>Your stay, your pace.</strong><span>Share your dates and preferences.</span></div>}<span className="sample-stay-inquiry">Inquire about a stay <ArrowRight aria-hidden="true" /></span></div></div>;
 }
 
-export function ProjectSamplePreview({ variant, compact = false }: { variant: SamplePreviewVariant; compact?: boolean }) {
-  return <figure className={`project-sample-preview sample-${variant}${compact ? ' sample-compact' : ''}`}>
-    <div className="sample-frame"><div className="sample-chrome"><span className="sample-window-dots" aria-hidden="true"><i /><i /><i /></span><span>{sampleTitles[variant]}</span><span className="sample-chrome-label">Concept</span></div>
+export function ProjectSamplePreview({ variant, compact = false, tilt = true }: { variant: SamplePreviewVariant; compact?: boolean; tilt?: boolean }) {
+  const frame = <div className="sample-frame" data-card-motion={tilt ? '' : undefined}><div className="sample-chrome"><span className="sample-window-dots" aria-hidden="true"><i /><i /><i /></span><span>{sampleTitles[variant]}</span><span className="sample-chrome-label">Concept</span></div>
       {variant === 'white-label' ? <PortalPreview compact={compact} /> : variant === 'dispatch' ? <DispatchPreview compact={compact} /> : variant === 'booking' ? <BookingPreview compact={compact} /> : variant === 'documents' ? <DocumentsPreview compact={compact} /> : variant === 'wholesale' ? <WholesalePreview compact={compact} /> : <HospitalityPreview compact={compact} />}
-    </div><figcaption>Illustrative concept · Sample content and data</figcaption>
+    </div>;
+
+  return <figure className={`project-sample-preview sample-${variant}${compact ? ' sample-compact' : ''}`}>
+    {tilt ? <div className="card-motion-surface">{frame}</div> : frame}<figcaption>Illustrative concept · Sample content and data</figcaption>
   </figure>;
 }

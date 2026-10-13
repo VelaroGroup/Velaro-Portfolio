@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useEffect, useId, useRef, useState } from 'react';
+import { useId, useState } from 'react';
 import { ArrowRight, Check, CheckCheck, CircleCheck, ClipboardList, Database, LayoutDashboard, MessageCircle, MoreHorizontal, Search, Send, Settings2, ShieldCheck, ShoppingBag, SlidersHorizontal, Sparkles, Users, Workflow } from 'lucide-react';
 import architectureConcept from '@/public/images/concept-architecture.png';
 import ceramicsConcept from '@/public/images/concept-ceramics.png';
@@ -63,71 +63,9 @@ function WebsitePreview({ commerce = false }: { commerce?: boolean }) {
 
 const titles: Record<PreviewVariant, string> = { inbox: 'Customer conversations', workflow: 'Connected workflows', platform: 'Your custom workspace', website: 'A considered web experience', commerce: 'From discovery to checkout' };
 
-export function PlatformPreview({ variant = 'inbox', compact = false, tilt = false }: { variant?: PreviewVariant; compact?: boolean; tilt?: boolean }) {
+export function PlatformPreview({ variant = 'inbox', compact = false, tilt = true }: { variant?: PreviewVariant; compact?: boolean; tilt?: boolean }) {
   const captionId = useId();
-  const tiltSurface = useRef<HTMLDivElement>(null);
+  const frame = <div className="preview-frame" data-card-motion={tilt ? '' : undefined}><div className="preview-chrome"><span className="window-dots" aria-hidden="true"><i /><i /><i /></span><span>{titles[variant]}</span><span className="preview-chrome-tag">Concept</span></div>{variant === 'inbox' ? <InboxPreview /> : variant === 'workflow' ? <WorkflowPreview /> : variant === 'platform' ? <WorkspacePreview /> : <WebsitePreview commerce={variant === 'commerce'} />}</div>;
 
-  useEffect(() => {
-    const surface = tiltSurface.current;
-    if (!tilt || !surface) return;
-
-    const motionAllowed = window.matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)');
-    let animationFrame: number | null = null;
-    let pointerX = 0;
-    let pointerY = 0;
-
-    function reset() {
-      if (animationFrame !== null) window.cancelAnimationFrame(animationFrame);
-      animationFrame = null;
-      surface!.removeAttribute('data-tilting');
-      for (const property of ['--preview-rotate-x', '--preview-rotate-y', '--preview-light-x', '--preview-light-y']) {
-        surface!.style.removeProperty(property);
-      }
-    }
-
-    function update() {
-      animationFrame = null;
-      // Measure the stationary surface, not the transformed card, to avoid jitter.
-      const bounds = surface!.getBoundingClientRect();
-      if (!bounds.width || !bounds.height) return;
-      const x = Math.min(1, Math.max(0, (pointerX - bounds.left) / bounds.width));
-      const y = Math.min(1, Math.max(0, (pointerY - bounds.top) / bounds.height));
-      surface!.style.setProperty('--preview-rotate-x', `${((0.5 - y) * 7).toFixed(2)}deg`);
-      surface!.style.setProperty('--preview-rotate-y', `${((x - 0.5) * 9).toFixed(2)}deg`);
-      surface!.style.setProperty('--preview-light-x', `${(x * 100).toFixed(1)}%`);
-      surface!.style.setProperty('--preview-light-y', `${(y * 100).toFixed(1)}%`);
-      surface!.setAttribute('data-tilting', 'true');
-    }
-
-    function followPointer(event: PointerEvent) {
-      if (!motionAllowed.matches || event.pointerType === 'touch') {
-        reset();
-        return;
-      }
-      pointerX = event.clientX;
-      pointerY = event.clientY;
-      if (animationFrame === null) animationFrame = window.requestAnimationFrame(update);
-    }
-
-    surface.addEventListener('pointerenter', followPointer);
-    surface.addEventListener('pointermove', followPointer);
-    surface.addEventListener('pointerleave', reset);
-    surface.addEventListener('pointercancel', reset);
-    motionAllowed.addEventListener('change', reset);
-    window.addEventListener('blur', reset);
-
-    return () => {
-      reset();
-      surface.removeEventListener('pointerenter', followPointer);
-      surface.removeEventListener('pointermove', followPointer);
-      surface.removeEventListener('pointerleave', reset);
-      surface.removeEventListener('pointercancel', reset);
-      motionAllowed.removeEventListener('change', reset);
-      window.removeEventListener('blur', reset);
-    };
-  }, [tilt]);
-
-  const frame = <div className="preview-frame"><div className="preview-chrome"><span className="window-dots" aria-hidden="true"><i /><i /><i /></span><span>{titles[variant]}</span><span className="preview-chrome-tag">Concept</span></div>{variant === 'inbox' ? <InboxPreview /> : variant === 'workflow' ? <WorkflowPreview /> : variant === 'platform' ? <WorkspacePreview /> : <WebsitePreview commerce={variant === 'commerce'} />}</div>;
-
-  return <figure className={`platform-preview preview-${variant}${compact ? ' preview-compact' : ''}${tilt ? ' preview-tilt' : ''}`} aria-describedby={captionId}>{tilt ? <div className="preview-tilt-surface" ref={tiltSurface}>{frame}</div> : frame}<figcaption id={captionId}>{variant === 'inbox' ? 'Interactive concept · Sample data · Select a channel to explore' : 'Illustrative concept · Built around your business'}</figcaption></figure>;
+  return <figure className={`platform-preview preview-${variant}${compact ? ' preview-compact' : ''}`} aria-describedby={captionId}>{tilt ? <div className="card-motion-surface">{frame}</div> : frame}<figcaption id={captionId}>{variant === 'inbox' ? 'Interactive concept · Sample data · Select a channel to explore' : 'Illustrative concept · Built around your business'}</figcaption></figure>;
 }

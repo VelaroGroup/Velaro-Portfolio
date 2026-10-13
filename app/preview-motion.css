@@ -1,56 +1,61 @@
-/* A stationary hit area keeps pointer tracking smooth while the card tilts. */
-.preview-tilt-surface {
-  position: relative;
-  perspective: 1200px;
-}
+/* The frame moves inside this stationary hit area; its caption stays readable. */
+.card-motion-surface { position: relative; min-width: 0; }
 
-.preview-tilt .preview-frame {
-  position: relative;
-  border-color: color-mix(in srgb, var(--brand-action) 22%, var(--line));
-  box-shadow: 0 18px 46px #0a162812, 0 2px 7px #0a16280a;
-}
+[data-card-motion] { position: relative; }
 
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  .preview-tilt .preview-frame {
-    transform: translateY(0) rotateX(0deg) rotateY(0deg);
+  [data-card-motion] {
     transform-origin: center;
-    transition: transform 440ms cubic-bezier(.2, .75, .25, 1), box-shadow 440ms ease, border-color 440ms ease;
+    transition: transform 420ms cubic-bezier(.2, .75, .25, 1), box-shadow 350ms ease, border-color 350ms ease, background-color 250ms ease;
   }
 
-  .preview-tilt .preview-frame::after {
+  [data-card-motion]:not([data-card-tilting]) { transform: none; }
+
+  [data-card-motion][data-card-tilting] {
+    transform: perspective(1100px) translateY(-4px) rotateX(var(--card-rotate-x, 0deg)) rotateY(var(--card-rotate-y, 0deg));
+    border-color: color-mix(in srgb, var(--brand-action) 46%, var(--line));
+    box-shadow: 0 22px 46px #0a16281a, 0 5px 14px #0a16280c, 0 0 0 1px #06b6d413;
+    transition: transform 160ms ease-out, box-shadow 350ms ease, border-color 350ms ease, background-color 250ms ease;
+    will-change: transform;
+  }
+
+  [data-card-motion="dark"][data-card-tilting] {
+    border-color: color-mix(in srgb, var(--brand-cyan) 55%, #385070);
+    box-shadow: 0 22px 46px #02081736, 0 5px 14px #0208171a, 0 0 0 1px #06b6d426;
+  }
+
+  /* Only preview frames own a light overlay; card decorations remain independent. */
+  :is(.preview-frame, .sample-frame)[data-card-motion]::after {
     content: '';
     position: absolute;
     z-index: 2;
     inset: 0;
     border-radius: inherit;
     pointer-events: none;
-    background: radial-gradient(circle at var(--preview-light-x, 50%) var(--preview-light-y, 50%), color-mix(in srgb, var(--brand-cyan) 13%, transparent), transparent 65%);
+    background: radial-gradient(circle at var(--card-light-x, 50%) var(--card-light-y, 50%), color-mix(in srgb, var(--brand-cyan) 9%, transparent), transparent 65%);
     opacity: 0;
     transition: opacity 350ms ease;
   }
 
-  .preview-tilt-surface[data-tilting] .preview-frame {
-    transform: translateY(-5px) rotateX(var(--preview-rotate-x, 0deg)) rotateY(var(--preview-rotate-y, 0deg));
-    border-color: color-mix(in srgb, var(--brand-action) 58%, var(--line));
-    box-shadow: 0 30px 65px #0a162826, 0 8px 20px #0a162810, 0 0 0 1px color-mix(in srgb, var(--brand-cyan) 10%, transparent);
-    transition: transform 160ms ease-out, box-shadow 350ms ease, border-color 350ms ease;
-  }
+  :is(.preview-frame, .sample-frame)[data-card-tilting]::after { opacity: 1; }
 
-  .preview-tilt-surface[data-tilting] .preview-frame::after { opacity: 1; }
-
-  .preview-tilt :is(.kanban-card, .workflow-node) {
+  .preview-frame[data-card-motion] :is(.kanban-card, .workflow-node) {
     transition: transform 350ms ease, box-shadow 350ms ease;
   }
 
-  .preview-tilt-surface[data-tilting] :is(.kanban-card, .workflow-node) {
-    transform: translateY(-3px);
-    box-shadow: 0 9px 16px #0a162810;
+  .preview-frame[data-card-tilting] :is(.kanban-card, .workflow-node) {
+    transform: translateY(-2px);
+    box-shadow: 0 7px 14px #0a16280e;
   }
 }
 
-/* Touch and reduced-motion readers always get a stable, fully readable card. */
+/* Motion is decorative: touch, keyboard focus and reduced motion stay stable. */
 @media (prefers-reduced-motion: reduce), (hover: none), (pointer: coarse) {
-  .preview-tilt .preview-frame,
-  .preview-tilt :is(.kanban-card, .workflow-node) { transform: none; }
-  .preview-tilt .preview-frame::after { display: none; }
+  [data-card-motion], [data-card-motion]:hover,
+  .preview-frame[data-card-motion] :is(.kanban-card, .workflow-node) {
+    transform: none;
+    transition: none;
+  }
+
+  :is(.preview-frame, .sample-frame)[data-card-motion]::after { display: none; }
 }

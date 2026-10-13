@@ -29,7 +29,7 @@ function ServiceOverview() {
       <div className="overview-emblem" aria-hidden="true"><span className="overview-orbit" /><Image src={velaroMark} alt="" width={240} height={240} sizes="(max-width: 580px) 160px, 220px" /></div>
       <div className="overview-manifesto"><span className="overview-label">THE VELARO APPROACH</span><p>Vision.<br />Built into reality.</p></div>
     </div>
-    <div className="overview-services">{offerings.map(({ slug, number, name, Icon }) => <Link key={slug} href={'/services/' + slug} className="overview-service"><span className="overview-service-top"><Icon size={23} aria-hidden="true" /><span>{number}</span></span><strong>{name}</strong><ArrowUpRight className="overview-arrow" size={17} aria-hidden="true" /></Link>)}</div>
+    <div className="overview-services">{offerings.map(({ slug, number, name, Icon }) => <Link key={slug} href={'/services/' + slug} className="overview-service" data-card-motion="dark"><span className="overview-service-top"><Icon size={23} aria-hidden="true" /><span>{number}</span></span><strong>{name}</strong><ArrowUpRight className="overview-arrow" size={17} aria-hidden="true" /></Link>)}</div>
     <div className="overview-note"><span />Built individually. Connected where it matters.</div>
   </div>;
 }
@@ -62,7 +62,7 @@ export default async function Home() {
 
     <section className="section home-services" id="services"><div className="shell">
       <SectionHeading eyebrow="FOUR CORE SERVICES" title="The right solution for your next step." description="Choose one service or bring them together. Every project starts with what your business needs." />
-      <div className="home-service-grid">{offerings.map(({ slug, number, name, line, description, details, Icon }) => <Link key={slug} href={'/services/' + slug} className="home-service-card"><div className="home-service-card-top"><span>{number}</span><Icon size={27} aria-hidden="true" /></div><h3>{name}</h3><p className="home-service-line">{line}</p><p>{description}</p><div className="home-service-card-bottom"><span>{details}</span><ArrowUpRight size={21} aria-hidden="true" /></div></Link>)}</div>
+      <div className="home-service-grid">{offerings.map(({ slug, number, name, line, description, details, Icon }) => <Link key={slug} href={'/services/' + slug} className="home-service-card" data-card-motion><div className="home-service-card-top"><span>{number}</span><Icon size={27} aria-hidden="true" /></div><h3>{name}</h3><p className="home-service-line">{line}</p><p>{description}</p><div className="home-service-card-bottom"><span>{details}</span><ArrowUpRight size={21} aria-hidden="true" /></div></Link>)}</div>
     </div></section>
 
     <section className="section dark-section platform-section"><div className="shell platform-section-grid">
@@ -73,8 +73,8 @@ export default async function Home() {
     <section className="section home-presence"><div className="shell">
       <SectionHeading eyebrow="WEBSITES & E-COMMERCE" title="Make the first impression count." description="A website that tells your story. A store that makes shopping feel effortless. Each deserves a considered experience of its own." />
       <div className="home-work-grid">
-        <Link href="/services/web" className="home-work-card"><PlatformPreview variant="website" compact /><div className="home-work-title"><div><span className="concept-label">WEBSITE DESIGN & DEVELOPMENT</span><h3>A clear story. A confident next step.</h3><p>Turn your expertise into a website people can understand, explore and act on.</p></div><ArrowUpRight size={24} aria-hidden="true" /></div></Link>
-        <Link href="/services/ecommerce" className="home-work-card"><PlatformPreview variant="commerce" compact /><div className="home-work-title"><div><span className="concept-label">ONLINE STORES & COMMERCE</span><h3>A better journey, from browse to buy.</h3><p>Bring your products, brand and shopping experience together in a store built to grow.</p></div><ArrowUpRight size={24} aria-hidden="true" /></div></Link>
+        <Link href="/services/web" className="home-work-card" data-card-motion><PlatformPreview variant="website" compact tilt={false} /><div className="home-work-title"><div><span className="concept-label">WEBSITE DESIGN & DEVELOPMENT</span><h3>A clear story. A confident next step.</h3><p>Turn your expertise into a website people can understand, explore and act on.</p></div><ArrowUpRight size={24} aria-hidden="true" /></div></Link>
+        <Link href="/services/ecommerce" className="home-work-card" data-card-motion><PlatformPreview variant="commerce" compact tilt={false} /><div className="home-work-title"><div><span className="concept-label">ONLINE STORES & COMMERCE</span><h3>A better journey, from browse to buy.</h3><p>Bring your products, brand and shopping experience together in a store built to grow.</p></div><ArrowUpRight size={24} aria-hidden="true" /></div></Link>
       </div><Link href="/work" className="text-link work-all-link">Explore our work & concepts <ArrowRight size={17} aria-hidden="true" /></Link>
     </div></section>
 
@@ -86,7 +86,7 @@ export default async function Home() {
 
     {homeConcepts.length > 0 && <section className="section home-concepts"><div className="shell">
       <SectionHeading eyebrow="SELECTED CONCEPTS" title="Possibilities for the way you work." description="Explore a few illustrative concepts, from a platform under your own brand to the everyday processes behind it." />
-      <div className="home-concept-grid">{homeConcepts.map((project, index) => <article className="home-concept-card" key={project.slug}>
+      <div className="home-concept-grid">{homeConcepts.map((project, index) => <article className="home-concept-card" data-card-motion key={project.slug}>
         <div className="home-concept-meta"><span className="home-concept-number" aria-hidden="true">0{index + 1}</span><span>{projectCategoryLabel(project.service)}</span></div>
         <h3>{project.title}</h3>
         <p>{project.summary}</p>

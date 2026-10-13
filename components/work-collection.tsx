@@ -18,8 +18,8 @@ export function WorkCollection({ projects, activeCategory = 'All work' }: { proj
       <p className="work-context">{onlyConcepts ? 'Our current collection is a set of illustrative concepts, showing the problems we can help you solve.' : 'Explore the collection. Illustrative concepts are clearly marked throughout.'}</p>
     </div></section>
     {featured && <section className="work-featured-section"><div className="shell">
-      <article className="work-featured">
-        <div className="work-featured-visual"><span className="project-kind">{featured.kind === 'concept' ? 'Featured concept' : 'Featured project'}</span><ProjectVisual project={featured} /></div>
+      <article className="work-featured" data-card-motion>
+        <div className="work-featured-visual"><span className="project-kind">{featured.kind === 'concept' ? 'Featured concept' : 'Featured project'}</span><ProjectVisual project={featured} tilt={false} /></div>
         <Link href={`/work/${featured.slug}`} className="work-featured-copy"><div><span className="eyebrow">{projectCategoryLabel(featured.service)}</span><h2>{featured.title}</h2><p>{featured.summary}</p></div><span className="work-featured-arrow"><ArrowUpRight aria-hidden="true" /></span></Link>
       </article>
     </div></section>}

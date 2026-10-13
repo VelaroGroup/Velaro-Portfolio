@@ -12,5 +12,5 @@ const steps = [
 ] as const;
 
 export function ProcessSteps() {
-  return <div className="process-steps">{steps.map(([title, description], index) => <div className="process-step" key={title}><div className="process-step-top"><span>0{index + 1}</span>{index < steps.length - 1 && <ArrowUpRight size={21} aria-hidden="true" />}</div><h3>{title}</h3><p>{description}</p></div>)}</div>;
+  return <div className="process-steps">{steps.map(([title, description], index) => <div className="process-step" data-card-motion key={title}><div className="process-step-top"><span>0{index + 1}</span>{index < steps.length - 1 && <ArrowUpRight size={21} aria-hidden="true" />}</div><h3>{title}</h3><p>{description}</p></div>)}</div>;
 }

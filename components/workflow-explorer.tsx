@@ -16,7 +16,7 @@ export function WorkflowExplorer() {
   const panelId = useId();
   const example = examples[selected];
 
-  return <div className="workflow-explorer">
+  return <div className="workflow-explorer" data-card-motion>
     <div className="pain-options" role="group" aria-label="Choose a business challenge">
       <span className="eyebrow workflow-menu-label">Choose a challenge</span>
       {examples.map(({ title, Icon }, index) => <button

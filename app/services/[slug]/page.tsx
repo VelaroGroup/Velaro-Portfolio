@@ -73,7 +73,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
             </div>
           </div>
           <div className="svc-hero-preview">
-            <PlatformPreview variant={service.preview} tilt={slug === 'custom-software'} />
+            <PlatformPreview variant={service.preview} />
           </div>
         </div>
       </section>
@@ -88,7 +88,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
             {service.benefits.map((benefit, index) => {
               const Icon = benefitIcons[index];
               return (
-                <article className="svc-benefit" key={benefit.title}>
+                <article className="svc-benefit" data-card-motion key={benefit.title}>
                   <div className="svc-benefit-icon"><Icon size={23} strokeWidth={1.6} aria-hidden="true" /></div>
                   <div><h3>{benefit.title}</h3><p>{benefit.description}</p></div>
                 </article>
@@ -110,7 +110,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
             <Link className="button button-accent" href={`/contact?service=${slug}`}>Let’s map your process <ArrowUpRight size={17} aria-hidden="true" /></Link>
           </div>
           <div className="svc-connected-preview">
-            <PlatformPreview variant={service.band.preview} compact tilt={slug === 'custom-software'} />
+            <PlatformPreview variant={service.band.preview} compact />
           </div>
         </div>
       </section>
@@ -171,7 +171,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
           <h2 className="eyebrow">PART OF A CONNECTED BUSINESS</h2>
           <div className="svc-related-grid">
             {related.map((item) => (
-              <Link className="svc-related-link" href={`/services/${item.slug}`} key={item.slug}>
+              <Link className="svc-related-link" data-card-motion href={`/services/${item.slug}`} key={item.slug}>
                 <span className="svc-related-number">{item.number} / SERVICE</span>
                 <h3>{item.name}<ArrowUpRight size={24} aria-hidden="true" /></h3>
                 <p>{item.short}</p>

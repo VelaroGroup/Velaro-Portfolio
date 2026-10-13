@@ -6,9 +6,9 @@ import { ProjectSamplePreview } from '@/components/project-sample-preview';
 import { WorkGallery } from '@/components/work-gallery';
 import { projectCategories, projectCategoryLabel, type Project } from '@/lib/projects';
 
-export function ProjectVisual({ project, compact = false }: { project: Project; compact?: boolean }) {
+export function ProjectVisual({ project, compact = false, tilt = true }: { project: Project; compact?: boolean; tilt?: boolean }) {
   if (project.image) {
-    return <div className="project-cover"><Image src={project.image} alt={project.imageAlt || project.title} fill sizes={compact ? '(max-width: 700px) 100vw, 50vw' : '(max-width: 700px) 100vw, 85vw'} unoptimized={project.image.startsWith('http')} /></div>;
+    return <div className="project-cover" data-card-motion={tilt ? '' : undefined}><Image src={project.image} alt={project.imageAlt || project.title} fill sizes={compact ? '(max-width: 700px) 100vw, 50vw' : '(max-width: 700px) 100vw, 85vw'} unoptimized={project.image.startsWith('http')} /></div>;
   }
   switch (project.visual) {
     case 'white-label':
@@ -17,9 +17,9 @@ export function ProjectVisual({ project, compact = false }: { project: Project; 
     case 'documents':
     case 'wholesale':
     case 'hospitality':
-      return <ProjectSamplePreview variant={project.visual} compact={compact} />;
+      return <ProjectSamplePreview variant={project.visual} compact={compact} tilt={tilt} />;
     default:
-      return <PlatformPreview variant={project.visual || 'platform'} compact={compact} />;
+      return <PlatformPreview variant={project.visual || 'platform'} compact={compact} tilt={tilt} />;
   }
 }
 
@@ -39,10 +39,10 @@ export function ProjectGrid({ projects, activeCategory = 'All work' }: { project
   return <WorkGallery filters={filters} selected={activeCategory} selectedLabel={category?.shortLabel || 'All work'}
     description={category?.description || 'Explore the full collection of business challenges and possible solutions.'} resultLabel={resultLabel}>
     {visibleProjects.length ? <div className="project-grid">{visibleProjects.map((project) => <div className="project-grid-item" key={project.slug}>
-      <article className="project-card">
+      <article className="project-card" data-card-motion>
         <div className={`project-visual project-visual--${project.visual || 'platform'}`}>
           <span className="project-kind">{project.kind === 'concept' ? 'Illustrative concept' : 'Project'}</span>
-          <ProjectVisual project={project} compact />
+          <ProjectVisual project={project} compact tilt={false} />
         </div>
         <div className="project-meta"><span>{projectCategoryLabel(project.service)}</span>{project.kind !== 'concept' && project.year && <span>{project.year}</span>}</div>
         <h3><Link href={`/work/${project.slug}`}>{project.title}<ArrowUpRight aria-hidden="true" /></Link></h3>

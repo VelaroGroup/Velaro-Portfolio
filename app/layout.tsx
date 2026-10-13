@@ -2,12 +2,12 @@ import type { Metadata, Viewport } from 'next';
 import localFont from 'next/font/local';
 import { SiteHeader } from '@/components/site-header';
 import { SiteFooter } from '@/components/site-footer';
+import { CardMotion } from '@/components/card-motion';
 import { JsonLd } from '@/components/json-ld';
 import { site, siteUrl } from '@/lib/site';
 import { organizationSchema } from '@/lib/structured-data';
 import './design-system.css';
 import './previews.css';
-import './preview-motion.css';
 import './project-samples.css';
 import './services.css';
 import './secondary.css';
@@ -15,6 +15,7 @@ import './home.css';
 import './about-navigation.css';
 import './workflow-explorer.css';
 import './brand-identity.css';
+import './preview-motion.css';
 
 const inter = localFont({ src: '../public/fonts/inter-latin.woff2', variable: '--font-body', weight: '100 900', display: 'swap' });
 
@@ -48,6 +49,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SiteHeader />
         {children}
         <SiteFooter />
+        <CardMotion />
         <JsonLd data={organizationSchema} />
       </body>
     </html>
